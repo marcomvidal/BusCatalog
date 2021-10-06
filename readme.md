@@ -1,4 +1,4 @@
-# Santo André On Bus
+# SantoAndreOnBus.Api
 
 API RESTful de consulta de informações de linhas de ônibus da cidade de Santo André.
 
