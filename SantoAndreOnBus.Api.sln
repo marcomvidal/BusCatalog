@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantoAndreOnBus.Api", "SantoAndreOnBus.Api\SantoAndreOnBus.Api.csproj", "{D54DA4F5-80AA-4587-8443-C99C94AC439C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SantoAndreOnBus.Test", "SantoAndreOnBus.Test\SantoAndreOnBus.Test.csproj", "{BE3E8FF0-5AEE-40CF-A400-8DB33A2AB647}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D54DA4F5-80AA-4587-8443-C99C94AC439C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D54DA4F5-80AA-4587-8443-C99C94AC439C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D54DA4F5-80AA-4587-8443-C99C94AC439C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D54DA4F5-80AA-4587-8443-C99C94AC439C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE3E8FF0-5AEE-40CF-A400-8DB33A2AB647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3E8FF0-5AEE-40CF-A400-8DB33A2AB647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3E8FF0-5AEE-40CF-A400-8DB33A2AB647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3E8FF0-5AEE-40CF-A400-8DB33A2AB647}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
