@@ -7,6 +7,7 @@ var configuration = builder.Configuration.Consolidate();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddPersistence(configuration.ConnectionString!);
 builder.Services.AddRepositories();
+builder.Services.AddServices();
 builder.Services.AddJwtAuthentication(configuration.Authentication!);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

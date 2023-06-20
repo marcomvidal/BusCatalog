@@ -1,6 +1,6 @@
-using SantoAndreOnBus.Api.Companies;
-using SantoAndreOnBus.Api.Lines;
-using SantoAndreOnBus.Api.Vehicles;
+using SantoAndreOnBus.Api.Business.Companies;
+using SantoAndreOnBus.Api.Business.Lines;
+using SantoAndreOnBus.Api.Business.Vehicles;
 
 namespace SantoAndreOnBus.Api.Infrastructure.Dependencies;
 

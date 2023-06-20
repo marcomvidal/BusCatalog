@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SantoAndreOnBus.Api.Infrastructure;
 
@@ -10,27 +11,13 @@ using SantoAndreOnBus.Api.Infrastructure;
 namespace SantoAndreOnBus.Api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230530003927_CompanyTableNameNotNull")]
+    partial class CompanyTableNameNotNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.16");
-
-            modelBuilder.Entity("LineVehicle", b =>
-                {
-                    b.Property<int>("LinesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("VehiclesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("LinesId", "VehiclesId");
-
-                    b.HasIndex("VehiclesId");
-
-                    b.ToTable("LineVehicle");
-                });
 
             modelBuilder.Entity("SantoAndreOnBus.Api.Companies.Company", b =>
                 {
@@ -170,7 +157,7 @@ namespace SantoAndreOnBus.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("TEXT");
@@ -178,21 +165,6 @@ namespace SantoAndreOnBus.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("LineVehicle", b =>
-                {
-                    b.HasOne("SantoAndreOnBus.Api.Lines.Line", null)
-                        .WithMany()
-                        .HasForeignKey("LinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SantoAndreOnBus.Api.Vehicles.Vehicle", null)
-                        .WithMany()
-                        .HasForeignKey("VehiclesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SantoAndreOnBus.Api.Companies.Prefix", b =>
@@ -233,13 +205,13 @@ namespace SantoAndreOnBus.Api.Migrations
             modelBuilder.Entity("SantoAndreOnBus.Api.Lines.LineVehicle", b =>
                 {
                     b.HasOne("SantoAndreOnBus.Api.Lines.Line", "Line")
-                        .WithMany()
+                        .WithMany("LineVehicles")
                         .HasForeignKey("LineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SantoAndreOnBus.Api.Vehicles.Vehicle", "Vehicle")
-                        .WithMany()
+                        .WithMany("LineVehicles")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -276,7 +248,14 @@ namespace SantoAndreOnBus.Api.Migrations
                 {
                     b.Navigation("InterestPoints");
 
+                    b.Navigation("LineVehicles");
+
                     b.Navigation("Places");
+                });
+
+            modelBuilder.Entity("SantoAndreOnBus.Api.Vehicles.Vehicle", b =>
+                {
+                    b.Navigation("LineVehicles");
                 });
 #pragma warning restore 612, 618
         }
