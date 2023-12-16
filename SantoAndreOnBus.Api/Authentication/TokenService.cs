@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using SantoAndreOnBus.Api.Infrastructure.Configurations.Sections;
+using SantoAndreOnBus.Api.Infrastructure.Sections;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -40,7 +40,7 @@ public class TokenService : ITokenService
         {
             Issuer = _settings.Issuer,
             Audience = _settings.Audience,
-            Expires = DateTime.UtcNow.AddHours(Double.Parse(_settings.ExpirationInHours)),
+            Expires = DateTime.UtcNow.AddHours(double.Parse(_settings!.ExpirationInHours!)),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)

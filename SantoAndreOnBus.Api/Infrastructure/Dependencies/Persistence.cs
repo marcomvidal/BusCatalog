@@ -1,12 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace SantoAndreOnBus.Api.Infrastructure.Dependencies;
+namespace SantoAndreOnBus.Api.Infrastructure;
 
 public static class Persistence
 {
-    public static IServiceCollection AddPersistence(
-        this IServiceCollection services,
-        string connectionString) =>
-        services.AddDbContext<DatabaseContext>(options =>
-            options.UseSqlite(connectionString));
+    private const string ConnectionString = "Default";
+
+    public static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddDbContext<DatabaseContext>(options =>
+            options.UseSqlite(
+                builder.Configuration.GetConnectionString(ConnectionString)));
+
+        return builder;
+    }
+        
 }

@@ -4,25 +4,30 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SantoAndreOnBus.Api.Authentication;
-using SantoAndreOnBus.Api.Infrastructure.Configurations.Sections;
+using SantoAndreOnBus.Api.Infrastructure.Sections;
 
-namespace SantoAndreOnBus.Api.Infrastructure.Dependencies;
+namespace SantoAndreOnBus.Api.Infrastructure;
 
 public static class Authentication
 {
-    public static void AddJwtAuthentication(
-        this IServiceCollection services,
-        AuthenticationSection authentication)
+    public static WebApplicationBuilder AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-        services.AddScoped<ITokenService, TokenService>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
 
-        services
+        builder.Services
             .AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<DatabaseContext>()
             .AddDefaultTokenProviders();
+
+        var authentication = builder.Configuration
+            .GetSection("Authentication")
+            .Get<AuthenticationSection>()!;
         
-        services.AddAuthentication(AuthenticationConfig)
+        builder.Services
+            .AddAuthentication(AuthenticationConfig)
             .AddJwtBearer(b => BearerOptions(b, authentication));
+            
+        return builder;
     }
 
     private static Action<AuthenticationOptions> AuthenticationConfig = a => {
@@ -31,14 +36,14 @@ public static class Authentication
     };
 
     private static JwtBearerOptions BearerOptions(
-        JwtBearerOptions x,
+        JwtBearerOptions options,
         AuthenticationSection authentication)
     {
         var key = Encoding.ASCII.GetBytes(authentication.Secret!);
 
-        x.RequireHttpsMetadata = true;
-        x.SaveToken = true;
-        x.TokenValidationParameters = new TokenValidationParameters
+        options.RequireHttpsMetadata = true;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidAudience = authentication.Audience,
@@ -48,6 +53,6 @@ public static class Authentication
             ValidateIssuer = true
         };
 
-        return x;
+        return options;
     }
 }

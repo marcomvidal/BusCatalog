@@ -1,4 +1,4 @@
-namespace SantoAndreOnBus.Api.Infrastructure.Configurations.Sections;
+namespace SantoAndreOnBus.Api.Infrastructure.Sections;
 
 public record AuthenticationSection
 {
