@@ -1,84 +1,85 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SantoAndreOnBus.Api.Infrastructure;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using AutoMapper;
+using SantoAndreOnBus.Api.Business.General;
 
 namespace SantoAndreOnBus.Api.Business.Lines;
 
-public class LineService
+public interface ILineService
 {
-    private readonly DatabaseContext _db;
-    private readonly IMapper _mapper;
+    Task<IEnumerable<Line>> GetAllAsync();
+    Task<Line?> GetByIdAsync(int id);
+    Task<Line?> GetByIdentificationAsync(string identification);
+    Task<Line> SaveAsync(LinePostRequest request);
+    Task<Line> UpdateAsync(LinePostRequest request, Line line);
+    Task<DeleteResponse> DeleteAsync(Line line);
+}
 
-    public LineService(DatabaseContext db, IMapper mapper)
+public class LineService(
+    DatabaseContext db,
+    ILineRepository repository,
+    ILogger<LineService> logger,
+    IMapper mapper) : ILineService
+{
+    private readonly DatabaseContext _db = db;
+    private readonly ILineRepository _repository = repository;
+    private readonly ILogger<LineService> _logger = logger;
+    private readonly IMapper _mapper = mapper;
+
+    public async Task<IEnumerable<Line>> GetAllAsync()
     {
-        _db = db;
-        _mapper = mapper;
+        _logger.LogInformation("Fetching all registered lines.");
+
+        return await _repository.GetAllAsync();
     }
 
-    public async Task<Line> GetByLineNameAsync(string lineName)
+    public async Task<Line?> GetByIdAsync(int id)
     {
-        var partsOfName = new LineName(lineName);
-        
-        return await _db.Lines
-            .Include(l => l.InterestPoints)
-            .Include(l => l.Places)
-            .Include(l => l.Company)
-                .ThenInclude(c => c.Prefixes)
-            .Include(l => l.Vehicles)
-            .Where(l => l.Letter == partsOfName.Letter)
-            .Where(l => l.Number == partsOfName.Number)
-            .FirstAsync();
+        _logger.LogInformation("Fetching registered line with ID {id}.", id);
+
+        return await _repository.GetByIdAsync(id);
     }
 
-    public async Task<int> GetCountByNameAsync(LineSubmitRequest line)
+    public async Task<Line?> GetByIdentificationAsync(string identification)
     {
-        return await _db.Lines!
-            .Where(l => l.Number == line.Number)
-            .Where(l => l.Letter == line.Letter)
-            .CountAsync();
+        _logger.LogInformation(
+            "Fetching registered line with identification {identification}.", identification);
+
+        return await _repository.GetByIdentificationAsync(identification);
     }
 
-    public async Task<Line> SaveAsync(LineSubmitRequest request)
+    public async Task<Line> SaveAsync(LinePostRequest request)
     {
-        var line = LineDTOToModel.Map(request, new Line());
-        line.Company = await _db.Companies!.FindAsync(request.CompanyId);
-        
-        _db.Lines!.Add(line);
-        await AddVehiclesToLineAsync(line, request.Vehicles);
+        _logger.LogInformation("Registering line {identification}.", request.Identification);
+        var place = _mapper.Map<Line>(request);
+        await _repository.SaveAsync(place);
+
+        return place;
+    }
+
+    public async Task<Line> UpdateAsync(LinePostRequest request, Line line)
+    {
+        var updatedLine = _mapper.Map(request, line);
+        _db.Entry(updatedLine).State = EntityState.Modified;
         await _db.SaveChangesAsync();
-        
-        return line;
-    }
-
-    public async Task<Line> UpdateAsync(Line line, LineSubmitRequest request)
-    {
-        line = LineDTOToModel.Map(request, line);
-        line.Company = await _db.Companies!.FindAsync(request.CompanyId);
-        await AddVehiclesToLineAsync(line, request.Vehicles);
-
-        _db.Entry(line).State = EntityState.Modified;
-        await _db.SaveChangesAsync();
 
         return line;
     }
 
-    public Line ClearRelationships(LineSubmitRequest request, Line line)
+    public async Task<Line> UpdateAsync(LinePutRequest request, Line place)
     {
-        if (request.InterestPoints.Count > 0)
-            _db.InterestPoints.RemoveRange(line.InterestPoints);
+        var updatedLine = _mapper.Map(request, place);
+        await _repository.UpdateAsync(updatedLine);
+        _logger.LogInformation("Updated place {identification}.", request.Identification);
 
-        if (request.Places.Count > 0)
-            _db.Places.RemoveRange(line.Places);
-            
-        line.Vehicles.Clear();
-
-        return line;
+        return updatedLine;
     }
 
-    public async Task AddVehiclesToLineAsync(Line line, IList<Vehicle> vehicles)
+    public async Task<DeleteResponse> DeleteAsync(Line line)
     {
-        foreach (var vehicle in vehicles)
-            line.Vehicles.Add(vehicle);
+        await _repository.DeleteAsync(line);
+        _logger.LogInformation("Deleted line {identification}.", line.Identification);
+
+        return new DeleteResponse(line.Id);
     }
 }

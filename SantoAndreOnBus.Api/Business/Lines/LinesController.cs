@@ -1,72 +1,65 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.Infrastructure.Filters;
 
 namespace SantoAndreOnBus.Api.Business.Lines;
 
-[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class LinesController : ControllerBase
+public class LinesController(
+    ILineValidator validator,
+    ILineService service) : ControllerBase
 {
-    private ILineRepository _repository;
-    private readonly IMapper _mapper;
-    
-    public LinesController(ILineRepository repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
+    private readonly ILineValidator _validator = validator;
+    private readonly ILineService _service = service;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
-        Ok(await _repository.GetAllOrderedByNumber());
+        Ok(await _service.GetAllAsync());
 
-    [HttpGet("{lineName}")]
-    public async Task<IActionResult> Get(string lineName)
+    [HttpGet("{identification}")]
+    public async Task<ActionResult<Line>> Get(string identification)
     {
-        try
-        {
-            var line = await _repository.GetByLineNameAsync(lineName);
-            var response = _mapper.Map<LineSubmitRequest>(line);
+        var line = await _service.GetByIdentificationAsync(identification);
 
-            return Ok(response);
-        }
-        catch (InvalidOperationException)
-        {
-            return BadRequest($"Linha {lineName} não encontrada.");
-        }
+        return line is not null
+            ? Ok(line)
+            : NotFound();
     }
 
-    [ValidateModel]
     [HttpPost]
-    public async Task<ActionResult<Line>> Post([FromBody] LineSubmitRequest request)
+    public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
-        if (await _repository.GetCountByNameAsync(request) > 0)
-            return BadRequest($"Linha {request.Letter}-{request.Number} já existe e não pode ser criada novamente.");
+        var validation = await _validator.ValidateAsync(request, ModelState);
+        var line = await _service.SaveAsync(request);
 
-        var line = await _repository.SaveAsync(request);
-
-        return Ok(line);
+        return validation.IsValid
+            ? Accepted(line)
+            : ValidationProblem();
     }
 
-    [ValidateModel]
-    [HttpPut("{lineName}")]
-    public async Task<ActionResult<Line>> Put(string lineName, [FromBody] LineSubmitRequest request)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePostRequest request)
     {
-        var line = await _repository.GetByLineNameAsync(lineName);
-        _repository.ClearRelationships(request, line);
-        line = await _repository.UpdateAsync(line, request);
+        var line = await _service.GetByIdAsync(id);
 
-        return Ok(line);
+        if (line is null)
+        {
+            return NotFound();
+        }
+
+        var validation = await _validator.ValidateAsync(request, ModelState);
+
+        return validation.IsValid
+            ? Accepted(await _service.UpdateAsync(request, line))
+            : ValidationProblem();
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<Line>> Delete(int id)
     {
-        await _repository.DeleteAsync(id);
+        var line = await _service.GetByIdAsync(id);
 
-        return Ok($"Linha excluída com sucesso.");
+        return line is not null
+            ? Ok(await _service.DeleteAsync(line))
+            : NotFound();
     }
 }

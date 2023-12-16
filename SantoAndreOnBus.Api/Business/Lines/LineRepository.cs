@@ -1,100 +1,67 @@
 using Microsoft.EntityFrameworkCore;
 using SantoAndreOnBus.Api.Infrastructure;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Extensions;
 
 namespace SantoAndreOnBus.Api.Business.Lines;
 
 public interface ILineRepository
 {
-    Task<List<Line>> GetAllOrderedByNumber();
-    Task<Line> GetByLineNameAsync(string lineName);
-    Task<int> GetCountByNameAsync(LineSubmitRequest line);
-    Task<Line> SaveAsync(LineSubmitRequest request);
-    Task<Line> UpdateAsync(Line line, LineSubmitRequest request);
-    Line ClearRelationships(LineSubmitRequest request, Line line);
-    Task AddVehiclesToLineAsync(Line line, IList<Vehicle> vehicles);
-    Task<int> DeleteAsync(int id);
+    Task<IEnumerable<Line>> GetAllAsync();
+    Task<Line?> GetByIdAsync(int id);
+    Task<Line?> GetByIdentificationAsync(string identification, int? id = null);
+    Task<Line> SaveAsync(Line line);
+    Task<int> UpdateAsync(Line line);
+    Task<int> DeleteAsync(Line line);
 }
 
-
-public class LineRepository : ILineRepository
+public class LineRepository(DatabaseContext db) : ILineRepository
 {
-    private readonly DatabaseContext _db;
+    private readonly DatabaseContext _db = db;
 
-    public LineRepository(DatabaseContext db) => _db = db;
+    public async Task<IEnumerable<Line>> GetAllAsync() => 
+        await _db.Lines!
+            .AsNoTracking()
+            .OrderBy(x => x.Identification)
+            .ToListAsync();
 
-    public Task<List<Line>> GetAllOrderedByNumber() => 
-        _db.Lines!.OrderBy(l => l.Number).ToListAsync();
-
-    public Task<Line> GetByLineNameAsync(string lineName)
-    {
-        var partsOfName = new LineName(lineName);
-        
+    public Task<Line?> GetByIdAsync(int id)
+    {        
         return _db.Lines
-            .Include(l => l.InterestPoints)
-            .Include(l => l.Places)
-            .Include(l => l.Company)
-                .ThenInclude(c => c.Prefixes)
-            .Include(l => l.Vehicles)
-            .Where(l => l.Letter == partsOfName.Letter)
-            .Where(l => l.Number == partsOfName.Number)
-            .FirstAsync();
+            .AsNoTracking()
+            .Include(x => x.Places)
+            .Include(x => x.Vehicles)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public Task<int> GetCountByNameAsync(LineSubmitRequest line) =>
-        _db.Lines
-            .Where(l => l.Number == line.Number)
-            .Where(l => l.Letter == line.Letter)
-            .CountAsync();
+    public async Task<Line?> GetByIdentificationAsync(
+        string identification,
+        int? id = null) =>
+        await _db.Lines
+            .AsNoTracking()
+            .WhereIfTrue(id.HasValue, x => x.Id != id)
+            .FirstOrDefaultAsync(
+                x => x.Identification.ToLower().Equals(identification.ToLower()));
 
-    public async Task<Line> SaveAsync(LineSubmitRequest request)
+    public async Task<Line> SaveAsync(Line line)
     {
-        var line = LineDTOToModel.Map(request, new Line());
-        line.Company = await _db.Companies!.FindAsync(request.CompanyId);
-        
         _db.Lines!.Add(line);
-        await AddVehiclesToLineAsync(line, request.Vehicles);
         await _db.SaveChangesAsync();
         
         return line;
     }
 
-    public async Task<Line> UpdateAsync(Line line, LineSubmitRequest request)
+    public async Task<int> UpdateAsync(Line line)
     {
-        line = LineDTOToModel.Map(request, line);
-        line.Company = await _db.Companies.FindAsync(request.CompanyId);
-        await AddVehiclesToLineAsync(line, request.Vehicles);
-
         _db.Entry(line).State = EntityState.Modified;
-        await _db.SaveChangesAsync();
-
-        return line;
-    }
-
-    public Line ClearRelationships(LineSubmitRequest request, Line line)
-    {
-        if (request.InterestPoints.Count > 0)
-            _db.InterestPoints.RemoveRange(line.InterestPoints);
-
-        if (request.Places.Count > 0)
-            _db.Places.RemoveRange(line.Places);
-            
-        line.Vehicles.Clear();
-
-        return line;
-    }
-
-    public async Task AddVehiclesToLineAsync(Line line, IList<Vehicle> vehicles)
-    {
-        foreach (var vehicle in vehicles)
-            line.Vehicles.Add(vehicle);
-    }
-
-    public async Task<int> DeleteAsync(int id)
-    {
-        var line = await _db.Lines.Where(l => l.Id == id).FirstAsync();
-        _db.Lines.Remove(line);
+        _db.Update(line);
 
         return await _db.SaveChangesAsync();
+    }
+
+    public Task<int> DeleteAsync(Line line)
+    {
+        _db.Lines.Remove(line);
+        
+        return _db.SaveChangesAsync();
     }
 }
