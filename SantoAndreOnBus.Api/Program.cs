@@ -1,14 +1,11 @@
-using SantoAndreOnBus.Api.Infrastructure.Configurations;
-using SantoAndreOnBus.Api.Infrastructure.Dependencies;
+using SantoAndreOnBus.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = builder.Configuration.Consolidate();
+builder.AddPersistence();
+builder.AddJwtAuthentication();
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddPersistence(configuration.ConnectionString!);
-builder.Services.AddRepositories();
-builder.Services.AddServices();
-builder.Services.AddJwtAuthentication(configuration.Authentication!);
+builder.Services.AddModules();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
