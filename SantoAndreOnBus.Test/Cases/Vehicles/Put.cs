@@ -1,7 +1,8 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using SantoAndreOnBus.Api.Business.Vehicles;
-using SantoAndreOnBus.Test.Fakes;
 using SantoAndreOnBus.Test.Fixtures;
+using SantoAndreOnBus.Test.ScenarioFakes;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
@@ -13,27 +14,27 @@ public class Put : IntegrationTest
     [Fact]
     public async void WhenItUpdatesAValidVehicle_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddAsync(VehicleFakes.Vehicles[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
         await Context.SaveChangesAsync();
 
-        var request = new VehicleSubmitRequest
+        var request = new VehiclePostRequest
         {
             Identification = "Valid Another Name",
             Description = "Valid Vehicle Changed Name"
         };
 
         var response = await Client.PutAsJsonAsync("/api/vehicles/1", request);
-        var body = await response.DeserializedBody<VehicleResponse>();
+        var body = await response.DeserializedBody<Vehicle>();
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        body.Should().Match<VehicleResponse>(
-            x => x.Data!.Identification == request.NormalizedIdentification);
+        response.StatusCode.Should().Be(HttpStatusCode.Accepted);
+        body.Should().Match<Vehicle>(
+            x => x.Identification == request.NormalizedIdentification);
     }
 
     [Fact]
-    public async void WhenItPutsACompanyThatDoesNotExists_ShouldRespondNotFound()
+    public async void WhenItPutsAVehicleThatDoesNotExists_ShouldRespondNotFound()
     {
-        var request = new VehicleSubmitRequest
+        var request = new VehiclePostRequest
         {
             Identification = "Valid Another Name",
             Description = "Valid Vehicle Changed Name"
@@ -45,10 +46,10 @@ public class Put : IntegrationTest
     }
 
     [Fact]
-    public async void WhenItPutsAnInvalidCompany_ShouldRespondWithValidationErrors()
+    public async void WhenItPutsAnInvalidVehicle_ShouldRespondWithValidationErrors()
     {
-        var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehicleSubmitRequest());
-        var body = await response.DeserializedBody<VehicleResponse>();
+        var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehiclePostRequest());
+        var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         body!.Errors.Should().ContainKeys("Identification");

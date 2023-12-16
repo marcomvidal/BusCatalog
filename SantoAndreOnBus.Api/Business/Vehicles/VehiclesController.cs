@@ -1,43 +1,47 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.General;
-using SantoAndreOnBus.Api.Infrastructure.Filters;
-using SantoAndreOnBus.Api.Business.Lines;
+using SantoAndreOnBus.Api.Business.General;
 
 namespace SantoAndreOnBus.Api.Business.Vehicles;
 
 // [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class VehiclesController : ControllerBase
+public class VehiclesController(
+    IVehicleValidator validator,
+    IVehicleService service) : ControllerBase
 {
-    private readonly IVehicleRepository _repository;
-    private readonly IVehicleService _service;
-    
-    public VehiclesController(IVehicleRepository repository, IVehicleService service)
-    {
-        _repository = repository;
-        _service = service;
-    }
+    private readonly IVehicleValidator _validator = validator;
+    private readonly IVehicleService _service = service;
 
     [HttpGet]
-    public async Task<ActionResult<VehicleListResponse>> Get() =>
+    public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
         Ok(await _service.GetAllAsync());
     
-    [ValidateModel]
     [HttpPost]
-    public async Task<ActionResult<VehicleResponse>> Post([FromBody] VehicleSubmitRequest request) =>
-        Ok(await _service.SaveAsync(request));
+    public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)
+    {
+        var validation = await _validator.ValidateAsync(request, ModelState);
 
-    [ValidateModel]
+        return validation.IsValid
+            ? Accepted(await _service.SaveAsync(request))
+            : ValidationProblem();
+    }
+
     [HttpPut("{id}")]
-    public async Task<ActionResult<Line>> Put(int id, [FromBody] VehicleSubmitRequest request)
+    public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] VehiclePutRequest request)
     {
         var vehicle = await _service.GetByIdAsync(id);
 
-        return vehicle.Data is not null
-            ? Ok(await _service.UpdateAsync(request, vehicle.Data))
-            : NotFound();
+        if (vehicle is null)
+        {
+            return NotFound();
+        }
+
+        var validator = await _validator.ValidateAsync(id, request, ModelState);
+
+        return validator.IsValid
+            ? Accepted(await _service.UpdateAsync(request, vehicle))
+            : ValidationProblem();
     }
 
     [HttpDelete("{id}")]
@@ -45,8 +49,8 @@ public class VehiclesController : ControllerBase
     {
         var vehicle = await _service.GetByIdAsync(id);
         
-        return vehicle.Data is not null
-            ? Ok(await _service.DeleteAsync(vehicle.Data))
+        return vehicle is not null
+            ? Ok(await _service.DeleteAsync(vehicle))
             : NotFound();
     }
 }

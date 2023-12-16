@@ -1,62 +1,56 @@
 using AutoMapper;
-using SantoAndreOnBus.Api.General;
+using SantoAndreOnBus.Api.Business.General;
 
 namespace SantoAndreOnBus.Api.Business.Vehicles;
 
 public interface IVehicleService
 {
-    Task<VehicleListResponse> GetAllAsync();
-    Task<VehicleResponse> GetByIdAsync(int id);
-    Task<VehicleResponse> SaveAsync(VehicleSubmitRequest request);
-    Task<VehicleResponse> UpdateAsync(VehicleSubmitRequest request, Vehicle vehicle);
+    Task<IEnumerable<Vehicle>> GetAllAsync();
+    Task<Vehicle?> GetByIdAsync(int id);
+    Task<Vehicle> SaveAsync(VehiclePostRequest request);
+    Task<Vehicle> UpdateAsync(VehiclePostRequest request, Vehicle vehicle);
     Task<DeleteResponse> DeleteAsync(Vehicle vehicle);
 }
 
-public class VehicleService : IVehicleService
+public class VehicleService(
+    IVehicleRepository repository,
+    IMapper mapper,
+    ILogger<VehicleService> logger) : IVehicleService
 {
-    private readonly IVehicleRepository _repository;
-    private readonly IMapper _mapper;
-    private readonly ILogger<VehicleService> _logger;
+    private readonly IVehicleRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
+    private readonly ILogger<VehicleService> _logger = logger;
 
-    public VehicleService(
-        IVehicleRepository repository,
-        IMapper mapper,
-        ILogger<VehicleService> logger)
-    {
-        _repository = repository;
-        _mapper = mapper;
-        _logger = logger;
-    }
-
-    public async Task<VehicleListResponse> GetAllAsync()
+    public async Task<IEnumerable<Vehicle>> GetAllAsync()
     {
         _logger.LogInformation("Fetching all registered vehicles.");
 
-        return new VehicleListResponse(await _repository.GetAllAsync());
+        return await _repository.GetAllAsync();
     }
 
-    public async Task<VehicleResponse> GetByIdAsync(int id)
+    public async Task<Vehicle?> GetByIdAsync(int id)
     {
         _logger.LogInformation("Fetching vehicle with ID {id}.", id);
 
-        return new VehicleResponse(await _repository.GetByIdAsync(id));
+        return await _repository.GetByIdAsync(id);
     }
     
-    public async Task<VehicleResponse> SaveAsync(VehicleSubmitRequest request)
+    public async Task<Vehicle> SaveAsync(VehiclePostRequest request)
     {
         _logger.LogInformation("Registering vehicle {identification}.", request.Identification);
         var vehicle = _mapper.Map<Vehicle>(request);
         await _repository.SaveAsync(vehicle);
 
-        return new VehicleResponse(vehicle);
+        return vehicle;
     }
 
-    public async Task<VehicleResponse> UpdateAsync(VehicleSubmitRequest request, Vehicle vehicle)
+    public async Task<Vehicle> UpdateAsync(VehiclePostRequest request, Vehicle vehicle)
     {
         _logger.LogInformation("Updating vehicle {identification}.", request.Identification);
-        await _repository.UpdateAsync(_mapper.Map(request, vehicle));
+        var updatedVehicle = _mapper.Map(request, vehicle);
+        await _repository.UpdateAsync(updatedVehicle);
 
-        return new VehicleResponse(vehicle);
+        return updatedVehicle;
     }
 
     public async Task<DeleteResponse> DeleteAsync(Vehicle vehicle)
