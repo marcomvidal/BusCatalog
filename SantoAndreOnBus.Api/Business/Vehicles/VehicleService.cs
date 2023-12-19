@@ -34,6 +34,13 @@ public class VehicleService(
 
         return await _repository.GetByIdAsync(id);
     }
+
+    public async Task<Vehicle?> GetByIdentificationAsync(string identification)
+    {
+        _logger.LogInformation("Fetching vehicle with identification {identification}.", identification);
+
+        return await _repository.GetByIdentificationAsync(identification);
+    }
     
     public async Task<Vehicle> SaveAsync(VehiclePostRequest request)
     {

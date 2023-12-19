@@ -10,6 +10,6 @@ public record Line
     public string? Fromwards { get; set; } = null!;
     public string? Towards { get; set; } = null!;
     public int DeparturesPerDay { get; set; }
-    public virtual ICollection<Place>? Places { get; set; } = new List<Place>();
-    public virtual ICollection<Vehicle>? Vehicles { get; set; } = new List<Vehicle>();
+    public virtual List<Place> Places { get; set; } = [];
+    public virtual List<Vehicle> Vehicles { get; set; } = [];
 }

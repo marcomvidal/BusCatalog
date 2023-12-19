@@ -78,12 +78,10 @@ namespace SantoAndreOnBus.Api.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -103,7 +101,6 @@ namespace SantoAndreOnBus.Api.Migrations
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

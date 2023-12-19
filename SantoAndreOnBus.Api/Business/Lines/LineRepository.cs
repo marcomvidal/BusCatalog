@@ -38,6 +38,8 @@ public class LineRepository(DatabaseContext db) : ILineRepository
         int? id = null) =>
         await _db.Lines
             .AsNoTracking()
+            .Include(x => x.Places)
+            .Include(x => x.Vehicles)
             .WhereIfTrue(id.HasValue, x => x.Id != id)
             .FirstOrDefaultAsync(
                 x => x.Identification.ToLower().Equals(identification.ToLower()));

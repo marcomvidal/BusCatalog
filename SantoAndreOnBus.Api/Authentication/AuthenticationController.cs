@@ -35,14 +35,14 @@ public class AuthenticationController : ControllerBase
             EmailConfirmed = true
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var result = await _userManager.CreateAsync(user, request.Password!);
 
         if (!result.Succeeded)
             return BadRequest(result.Errors);
         
         await _signInManager.SignInAsync(user, false);
 
-        return Ok(await _tokenService.Generate(user.Email));
+        return Ok(await _tokenService.Generate(user.Email!));
     }
 
     [ValidateModelAndSendErrors]
@@ -50,8 +50,8 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> Login(UserLoginRequest request)
     {
         var result = await _signInManager.PasswordSignInAsync(
-            userName: request.Email,
-            password: request.Password,
+            userName: request.Email!,
+            password: request.Password!,
             isPersistent: false,
             lockoutOnFailure: true);
 
@@ -60,7 +60,7 @@ public class AuthenticationController : ControllerBase
         
         var token = new TokenResponse
         {
-            Token = await _tokenService.Generate(request.Email)
+            Token = await _tokenService.Generate(request.Email!)
         };
 
         return Ok(token);

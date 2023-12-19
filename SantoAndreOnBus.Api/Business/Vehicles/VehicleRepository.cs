@@ -9,6 +9,7 @@ public interface IVehicleRepository
     Task<IEnumerable<Vehicle>> GetAllAsync();
     Task<Vehicle?> GetByIdAsync(int id);
     Task<Vehicle?> GetByIdentificationAsync(string identification, int? id = null);
+    Task<IList<Vehicle>> GetByIdentificationAsync(IEnumerable<string> identificators);
     Task<int> SaveAsync(Vehicle vehicle);
     Task<int> UpdateAsync(Vehicle vehicle);
     Task<int> DeleteAsync(Vehicle vehicle);
@@ -36,6 +37,12 @@ public class VehicleRepository(DatabaseContext db) : IVehicleRepository
             .AsNoTracking()
             .WhereIfTrue(id.HasValue, x => x.Id != id)
             .FirstOrDefaultAsync(x => x.Identification.ToLower().Equals(identification.ToLower()));
+
+    public async Task<IList<Vehicle>> GetByIdentificationAsync(
+        IEnumerable<string> identificators) =>
+        await _db.Vehicles
+            .Where(x => identificators.Contains(x.Identification))
+            .ToListAsync();
 
     public async Task<int> SaveAsync(Vehicle vehicle)
     {

@@ -8,6 +8,7 @@ public interface IPlaceRepository
 {
     Task<IEnumerable<Place>> GetAllAsync();
     Task<Place?> GetByIdAsync(int id);
+    Task<IList<Place>> GetByIdAsync(IEnumerable<int> identificators);
     Task<Place?> GetByIdentificationAsync(string identification, int? id = null);
     Task<int> SaveAsync(Place place);
     Task<int> UpdateAsync(Place place);
@@ -28,6 +29,12 @@ public class PlaceRepository(DatabaseContext db) : IPlaceRepository
         _db.Places
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == id);
+
+    public async Task<IList<Place>> GetByIdAsync(
+        IEnumerable<int> idList) =>
+        await _db.Places
+            .Where(x => idList.Contains(x.Id))
+            .ToListAsync();
 
     public async Task<Place?> GetByIdentificationAsync(
         string identification,

@@ -34,7 +34,7 @@ public class TokenService : ITokenService
             Environment.GetEnvironmentVariable("ASPNETCORE_JwtSecret") :
             _settings.Secret;
             
-        var key = Encoding.ASCII.GetBytes(secret);
+        var key = Encoding.ASCII.GetBytes(secret!);
 
         var descriptor = new SecurityTokenDescriptor()
         {

@@ -10,7 +10,7 @@ using SantoAndreOnBus.Api.Infrastructure;
 namespace SantoAndreOnBus.Api.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20231115182029_InitialCreate")]
+    [Migration("20231219002636_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -81,12 +81,10 @@ namespace SantoAndreOnBus.Api.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -106,7 +104,6 @@ namespace SantoAndreOnBus.Api.Migrations
 
                     b.Property<string>("Identification")
                         .IsRequired()
-                        .HasMaxLength(30)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

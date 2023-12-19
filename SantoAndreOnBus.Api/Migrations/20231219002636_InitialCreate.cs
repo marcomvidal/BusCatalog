@@ -32,8 +32,8 @@ namespace SantoAndreOnBus.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Identification = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    City = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false)
+                    Identification = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,7 @@ namespace SantoAndreOnBus.Api.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Identification = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
+                    Identification = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
