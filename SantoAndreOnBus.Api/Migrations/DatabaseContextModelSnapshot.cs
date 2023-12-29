@@ -46,7 +46,7 @@ namespace SantoAndreOnBus.Api.Migrations
                     b.ToTable("LineVehicle");
                 });
 
-            modelBuilder.Entity("SantoAndreOnBus.Api.Business.Lines.Line", b =>
+            modelBuilder.Entity("SantoAndreOnBus.Api.Domain.Lines.Line", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace SantoAndreOnBus.Api.Migrations
                     b.ToTable("Lines");
                 });
 
-            modelBuilder.Entity("SantoAndreOnBus.Api.Business.Places.Place", b =>
+            modelBuilder.Entity("SantoAndreOnBus.Api.Domain.Places.Place", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace SantoAndreOnBus.Api.Migrations
                     b.ToTable("Places");
                 });
 
-            modelBuilder.Entity("SantoAndreOnBus.Api.Business.Vehicles.Vehicle", b =>
+            modelBuilder.Entity("SantoAndreOnBus.Api.Domain.Vehicles.Vehicle", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -110,13 +110,13 @@ namespace SantoAndreOnBus.Api.Migrations
 
             modelBuilder.Entity("LinePlace", b =>
                 {
-                    b.HasOne("SantoAndreOnBus.Api.Business.Lines.Line", null)
+                    b.HasOne("SantoAndreOnBus.Api.Domain.Lines.Line", null)
                         .WithMany()
                         .HasForeignKey("LinesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SantoAndreOnBus.Api.Business.Places.Place", null)
+                    b.HasOne("SantoAndreOnBus.Api.Domain.Places.Place", null)
                         .WithMany()
                         .HasForeignKey("PlacesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -125,13 +125,13 @@ namespace SantoAndreOnBus.Api.Migrations
 
             modelBuilder.Entity("LineVehicle", b =>
                 {
-                    b.HasOne("SantoAndreOnBus.Api.Business.Lines.Line", null)
+                    b.HasOne("SantoAndreOnBus.Api.Domain.Lines.Line", null)
                         .WithMany()
                         .HasForeignKey("LinesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SantoAndreOnBus.Api.Business.Vehicles.Vehicle", null)
+                    b.HasOne("SantoAndreOnBus.Api.Domain.Vehicles.Vehicle", null)
                         .WithMany()
                         .HasForeignKey("VehiclesId")
                         .OnDelete(DeleteBehavior.Cascade)

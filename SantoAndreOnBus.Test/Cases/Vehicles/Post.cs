@@ -2,7 +2,8 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Domain.Vehicles;
+using SantoAndreOnBus.Api.Extensions;
 using SantoAndreOnBus.Test.Fixtures;
 using Xunit;
 
@@ -15,7 +16,7 @@ public class Post : IntegrationTest
     {
         var request = new VehiclePostRequest
         {
-            Identification = "ARTICULATED",
+            Identification = "super articulated",
             Description = "Articulated"
         };
 
@@ -25,7 +26,7 @@ public class Post : IntegrationTest
         (await response.DeserializedBody<Vehicle>())
             .Should()
             .Match<Vehicle>(x =>
-                x.Identification == request.Identification
+                x.Identification == request.Identification.SlugfyUpper()
                 && x.Description == request.Description);
     }
 
@@ -36,7 +37,7 @@ public class Post : IntegrationTest
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        body!.Errors.Should().ContainKeys("Identification");
+        body!.Errors.Should().ContainKeys("Identification", "Description");
     }
 
     [Fact]

@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Domain.Vehicles;
 using SantoAndreOnBus.Test.Fixtures;
 using SantoAndreOnBus.Test.ScenarioFakes;
 using System.Net;
@@ -17,24 +17,24 @@ public class Put : IntegrationTest
         await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
         await Context.SaveChangesAsync();
 
-        var request = new VehiclePostRequest
+        var request = new VehiclePutRequest
         {
             Identification = "Valid Another Name",
             Description = "Valid Vehicle Changed Name"
         };
 
         var response = await Client.PutAsJsonAsync("/api/vehicles/1", request);
-        var body = await response.DeserializedBody<Vehicle>();
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-        body.Should().Match<Vehicle>(
-            x => x.Identification == request.NormalizedIdentification);
+        (await response.DeserializedBody<Vehicle>())
+            .Should().Match<Vehicle>(
+            x => x.Identification == request.Identification);
     }
 
     [Fact]
     public async void WhenItPutsAVehicleThatDoesNotExists_ShouldRespondNotFound()
     {
-        var request = new VehiclePostRequest
+        var request = new VehiclePutRequest
         {
             Identification = "Valid Another Name",
             Description = "Valid Vehicle Changed Name"
@@ -48,10 +48,13 @@ public class Put : IntegrationTest
     [Fact]
     public async void WhenItPutsAnInvalidVehicle_ShouldRespondWithValidationErrors()
     {
-        var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehiclePostRequest());
-        var body = await response.DeserializedBody<ValidationProblemDetails>();
-
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.SaveChangesAsync();
+        
+        var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehiclePutRequest());
+        
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        body!.Errors.Should().ContainKeys("Identification");
+        (await response.DeserializedBody<ValidationProblemDetails>())!
+            .Errors.Should().ContainKeys("Identification", "Description");
     }
 }

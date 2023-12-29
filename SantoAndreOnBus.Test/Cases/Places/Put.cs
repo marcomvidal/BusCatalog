@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.Business.Places;
+using SantoAndreOnBus.Api.Domain.Places;
 using SantoAndreOnBus.Test.Fixtures;
 using SantoAndreOnBus.Test.ScenarioFakes;
 using System.Net;
@@ -24,11 +24,11 @@ public class Put : IntegrationTest
         };
 
         var response = await Client.PutAsJsonAsync("/api/places/1", request);
-        var body = await response.DeserializedBody<Place>();
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-        body.Should().Match<Place>(
-            x => x.Identification == request.Identification);
+        (await response.DeserializedBody<Place>())
+            .Should()
+            .Match<Place>(x => x.Identification == request.Identification);
     }
 
     [Fact]
@@ -48,10 +48,12 @@ public class Put : IntegrationTest
     [Fact]
     public async void WhenItPutsAnInvalidPlace_ShouldRespondWithValidationErrors()
     {
+        await Context.Places.AddAsync(FakeStore.Places[0]);
+        await Context.SaveChangesAsync();
         var response = await Client.PutAsJsonAsync("/api/places/1", new PlacePostRequest());
-        var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        body!.Errors.Should().ContainKeys("Identification");
+        (await response.DeserializedBody<ValidationProblemDetails>())!
+            .Errors.Should().ContainKeys("Identification", "City");
     }
 }

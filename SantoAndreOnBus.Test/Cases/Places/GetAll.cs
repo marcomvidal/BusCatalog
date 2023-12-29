@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using FluentAssertions;
-using SantoAndreOnBus.Api.Business.Places;
+using SantoAndreOnBus.Api.Domain.Places;
 using SantoAndreOnBus.Test.Fixtures;
 using SantoAndreOnBus.Test.ScenarioFakes;
 using Xunit;
@@ -32,6 +32,7 @@ public class GetAll : IntegrationTest
         var body = await response.DeserializedBody<IEnumerable<Place>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
+        
         body!
             .Select(x => new { x.Identification, x.City })
             .Should()

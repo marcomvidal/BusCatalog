@@ -1,6 +1,6 @@
-using SantoAndreOnBus.Api.Business.Lines;
-using SantoAndreOnBus.Api.Business.Places;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Domain.Lines;
+using SantoAndreOnBus.Api.Domain.Places;
+using SantoAndreOnBus.Api.Domain.Vehicles;
 
 namespace SantoAndreOnBus.Test.ScenarioFakes;
 

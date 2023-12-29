@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using FluentAssertions;
-using SantoAndreOnBus.Api.Business.Lines;
+using SantoAndreOnBus.Api.Domain.Lines;
 using SantoAndreOnBus.Test.Fixtures;
 using SantoAndreOnBus.Test.ScenarioFakes;
 using Xunit;

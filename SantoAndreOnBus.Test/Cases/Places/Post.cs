@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
-using SantoAndreOnBus.Api.Business.Places;
+using SantoAndreOnBus.Api.Domain.Places;
 using SantoAndreOnBus.Test.Fixtures;
 using Xunit;
 
@@ -20,10 +20,11 @@ public class Post : IntegrationTest
         };
 
         var response = await Client.PostAsJsonAsync("/api/places", request);
+        var body = await response.DeserializedBody<Place>();
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-        (await response.DeserializedBody<Place>())
-            .Should()
+        
+        body.Should()
             .Match<Place>(x =>
                 x.Identification == request.Identification
                 && x.City == request.City);
@@ -36,7 +37,9 @@ public class Post : IntegrationTest
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        body!.Errors.Should().ContainKeys("Identification");
+        body!.Errors
+            .Should()
+            .ContainKeys("Identification", "City");
     }
 
     [Fact]

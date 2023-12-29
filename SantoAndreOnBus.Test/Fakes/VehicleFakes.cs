@@ -1,4 +1,4 @@
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Domain.Vehicles;
 
 namespace SantoAndreOnBus.Test.ScenarioFakes;
 

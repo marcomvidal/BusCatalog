@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using FluentAssertions;
-using SantoAndreOnBus.Api.Business.Vehicles;
+using SantoAndreOnBus.Api.Domain.Vehicles;
 using SantoAndreOnBus.Test.Fixtures;
 using SantoAndreOnBus.Test.ScenarioFakes;
 using Xunit;
