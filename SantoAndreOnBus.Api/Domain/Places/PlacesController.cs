@@ -1,5 +1,7 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SantoAndreOnBus.Api.Domain.General;
+using SantoAndreOnBus.Api.Extensions;
 
 namespace SantoAndreOnBus.Api.Domain.Places;
 
@@ -7,11 +9,13 @@ namespace SantoAndreOnBus.Api.Domain.Places;
 [Route("api/[controller]")]
 [ApiController]
 public class PlacesController(
-    IPlaceValidator validator,
-    IPlaceService service) : ControllerBase
+    IPlaceService service,
+    IValidator<PlacePostRequest> postValidator,
+    IValidator<PlacePutRequest> putValidator) : ControllerBase
 {
-    private readonly IPlaceValidator _validator = validator;
     private readonly IPlaceService _service = service;
+    private readonly IValidator<PlacePostRequest> _postValidator = postValidator;
+    private readonly IValidator<PlacePutRequest> _putValidator = putValidator;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Place>>> Get() =>
@@ -20,7 +24,7 @@ public class PlacesController(
     [HttpPost]
     public async Task<ActionResult<Place>> Post([FromBody] PlacePostRequest request)
     {
-        var validation = await _validator.ValidateAsync(request, ModelState);
+        var validation = await _postValidator.ValidateModelAsync(request, ModelState);
         
         return validation.IsValid
             ? Accepted(await _service.SaveAsync(request))
@@ -37,7 +41,9 @@ public class PlacesController(
             return NotFound();
         }
 
-        var validation = await _validator.ValidateAsync(id, request, ModelState);
+        var validation = await _putValidator.ValidateModelAsync(
+            request with { Id = id },
+            ModelState);
 
         return validation.IsValid
             ? Accepted(await _service.UpdateAsync(request, vehicle))

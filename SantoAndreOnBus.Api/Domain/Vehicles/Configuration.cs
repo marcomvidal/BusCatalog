@@ -9,6 +9,5 @@ public static class Configuration
             .AddScoped<IVehicleRepository, VehicleRepository>()
             .AddScoped<IVehicleService, VehicleService>()
             .AddScoped<IValidator<VehiclePostRequest>, VehiclePostValidator>()
-            .AddScoped<IValidator<VehiclePutRequest>, VehiclePutValidator>()
-            .AddScoped<IVehicleValidator, VehicleValidator>();
+            .AddScoped<IValidator<VehiclePutRequest>, VehiclePutValidator>();
 }

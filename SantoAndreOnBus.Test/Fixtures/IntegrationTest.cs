@@ -23,11 +23,10 @@ public class IntegrationTest : IDisposable
     public DatabaseContext Context { get; }
 
     private readonly static IEnumerable<Type> ServicesToReplace =
-      new[]
-      {
-        typeof(DbContextOptions<DatabaseContext>),
-        typeof(DatabaseContext)
-      };
+        [
+            typeof(DbContextOptions<DatabaseContext>),
+            typeof(DatabaseContext)
+        ];
 
     public IntegrationTest()
     {
@@ -47,7 +46,9 @@ public class IntegrationTest : IDisposable
     private void ConfigureServices(IServiceCollection services)
     {
         foreach (var service in ServicesToReplace)
+        {
             services.Remove(services.Single(x => x.ServiceType == service));
+        }
 
         Connection = new SqliteConnection(ConnectionString);
         Connection.Open();

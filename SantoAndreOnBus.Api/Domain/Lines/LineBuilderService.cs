@@ -17,7 +17,7 @@ public class LineBuilderService(
     IPlaceRepository placeRepository,
     IVehicleRepository vehicleRepository) : ILineBuilderService, ILineRelantionshipBuilder
 {
-    private Line? _line;
+    private Line _line = null!;
     private readonly IPlaceRepository _placeRepository = placeRepository;
     private readonly IVehicleRepository _vehicleRepository = vehicleRepository;
 
@@ -35,28 +35,28 @@ public class LineBuilderService(
         await AddPlaces(places);
         await AddVehicles(vehicles);
 
-        return _line!;
+        return _line;
     }
 
     private async Task AddPlaces(IEnumerable<int> places)
     {
-        if (_line!.Places.Count > 0)
+        if (_line.Places.Count > 0)
         {
             _line.Places.Clear();
         }
 
-        _line!.AddPlaces(
+        _line.AddPlaces(
             await _placeRepository.GetByAsync(x => places.Contains(x.Id)));
     }
 
     private async Task AddVehicles(IEnumerable<string> vehicles)
     {
-        if (_line!.Vehicles.Count > 0)
+        if (_line.Vehicles.Count > 0)
         {
             _line.Vehicles.Clear();
         }
 
-        _line!.AddVehicles(
+        _line.AddVehicles(
             await _vehicleRepository.GetByAsync(x => vehicles.Contains(x.Identification)));
     }
 }

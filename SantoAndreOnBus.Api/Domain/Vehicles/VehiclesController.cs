@@ -1,5 +1,7 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using SantoAndreOnBus.Api.Domain.General;
+using SantoAndreOnBus.Api.Extensions;
 
 namespace SantoAndreOnBus.Api.Domain.Vehicles;
 
@@ -7,11 +9,13 @@ namespace SantoAndreOnBus.Api.Domain.Vehicles;
 [Route("api/[controller]")]
 [ApiController]
 public class VehiclesController(
-    IVehicleValidator validator,
-    IVehicleService service) : ControllerBase
+    IVehicleService service,
+    IValidator<VehiclePostRequest> postValidator,
+    IValidator<VehiclePutRequest> putValidator) : ControllerBase
 {
-    private readonly IVehicleValidator _validator = validator;
     private readonly IVehicleService _service = service;
+    private readonly IValidator<VehiclePostRequest> _postValidator = postValidator;
+    private readonly IValidator<VehiclePutRequest> _putValidator = putValidator;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
@@ -20,7 +24,7 @@ public class VehiclesController(
     [HttpPost]
     public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)
     {
-        var validation = await _validator.ValidateAsync(request, ModelState);
+        var validation = await _postValidator.ValidateModelAsync(request, ModelState);
 
         return validation.IsValid
             ? Accepted(await _service.SaveAsync(request))
@@ -37,7 +41,9 @@ public class VehiclesController(
             return NotFound();
         }
 
-        var validator = await _validator.ValidateAsync(id, request, ModelState);
+        var validator = await _putValidator.ValidateModelAsync(
+            request with { Id = id },
+            ModelState);
 
         return validator.IsValid
             ? Accepted(await _service.UpdateAsync(request, vehicle))

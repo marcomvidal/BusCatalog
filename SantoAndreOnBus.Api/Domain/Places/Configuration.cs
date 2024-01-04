@@ -9,6 +9,5 @@ public static class Configuration
             .AddScoped<IPlaceRepository, PlaceRepository>()
             .AddScoped<IPlaceService, PlaceService>()
             .AddScoped<IValidator<PlacePostRequest>, PlacePostValidator>()
-            .AddScoped<IValidator<PlacePutRequest>, PlacePutValidator>()
-            .AddScoped<IPlaceValidator, PlaceValidator>();
+            .AddScoped<IValidator<PlacePutRequest>, PlacePutValidator>();
 }

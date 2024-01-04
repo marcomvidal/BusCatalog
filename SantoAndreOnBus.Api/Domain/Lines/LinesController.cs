@@ -1,15 +1,19 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using SantoAndreOnBus.Api.Extensions;
 
 namespace SantoAndreOnBus.Api.Domain.Lines;
 
 [Route("api/[controller]")]
 [ApiController]
 public class LinesController(
-    ILineValidator validator,
-    ILineService service) : ControllerBase
+    ILineService service,
+    IValidator<LinePostRequest> postValidator,
+    IValidator<LinePutRequest> putValidator) : ControllerBase
 {
-    private readonly ILineValidator _validator = validator;
     private readonly ILineService _service = service;
+    private readonly IValidator<LinePostRequest> _postValidator = postValidator;
+    private readonly IValidator<LinePutRequest> _putValidator = putValidator;
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
@@ -28,7 +32,7 @@ public class LinesController(
     [HttpPost]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
-        var validation = await _validator.ValidateAsync(request, ModelState);
+        var validation = await _postValidator.ValidateModelAsync(request, ModelState);
         var line = await _service.SaveAsync(request);
 
         return validation.IsValid
@@ -46,7 +50,9 @@ public class LinesController(
             return NotFound();
         }
 
-        var validation = await _validator.ValidateAsync(id, request, ModelState);
+        var validation = await _putValidator.ValidateModelAsync(
+            request with { Id = id },
+            ModelState);
 
         return validation.IsValid
             ? Accepted(await _service.UpdateAsync(request, line))

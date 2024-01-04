@@ -1,3 +1,4 @@
+using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -5,10 +6,13 @@ namespace SantoAndreOnBus.Api.Extensions;
 
 public static class IValidatorExtensions
 {
-    public static ValidationResult AddToModelState(
-        this ValidationResult validation,
+    public static async Task<ValidationResult> ValidateModelAsync<T>(
+        this IValidator<T> validator,
+        T instance,
         ModelStateDictionary modelState)
     {
+        var validation = await validator.ValidateAsync(instance);
+
         foreach (var error in validation.Errors) 
         {
             modelState.AddModelError(error.PropertyName, error.ErrorMessage);

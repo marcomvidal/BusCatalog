@@ -10,6 +10,5 @@ public static class Configuration
             .AddScoped<ILineService, LineService>()
             .AddScoped<ILineBuilderService, LineBuilderService>()
             .AddScoped<IValidator<LinePostRequest>, LinePostValidator>()
-            .AddScoped<IValidator<LinePutRequest>, LinePutValidator>()
-            .AddScoped<ILineValidator, LineValidator>();
+            .AddScoped<IValidator<LinePutRequest>, LinePutValidator>();
 }
