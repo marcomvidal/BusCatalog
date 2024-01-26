@@ -13,7 +13,7 @@ public static class IValidatorExtensions
     {
         var validation = await validator.ValidateAsync(instance);
 
-        foreach (var error in validation.Errors) 
+        foreach (var error in validation.Errors)
         {
             modelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }

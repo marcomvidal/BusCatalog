@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Vehicles;
 
-public class Post : IntegrationTest
+public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItPostsAValidVehicle_ShouldRespondWithIt()

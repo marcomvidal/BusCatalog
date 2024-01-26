@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Vehicles;
 
-public class GetAll : IntegrationTest
+public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItHasNoVehicles_ShouldRespondEmpty()
@@ -24,7 +24,7 @@ public class GetAll : IntegrationTest
     [Fact]
     public async void WhenItHasVehicles_ShouldRespondWithIt()
     {
-        var vehicles = FakeStore.Vehicles[0..1];
+        var vehicles = FakeStore.Vehicles()[0..1];
         await Context.Vehicles.AddRangeAsync(vehicles);
         await Context.SaveChangesAsync();
         

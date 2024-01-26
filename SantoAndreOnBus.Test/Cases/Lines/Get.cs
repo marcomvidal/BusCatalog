@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using FluentAssertions;
 using SantoAndreOnBus.Api.Domain.Lines;
@@ -10,7 +7,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Lines;
 
-public class Get : IntegrationTest
+public class Get(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenLineDoesNotExists_ShouldRespondNotFound()
@@ -23,7 +20,7 @@ public class Get : IntegrationTest
     [Fact]
     public async void WhenLineExists_ShouldRespondWithIt()
     {
-        var line = FakeStore.Lines[0];
+        var line = FakeStore.Lines()[0];
         await Context.Lines.AddAsync(line);
         await Context.SaveChangesAsync();
         

@@ -31,26 +31,27 @@ public class LinePostValidator : AbstractValidator<LinePostRequest>
 
         RuleFor(x => x.Vehicles)
             .NotEmpty()
-            .MustAsync(UnknownVehicles)
+            .MustAsync(VehiclesDoesNotExists)
                 .WithMessage("'Vehicles' should refeer to vehicles that exist in database.");
 
         RuleFor(x => x.Places)
             .NotEmpty()
-            .MustAsync(UnknownPlaces)
+            .MustAsync(PlacesDoesNotExists)
                 .WithMessage("'Places' should refeer to places that exist in database.");
     }
 
     protected async Task<bool> IdentificationShouldBeUnique(
         string identification, CancellationToken _) =>
-        (await _lineRepository.GetByAsync(x => x.Identification == identification))
-            is null;
+            (await _lineRepository.GetByAsync(x => x.Identification == identification))
+            .Count == 0;
+        
 
-    protected async Task<bool> UnknownVehicles(
+    protected async Task<bool> VehiclesDoesNotExists(
         IEnumerable<string> vehicles, CancellationToken _) =>
         (await _vehicleRepository.GetByAsync(x => vehicles.Contains(x.Identification)))
             .Count == vehicles.Count();
 
-    protected async Task<bool> UnknownPlaces(
+    protected async Task<bool> PlacesDoesNotExists(
         IEnumerable<int> places, CancellationToken _) =>
         (await _placeRepository.GetByAsync(x => places.Contains(x.Id)))
             .Count == places.Count();

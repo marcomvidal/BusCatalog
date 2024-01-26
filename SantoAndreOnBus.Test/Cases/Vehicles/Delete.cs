@@ -7,13 +7,13 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Vehicles;
 
-public class Delete : IntegrationTest
+public class Delete(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenTheVehicleExists_ShouldDeleteSuccessfully()
     {
         var id = 1;
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
         await Context.SaveChangesAsync();
 
         var response = await Client.DeleteAsync($"/api/vehicles/{id}");

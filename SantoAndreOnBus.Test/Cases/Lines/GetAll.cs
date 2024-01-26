@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,7 +9,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Lines;
 
-public class GetAll : IntegrationTest
+public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItHasNoPlaces_ShouldRespondEmpty()
@@ -25,7 +24,7 @@ public class GetAll : IntegrationTest
     [Fact]
     public async void WhenItHasLines_ShouldRespondWithIt()
     {
-        var lines = FakeStore.Lines[0..1];
+        var lines = FakeStore.Lines().Take(2);
         await Context.Lines.AddRangeAsync(lines);
         await Context.SaveChangesAsync();
         

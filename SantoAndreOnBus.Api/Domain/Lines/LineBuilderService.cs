@@ -38,25 +38,25 @@ public class LineBuilderService(
         return _line;
     }
 
-    private async Task AddPlaces(IEnumerable<int> places)
+    private async Task AddPlaces(IEnumerable<int> placesIds)
     {
         if (_line.Places.Count > 0)
         {
             _line.Places.Clear();
         }
 
-        _line.AddPlaces(
-            await _placeRepository.GetByAsync(x => places.Contains(x.Id)));
+        var places = await _placeRepository.GetByAsync(x => placesIds.Contains(x.Id));
+        _line.AddPlaces(places);
     }
 
-    private async Task AddVehicles(IEnumerable<string> vehicles)
+    private async Task AddVehicles(IEnumerable<string> vehiclesIds)
     {
         if (_line.Vehicles.Count > 0)
         {
             _line.Vehicles.Clear();
         }
 
-        _line.AddVehicles(
-            await _vehicleRepository.GetByAsync(x => vehicles.Contains(x.Identification)));
+        var vehicles = await _vehicleRepository.GetByAsync(x => vehiclesIds.Contains(x.Identification));
+        _line.AddVehicles(vehicles);
     }
 }

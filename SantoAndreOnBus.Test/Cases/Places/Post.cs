@@ -8,7 +8,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Places;
 
-public class Post : IntegrationTest
+public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItPostsAValidPlace_ShouldRespondWithIt()

@@ -6,7 +6,7 @@ namespace SantoAndreOnBus.Test.ScenarioFakes;
 
 public static class FakeStore
 {
-    public static readonly Vehicle[] Vehicles = VehicleFakes.Vehicles;
-    public static readonly Place[] Places = PlaceFakes.Places;
-    public static readonly Line[] Lines = LineFakes.Lines;
+    public static Vehicle[] Vehicles() => VehicleFakes.Vehicles();
+    public static Place[] Places() => PlaceFakes.Places();
+    public static Line[] Lines() => LineFakes.Lines();
 }

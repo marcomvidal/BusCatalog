@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Places;
 
-public class GetAll : IntegrationTest
+public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItHasNoPlaces_ShouldRespondEmpty()
@@ -24,7 +24,7 @@ public class GetAll : IntegrationTest
     [Fact]
     public async void WhenItHasPlaces_ShouldRespondWithIt()
     {
-        var places = FakeStore.Places[0..1];
+        var places = FakeStore.Places()[0..1];
         await Context.Places.AddRangeAsync(places);
         await Context.SaveChangesAsync();
         

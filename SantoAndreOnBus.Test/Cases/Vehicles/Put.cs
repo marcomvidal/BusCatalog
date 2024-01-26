@@ -9,12 +9,12 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Vehicles;
 
-public class Put : IntegrationTest
+public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItUpdatesAValidVehicle_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
         await Context.SaveChangesAsync();
 
         var request = new VehiclePutRequest
@@ -48,7 +48,7 @@ public class Put : IntegrationTest
     [Fact]
     public async void WhenItPutsAnInvalidVehicle_ShouldRespondWithValidationErrors()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0] with { Id = 1 });
         await Context.SaveChangesAsync();
         
         var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehiclePutRequest());

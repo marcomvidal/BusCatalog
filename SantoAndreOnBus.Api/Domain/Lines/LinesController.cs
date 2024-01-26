@@ -33,10 +33,9 @@ public class LinesController(
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
-        var line = await _service.SaveAsync(request);
 
         return validation.IsValid
-            ? Accepted(line)
+            ? Accepted(await _service.SaveAsync(request))
             : ValidationProblem();
     }
 

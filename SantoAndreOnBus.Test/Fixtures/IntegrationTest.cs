@@ -1,68 +1,40 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SantoAndreOnBus.Api.Infrastructure;
+using Xunit;
 
 namespace SantoAndreOnBus.Test.Fixtures;
 
-public class IntegrationTest : IDisposable
+public class IntegrationTest : IClassFixture<TestWebApplicationFactory>, IDisposable
 {
-    public const string Environment = "Testing";
-    private const string ConnectionString = "DataSource=:memory:";
-    public SqliteConnection? Connection { get; private set; }
-    public TestServer TestServer { get; }
-    public HttpClient Client { get; }
-    public IServiceProvider ServiceProvider { get; }
-    public DatabaseContext Context { get; }
+    protected HttpClient Client { get; private set; }
+    protected IServiceProvider ServiceProvider { get; private set; }
+    protected DatabaseContext Context { get; private set; }
+    private static readonly string[] TablesToClean =
+    [
+        "Vehicles",
+        "Places",
+        "Lines"
+    ];
 
-    private readonly static IEnumerable<Type> ServicesToReplace =
-        [
-            typeof(DbContextOptions<DatabaseContext>),
-            typeof(DatabaseContext)
-        ];
-
-    public IntegrationTest()
+    public IntegrationTest(TestWebApplicationFactory factory)
     {
-        var factory = new WebApplicationFactory<Program>()
-            .WithWebHostBuilder(builder =>
-            {
-                builder.UseEnvironment(Environment);
-                builder.ConfigureServices(ConfigureServices);
-            });
-        
-        TestServer = factory.Server;
         Client = factory.CreateClient();
-        ServiceProvider = factory.Services;
+        var scope = factory.Services.GetService<IServiceScopeFactory>()!.CreateScope();
+        ServiceProvider = scope.ServiceProvider;
         Context = ServiceProvider.GetService<DatabaseContext>()!;
     }
 
-    private void ConfigureServices(IServiceCollection services)
-    {
-        foreach (var service in ServicesToReplace)
+    public void Dispose()
+    {        
+        foreach (var table in TablesToClean)
         {
-            services.Remove(services.Single(x => x.ServiceType == service));
+            var statement = $"DELETE FROM {table}";
+            Context.Database.ExecuteSqlRaw(statement);
         }
 
-        Connection = new SqliteConnection(ConnectionString);
-        Connection.Open();
-        services.AddDbContext<DatabaseContext>(x => x.UseSqlite(Connection));
-
-        using var scope = services.BuildServiceProvider().CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-        db.Database.EnsureDeleted();
-        db.Database.EnsureCreated();
-    }
-
-    public void Dispose()
-    {
-        Connection!.Close();
         ServiceProvider.GetRequiredService<DatabaseContext>().Dispose();
     }
 }

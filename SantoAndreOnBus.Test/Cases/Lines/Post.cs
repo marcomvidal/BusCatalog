@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
@@ -10,15 +11,13 @@ using Xunit;
 
 namespace SantoAndreOnBus.Test.Cases.Lines;
 
-public class Post : IntegrationTest
+public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
     public async void WhenItPostsAValidLine_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[1]);
-        await Context.Places.AddAsync(FakeStore.Places[0]);
-        await Context.Places.AddAsync(FakeStore.Places[1]);
+        await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles().Take(2));
+        await Context.Places.AddRangeAsync(FakeStore.Places().Take(2));
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -48,8 +47,8 @@ public class Post : IntegrationTest
     [Fact]
     public async void WhenItPostsALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.Places.AddAsync(FakeStore.Places[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
+        await Context.Places.AddAsync(FakeStore.Places()[0]);
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -83,14 +82,18 @@ public class Post : IntegrationTest
     [Fact]
     public async void WhenItPostsALineWithRepeatedIdentification_ShouldRespondWithIt()
     {
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
+        await Context.Places.AddAsync(FakeStore.Places()[0]);
+        await Context.SaveChangesAsync();
+
         var request = new LinePostRequest
         {
             Identification = "101",
             Fromwards = "California",
             Towards = "Alaska",
             DeparturesPerDay = 10,
-            Places = [1, 2],
-            Vehicles = ["ARTICULADO", "PADRON"]
+            Places = [1],
+            Vehicles = ["MIDI"]
         };
 
         await Client.PostAsJsonAsync("/api/lines", request);
