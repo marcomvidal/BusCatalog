@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using BusCatalog.Api.Infrastructure;
+using BusCatalog.Api.Adapters.Database;
 
 #nullable disable
 

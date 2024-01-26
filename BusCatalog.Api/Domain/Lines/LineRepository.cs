@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using BusCatalog.Api.Infrastructure;
+using BusCatalog.Api.Adapters.Database;
 using BusCatalog.Api.Extensions;
 using System.Linq.Expressions;
 

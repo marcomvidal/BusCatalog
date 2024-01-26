@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace BusCatalog.Api.Infrastructure;
+namespace BusCatalog.Api.Adapters.Database;
 
-public static class Persistence
+public static class Configuration
 {
     private const string ConnectionString = "Default";
 
-    public static WebApplicationBuilder AddPersistence(this WebApplicationBuilder builder)
+    public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
     {
         builder.Services.AddDbContext<DatabaseContext>(options =>
             options.UseSqlite(
@@ -14,5 +14,4 @@ public static class Persistence
 
         return builder;
     }
-        
 }

@@ -2,9 +2,9 @@ using BusCatalog.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddPersistence();
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddModules();
+builder.AddAdapters();
+builder.Services.AddDomain();
 builder.Services.AddControllersWithNamingConvention();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
