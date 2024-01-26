@@ -14,7 +14,7 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItUpdatesAValidPlace_ShouldRespondWithIt()
     {
-        await Context.Places.AddAsync(FakeStore.Places()[0] with { Id = 1 });
+        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
 
         var request = new PlacePutRequest
@@ -48,7 +48,7 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPutsAnInvalidPlace_ShouldRespondWithValidationErrors()
     {
-        await Context.Places.AddAsync(FakeStore.Places()[0]);
+        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
         var response = await Client.PutAsJsonAsync("/api/places/1", new PlacePostRequest());
 

@@ -7,9 +7,9 @@ public static class VehicleFakes
     public static Vehicle[] Vehicles()
     {
         return [
-            new() { Identification = "MIDI", Description = "Midi Bus" },
-            new() { Identification = "PADRON", Description = "Padron" },
-            new() { Identification = "ARTICULATED", Description = "Articulated" }
+            new() { Id = 1, Identification = "MIDI", Description = "Midi Bus" },
+            new() { Id = 2, Identification = "PADRON", Description = "Padron" },
+            new() { Id = 3, Identification = "ARTICULATED", Description = "Articulated" }
         ];
     }
 }

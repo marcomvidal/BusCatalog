@@ -15,13 +15,13 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItUpdatesAValidLine_ShouldRespondWithIt()
     {
-        var place = FakeStore.Places()[0] with { Id = 1 };
+        var place = FakeStore.Places[0];
         await Context.Places.AddAsync(place);
 
-        var vehicle = FakeStore.Vehicles()[0] with { Id = 1 };
+        var vehicle = FakeStore.Vehicles[0];
         await Context.Vehicles.AddAsync(vehicle);
 
-        var line = FakeStore.Lines()[0] with { Id = 1, Places = [place], Vehicles = [vehicle] };
+        var line = FakeStore.Lines[0] with { Places = [place], Vehicles = [vehicle] };
         await Context.Lines.AddAsync(line);
         await Context.SaveChangesAsync();
 
@@ -52,9 +52,9 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItUpdatesALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
-        await Context.Lines.AddAsync(FakeStore.Lines()[0] with { Id = 1 });
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
-        await Context.Places.AddAsync(FakeStore.Places()[0]);
+        await Context.Lines.AddAsync(FakeStore.Lines[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -93,7 +93,7 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPutsAnInvalidLine_ShouldRespondWithValidationErrors()
     {
-        await Context.Lines.AddAsync(FakeStore.Lines()[0]);
+        await Context.Lines.AddAsync(FakeStore.Lines[0]);
         await Context.SaveChangesAsync();
 
         var response = await Client.PutAsJsonAsync("/api/lines/1", new LinePutRequest());

@@ -16,8 +16,8 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPostsAValidLine_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles().Take(2));
-        await Context.Places.AddRangeAsync(FakeStore.Places().Take(2));
+        await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles.Take(2));
+        await Context.Places.AddRangeAsync(FakeStore.Places.Take(2));
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -47,8 +47,8 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPostsALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
-        await Context.Places.AddAsync(FakeStore.Places()[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -82,8 +82,8 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPostsALineWithRepeatedIdentification_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles()[0]);
-        await Context.Places.AddAsync(FakeStore.Places()[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
+        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
 
         var request = new LinePostRequest

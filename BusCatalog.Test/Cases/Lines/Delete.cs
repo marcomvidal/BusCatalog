@@ -13,7 +13,7 @@ public class Delete(TestWebApplicationFactory factory) : IntegrationTest(factory
     public async void WhenTheLineExists_ShouldDeleteSuccessfully()
     {
         var id = 1;
-        await Context.Lines.AddAsync(FakeStore.Lines()[0]);
+        await Context.Lines.AddAsync(FakeStore.Lines[0]);
         await Context.SaveChangesAsync();
 
         var response = await Client.DeleteAsync($"/api/lines/{id}");

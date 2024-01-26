@@ -24,7 +24,7 @@ public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory
     [Fact]
     public async void WhenItHasPlaces_ShouldRespondWithIt()
     {
-        var places = FakeStore.Places()[0..1];
+        var places = FakeStore.Places.Take(2);
         await Context.Places.AddRangeAsync(places);
         await Context.SaveChangesAsync();
         

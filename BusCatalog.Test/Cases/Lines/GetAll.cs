@@ -24,7 +24,7 @@ public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory
     [Fact]
     public async void WhenItHasLines_ShouldRespondWithIt()
     {
-        var lines = FakeStore.Lines().Take(2);
+        var lines = FakeStore.Lines.Take(2);
         await Context.Lines.AddRangeAsync(lines);
         await Context.SaveChangesAsync();
         

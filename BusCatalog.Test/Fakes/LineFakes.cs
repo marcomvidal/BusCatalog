@@ -9,6 +9,7 @@ public static class LineFakes
         return [
             new()
             {
+                Id = 1,
                 Identification = "001",
                 Fromwards = "New York",
                 Towards = "Massachussets",
@@ -16,6 +17,7 @@ public static class LineFakes
             },
             new()
             {
+                Id = 2,
                 Identification = "002",
                 Fromwards = "London",
                 Towards = "Sussex",
@@ -23,6 +25,7 @@ public static class LineFakes
             },
             new()
             {
+                Id = 3,
                 Identification = "003",
                 Fromwards = "Brisbane",
                 Towards = "Sydney",

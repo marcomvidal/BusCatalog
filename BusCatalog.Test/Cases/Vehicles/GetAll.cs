@@ -24,7 +24,7 @@ public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory
     [Fact]
     public async void WhenItHasVehicles_ShouldRespondWithIt()
     {
-        var vehicles = FakeStore.Vehicles()[0..1];
+        var vehicles = FakeStore.Vehicles.Take(2);
         await Context.Vehicles.AddRangeAsync(vehicles);
         await Context.SaveChangesAsync();
         

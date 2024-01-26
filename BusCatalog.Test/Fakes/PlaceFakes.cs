@@ -7,9 +7,9 @@ public static class PlaceFakes
     public static Place[] Places()
     {
         return [
-            new() { Identification = "Blue Square", City = "New York" },
-            new() { Identification = "Green Street", City = "London" },
-            new() { Identification = "Yellow Avenue", City = "Melbourne" }
+            new() { Id = 1, Identification = "Blue Square", City = "New York" },
+            new() { Id = 2, Identification = "Green Street", City = "London" },
+            new() { Id = 3, Identification = "Yellow Avenue", City = "Melbourne" }
         ];
     }
 }

@@ -6,7 +6,7 @@ namespace BusCatalog.Test.ScenarioFakes;
 
 public static class FakeStore
 {
-    public static Vehicle[] Vehicles() => VehicleFakes.Vehicles();
-    public static Place[] Places() => PlaceFakes.Places();
-    public static Line[] Lines() => LineFakes.Lines();
+    public static Vehicle[] Vehicles { get => VehicleFakes.Vehicles(); }
+    public static Place[] Places { get => PlaceFakes.Places(); }
+    public static Line[] Lines { get => LineFakes.Lines(); }
 }

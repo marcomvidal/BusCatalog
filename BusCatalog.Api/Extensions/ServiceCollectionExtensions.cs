@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
     public static void EnsureDbCreated<T>(this IServiceCollection services) where T : DbContext
     {
         using var scope = services.BuildServiceProvider().CreateScope();
-        scope.ServiceProvider.GetRequiredService<T>().Database.EnsureCreated();
+        var database = scope.ServiceProvider.GetRequiredService<T>().Database;
+        database.EnsureCreated();
     }
 }

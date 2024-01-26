@@ -20,7 +20,7 @@ public class Get(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenLineExists_ShouldRespondWithIt()
     {
-        var line = FakeStore.Lines()[0];
+        var line = FakeStore.Lines[0];
         await Context.Lines.AddAsync(line);
         await Context.SaveChangesAsync();
         
