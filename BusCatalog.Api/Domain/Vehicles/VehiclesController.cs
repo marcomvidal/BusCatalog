@@ -1,7 +1,6 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.General;
-using BusCatalog.Api.Extensions;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 

@@ -2,8 +2,8 @@ using System;
 using System.Net.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using BusCatalog.Api.Infrastructure;
 using Xunit;
+using BusCatalog.Api.Adapters.Database;
 
 namespace BusCatalog.Test.Fixtures;
 

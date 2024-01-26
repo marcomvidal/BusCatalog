@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using BusCatalog.Api.Adapters.Database;
-using BusCatalog.Api.Extensions;
 using System.Linq.Expressions;
 
 namespace BusCatalog.Api.Domain.Lines;

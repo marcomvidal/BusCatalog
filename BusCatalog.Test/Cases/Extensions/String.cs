@@ -1,5 +1,4 @@
 using FluentAssertions;
-using BusCatalog.Api.Extensions;
 using Xunit;
 
 namespace BusCatalog.Test.Cases.Extensions;

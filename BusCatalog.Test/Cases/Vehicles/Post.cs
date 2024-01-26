@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.Vehicles;
-using BusCatalog.Api.Extensions;
 using BusCatalog.Test.Fixtures;
 using Xunit;
 

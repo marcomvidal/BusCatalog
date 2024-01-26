@@ -1,11 +1,10 @@
+using BusCatalog.Api.Adapters.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using BusCatalog.Api.Extensions;
-using BusCatalog.Api.Infrastructure;
 
 namespace BusCatalog.Test.Fixtures;
 

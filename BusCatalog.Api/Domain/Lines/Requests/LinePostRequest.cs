@@ -1,5 +1,3 @@
-using BusCatalog.Api.Extensions;
-
 namespace BusCatalog.Api.Domain.Lines;
 
 public record LinePostRequest

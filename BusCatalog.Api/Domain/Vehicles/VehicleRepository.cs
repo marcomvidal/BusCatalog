@@ -1,7 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using BusCatalog.Api.Adapters.Database;
-using BusCatalog.Api.Extensions;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 

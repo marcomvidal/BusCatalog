@@ -1,5 +1,3 @@
-using BusCatalog.Api.Extensions;
-
 namespace BusCatalog.Api.Domain.Vehicles;
 
 public record VehiclePostRequest
