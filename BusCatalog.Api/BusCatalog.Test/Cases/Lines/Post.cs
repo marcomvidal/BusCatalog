@@ -6,7 +6,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.Lines;
 using BusCatalog.Test.Fixtures;
-using BusCatalog.Test.ScenarioFakes;
+using BusCatalog.Test.Fakes;
 using Xunit;
 
 namespace BusCatalog.Test.Cases.Lines;

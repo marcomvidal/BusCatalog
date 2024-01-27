@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusCatalog.Api.Domain.Lines;
@@ -29,6 +30,7 @@ public class LinesController(
     }
 
     [HttpPost]
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
@@ -39,6 +41,7 @@ public class LinesController(
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePutRequest request)
     {
         var line = await _service.GetByIdAsync(id);

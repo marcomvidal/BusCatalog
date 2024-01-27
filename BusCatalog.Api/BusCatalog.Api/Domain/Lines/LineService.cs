@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using BusCatalog.Api.Infrastructure;
 using AutoMapper;
 using BusCatalog.Api.Domain.General;
 

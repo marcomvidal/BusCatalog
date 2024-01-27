@@ -56,7 +56,9 @@ public class LineBuilderService(
             _line.Vehicles.Clear();
         }
 
-        var vehicles = await _vehicleRepository.GetByAsync(x => vehiclesIds.Contains(x.Identification));
+        var vehicles = await _vehicleRepository.GetByAsync(
+            x => vehiclesIds.Contains(x.Identification));
+        
         _line.AddVehicles(vehicles);
     }
 }

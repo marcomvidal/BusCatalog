@@ -4,7 +4,7 @@ using System.Net;
 using FluentAssertions;
 using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Test.Fixtures;
-using BusCatalog.Test.ScenarioFakes;
+using BusCatalog.Test.Fakes;
 using Xunit;
 
 namespace BusCatalog.Test.Cases.Vehicles;

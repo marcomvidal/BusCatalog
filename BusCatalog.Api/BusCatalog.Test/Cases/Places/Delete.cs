@@ -2,21 +2,21 @@ using System.Net;
 using FluentAssertions;
 using BusCatalog.Api.Domain.General;
 using BusCatalog.Test.Fixtures;
-using BusCatalog.Test.ScenarioFakes;
+using BusCatalog.Test.Fakes;
 using Xunit;
 
-namespace BusCatalog.Test.Cases.Lines;
+namespace BusCatalog.Test.Cases.Places;
 
 public class Delete(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenTheLineExists_ShouldDeleteSuccessfully()
+    public async void WhenThePlaceExists_ShouldDeleteSuccessfully()
     {
         var id = 1;
-        await Context.Lines.AddAsync(FakeStore.Lines[0]);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
         await Context.SaveChangesAsync();
 
-        var response = await Client.DeleteAsync($"/api/lines/{id}");
+        var response = await Client.DeleteAsync($"/api/vehicles/{id}");
         var content = await response.Content.ReadAsStringAsync();
         var body = await response.DeserializedBody<DeleteResponse>();
 
@@ -25,10 +25,10 @@ public class Delete(TestWebApplicationFactory factory) : IntegrationTest(factory
     }
 
     [Fact]
-    public async void WhenLineDoesNotExists_ShouldReturnNotFound()
+    public async void WhenThePlaceDoesNotExists_ShouldReturnNotFound()
     {
-        var response = await Client.DeleteAsync($"/api/lines/0");
-
+        var response = await Client.DeleteAsync($"/api/vehicles/0");
+        
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

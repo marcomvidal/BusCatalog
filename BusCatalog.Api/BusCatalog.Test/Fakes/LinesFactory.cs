@@ -1,12 +1,11 @@
 using BusCatalog.Api.Domain.Lines;
 
-namespace BusCatalog.Test.ScenarioFakes;
+namespace BusCatalog.Test.Fakes;
 
-public static class LineFakes
+public class LinesFactory : IFakeFactory<Line>
 {
-    public static Line[] Lines()
-    {
-        return [
+    public static Line[] Generate() =>
+        [
             new()
             {
                 Id = 1,
@@ -32,5 +31,4 @@ public static class LineFakes
                 DeparturesPerDay = 30
             }
         ];
-    }
 }

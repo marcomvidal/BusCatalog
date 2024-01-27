@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Test.Fixtures;
-using BusCatalog.Test.ScenarioFakes;
+using BusCatalog.Test.Fakes;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;

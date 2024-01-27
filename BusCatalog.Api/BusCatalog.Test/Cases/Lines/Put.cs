@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.Lines;
 using BusCatalog.Test.Fixtures;
-using BusCatalog.Test.ScenarioFakes;
+using BusCatalog.Test.Fakes;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Json;

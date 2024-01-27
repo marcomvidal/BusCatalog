@@ -1,37 +1,39 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.General;
+using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace BusCatalog.Api.Domain.Places;
+namespace BusCatalog.Api.Domain.Vehicles;
 
-// [Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class PlacesController(
-    IPlaceService service,
-    IValidator<PlacePostRequest> postValidator,
-    IValidator<PlacePutRequest> putValidator) : ControllerBase
+public class VehiclesController(
+    IVehicleService service,
+    IValidator<VehiclePostRequest> postValidator,
+    IValidator<VehiclePutRequest> putValidator) : ControllerBase
 {
-    private readonly IPlaceService _service = service;
-    private readonly IValidator<PlacePostRequest> _postValidator = postValidator;
-    private readonly IValidator<PlacePutRequest> _putValidator = putValidator;
+    private readonly IVehicleService _service = service;
+    private readonly IValidator<VehiclePostRequest> _postValidator = postValidator;
+    private readonly IValidator<VehiclePutRequest> _putValidator = putValidator;
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Place>>> Get() =>
+    public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
         Ok(await _service.GetAllAsync());
     
     [HttpPost]
-    public async Task<ActionResult<Place>> Post([FromBody] PlacePostRequest request)
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
-        
+
         return validation.IsValid
             ? Accepted(await _service.SaveAsync(request))
             : ValidationProblem();
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Place>> Put(int id, [FromBody] PlacePutRequest request)
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] VehiclePutRequest request)
     {
         var vehicle = await _service.GetByIdAsync(id);
 
@@ -40,11 +42,11 @@ public class PlacesController(
             return NotFound();
         }
 
-        var validation = await _putValidator.ValidateModelAsync(
+        var validator = await _putValidator.ValidateModelAsync(
             request with { Id = id },
             ModelState);
 
-        return validation.IsValid
+        return validator.IsValid
             ? Accepted(await _service.UpdateAsync(request, vehicle))
             : ValidationProblem();
     }
