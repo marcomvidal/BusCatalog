@@ -8,7 +8,8 @@ import { TableRowDirective } from './directives/table-row/table-row.directive';
 import { InputDirective } from './directives/input/input.directive';
 import { LabelDirective } from './directives/label/label.directive';
 import { InputWrapperComponent } from './components/input-wrapper/input-wrapper.component';
-import { SubmitWrapperDirective } from './directives/submit-wrapper/submit-wrapper.directive';
+import { FormFieldsWrapperDirective } from './directives/submit-wrapper/form-fields-wrapper.directive';
+import { SubmitButtonDirective } from './directives/submit-button/submit-button.directive';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { SubmitWrapperDirective } from './directives/submit-wrapper/submit-wrapp
     InputDirective,
     InputWrapperComponent,
     LabelDirective,
-    SubmitWrapperDirective,
+    FormFieldsWrapperDirective,
+    SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
     TableRowDirective,
@@ -31,7 +33,8 @@ import { SubmitWrapperDirective } from './directives/submit-wrapper/submit-wrapp
     InputDirective,
     InputWrapperComponent,
     LabelDirective,
-    SubmitWrapperDirective,
+    FormFieldsWrapperDirective,
+    SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
     TableRowDirective,

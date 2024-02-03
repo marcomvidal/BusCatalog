@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Link } from './link';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-  links = [
+  @Input()
+  title: string = '';
+
+  links: Link[] = [
     { label: 'Lines', url: '/' },
     { label: 'Places', url: '/places' },
     { label: 'Vehicles', url: '/vehicles' }
