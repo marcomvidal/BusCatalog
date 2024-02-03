@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
-import { LINKS } from './links';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  imports: [RouterModule],
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-  links = LINKS;
+  links = [
+    { label: 'Lines', url: '/' },
+    { label: 'Places', url: '/places' },
+    { label: 'Vehicles', url: '/vehicles' }
+  ];
 }

@@ -4,8 +4,16 @@
 @import "tailwindcss/utilities";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+}
 
 .border-t-1 {
     border-top-width: 1px;
+}
+
+*[_nghost] {
+    font-family: "Inter", sans-serif !important;
 }

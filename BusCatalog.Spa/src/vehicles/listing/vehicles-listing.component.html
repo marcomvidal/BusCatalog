@@ -1,0 +1,14 @@
+<section>
+  <bus-heading title="Vehicles" subTitle="Vehicle types that are associated with the lines.">
+    <a busButton routerLink="/vehicles/create">Create</a>
+  </bus-heading>
+
+  <bus-table [headers]="['Identification', 'Description']">
+    @for (vehicle of vehicles; track $index) {
+      <tr busTableRow>
+        <td busTableCell>{{ vehicle.identification }}</td>
+        <td busTableCell>{{ vehicle.description }}</td>
+      </tr>
+    }
+  </bus-table>
+</section>

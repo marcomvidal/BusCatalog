@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Line } from '../line';
 import { environment } from '../../environments/environment';
+import { Vehicle } from '../vehicle';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LinesService {
+export class VehiclesService {
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<Line[]>(`${environment.apiUrl}/lines`);
+    return this.http.get<Vehicle[]>(`${environment.apiUrl}/vehicles`);
   }
 }

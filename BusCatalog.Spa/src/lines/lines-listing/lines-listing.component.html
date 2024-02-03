@@ -1,9 +1,0 @@
-<bus-table [headers]="['Identification', 'Itinerary', 'Departures / Day']">
-  @for (line of lines; track $index) {
-    <tr bus-table-row>
-      <td bus-table-cell>{{ line.identification }}</td>
-      <td bus-table-cell>{{ line.fromwards }} -> {{ line.towards }}</td>
-      <td bus-table-cell>{{ line.departuresPerDay }}</td>
-    </tr>
-  }
-</bus-table>

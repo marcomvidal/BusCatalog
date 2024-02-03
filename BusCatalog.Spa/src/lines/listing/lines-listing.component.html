@@ -1,0 +1,14 @@
+<section>
+  <bus-heading title="Lines" subTitle="The composition of all the lines registered.">
+    <a busButton routerLink="/lines/create">Create</a>
+  </bus-heading>
+  
+  <bus-table [headers]="['Identification', 'Itinerary']">
+    @for (line of lines; track $index) {
+      <tr busTableRow>
+        <td busTableCell>{{ line.identification }}</td>
+        <td busTableCell>{{ line.fromwards }} -> {{ line.towards }}</td>
+      </tr>
+    }
+  </bus-table>
+</section>
