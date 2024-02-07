@@ -2,7 +2,8 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'bus-heading',
-  templateUrl: './heading.component.html'
+  templateUrl: './heading.component.html',
+  styleUrl: './heading.css'
 })
 export class HeadingComponent {
   @Input()

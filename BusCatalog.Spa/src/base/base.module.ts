@@ -10,6 +10,8 @@ import { LabelDirective } from './directives/label/label.directive';
 import { InputWrapperComponent } from './components/input-wrapper/input-wrapper.component';
 import { FormFieldsWrapperDirective } from './directives/submit-wrapper/form-fields-wrapper.directive';
 import { SubmitButtonDirective } from './directives/submit-button/submit-button.directive';
+import { VehicleIconComponent } from './icons/vehicle/vehicle-icon.component';
+import { LineIconComponent } from './icons/line/line-icon.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { SubmitButtonDirective } from './directives/submit-button/submit-button.
     InputDirective,
     InputWrapperComponent,
     LabelDirective,
+    LineIconComponent,
     FormFieldsWrapperDirective,
+    VehicleIconComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
@@ -33,7 +37,9 @@ import { SubmitButtonDirective } from './directives/submit-button/submit-button.
     InputDirective,
     InputWrapperComponent,
     LabelDirective,
+    LineIconComponent,
     FormFieldsWrapperDirective,
+    VehicleIconComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,

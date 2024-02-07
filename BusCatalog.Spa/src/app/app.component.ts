@@ -8,6 +8,4 @@ import { HeaderComponent } from '../structure/header/header.component';
   imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html'
 })
-export class AppComponent {
-  title = 'Bus Catalog';
-}
+export class AppComponent {}
