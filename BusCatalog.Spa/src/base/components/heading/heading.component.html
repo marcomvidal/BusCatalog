@@ -1,16 +1,16 @@
-<div class="wrapper mb-6 py-6 border-gray-200 border-b mx-4 relative">
-  <div class="z-1">
-    <div class="pt-6 pb-3 z-1">
-      <h1 class="text-2xl font-semibold">{{ title }}</h1>
-      <h2 class="text-gray-600">{{ subTitle }}</h2>
-    </div>
-  
-    <div class="py-3">
-      <ng-content></ng-content>
+<div class="wrapper my-4 mb-6 border-gray-200 border-b flex items-center">
+  <div class="grow">
+    <div class="py-6">
+      <h1 class="text-2xl font-semibold z-10">{{ title }}</h1>
+      <h2 class="text-gray-600 z-10">{{ subTitle }}</h2>
+
+      <div class="py-3">
+        <ng-content></ng-content>
+      </div>
     </div>
   </div>
   
-  <div class="absolute right-2 top-0 icon-overflow">
+  <div class="right-2 top-0 flex-auto place-items-end">
     <ng-content select="[icon]"></ng-content>
   </div>
 </div>
