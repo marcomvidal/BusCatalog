@@ -12,6 +12,7 @@ import { FormFieldsWrapperDirective } from './directives/submit-wrapper/form-fie
 import { SubmitButtonDirective } from './directives/submit-button/submit-button.directive';
 import { VehicleIconComponent } from './icons/vehicle/vehicle-icon.component';
 import { LineIconComponent } from './icons/line/line-icon.component';
+import { PlaceIconComponent } from './icons/place/place-icon.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LineIconComponent } from './icons/line/line-icon.component';
     LineIconComponent,
     FormFieldsWrapperDirective,
     VehicleIconComponent,
+    PlaceIconComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
@@ -40,6 +42,7 @@ import { LineIconComponent } from './icons/line/line-icon.component';
     LineIconComponent,
     FormFieldsWrapperDirective,
     VehicleIconComponent,
+    PlaceIconComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
