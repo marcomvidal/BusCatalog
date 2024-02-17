@@ -7,9 +7,15 @@ import { Vehicle } from '../vehicle';
   providedIn: 'root'
 })
 export class VehiclesService {
+  static readonly BASE_URL = `${environment.apiUrl}/vehicles`;
+
   constructor(private http: HttpClient) {}
 
   getAll() {
-    return this.http.get<Vehicle[]>(`${environment.apiUrl}/vehicles`);
+    return this.http.get<Vehicle[]>(VehiclesService.BASE_URL);
+  }
+
+  post(vehicle: Vehicle) {
+    return this.http.post(VehiclesService.BASE_URL, vehicle);
   }
 }

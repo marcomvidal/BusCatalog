@@ -13,9 +13,13 @@ import { SubmitButtonDirective } from './directives/submit-button/submit-button.
 import { VehicleIconComponent } from './icons/vehicle/vehicle-icon.component';
 import { LineIconComponent } from './icons/line/line-icon.component';
 import { PlaceIconComponent } from './icons/place/place-icon.component';
+import { BackEndAlertComponent } from './components/back-end-alert/back-end.alert.component';
+import { AttentionIconComponent } from './icons/attention/attention-icon.component';
 
 @NgModule({
   declarations: [
+    AttentionIconComponent,
+    BackEndAlertComponent,
     ButtonDirective,
     HeadingComponent,
     InputDirective,
@@ -34,6 +38,8 @@ import { PlaceIconComponent } from './icons/place/place-icon.component';
     CommonModule
   ],
   exports: [
+    AttentionIconComponent,
+    BackEndAlertComponent,
     ButtonDirective,
     HeadingComponent,
     InputDirective,

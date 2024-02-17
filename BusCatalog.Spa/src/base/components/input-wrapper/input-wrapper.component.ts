@@ -1,4 +1,5 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'bus-input-wrapper',
@@ -7,4 +8,16 @@ import { Component, HostBinding } from '@angular/core';
 export class InputWrapperComponent {
   @HostBinding('class')
   elementClass = 'block w-full mb-6';
+
+  @Input()
+  form?: FormGroup;
+
+  @Input()
+  name = '';
+
+  get errors() {
+    return this.form?.get(this.name)
+      ? Object.keys(this.form?.get(this.name)?.errors!)
+      : [];
+  }
 }

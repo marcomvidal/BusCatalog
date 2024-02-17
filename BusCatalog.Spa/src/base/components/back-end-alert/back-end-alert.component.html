@@ -1,0 +1,29 @@
+@if (error.hasErrors) {
+  <div [class]="computedElementClass" role="alert">
+    <div class="flex">
+      <div class="py-1">
+        <bus-attention-icon [color]="color" />
+      </div>
+      @if (validationErrors.length > 0) {
+        <div>
+          <p class="font-bold">There are items that require your attention</p>
+          <ul>
+            @for (error of validationErrors; track $index) {
+              <li class="text-sm">{{ error }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      @if (error.isUnexpectedError) {
+        <div>
+          <p class="font-bold">An unexpected error occurred</p>
+          <p class="text-sm">
+            Please try submitting again. If it persists, ask for help with the support team.
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+}
+
