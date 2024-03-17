@@ -33,6 +33,7 @@ public class VehicleRepository(DatabaseContext db) : IVehicleRepository
         _db.Vehicles
             .Where(predicate)
             .LimitIfHasQuantity(quantity)
+            .OrderBy(x => x.Identification)
             .ToListAsync();
 
     public async Task<int> SaveAsync(Vehicle vehicle)

@@ -5,20 +5,12 @@
     <bus-vehicle-icon icon />
   </bus-heading>
   
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="form!" (ngSubmit)="onSubmit()">
     <bus-back-end-alert [error]="validator.error" />
 
     <div busFormFieldsWrapper>
-      <bus-input-wrapper #identification [form]="form" name="identification">
-        <label busLabel [for]="identification.name">Identification</label>
-        <input busInput
-          [id]="identification.name"
-          [name]="identification.name"
-          [formControlName]="identification.name" />
-      </bus-input-wrapper>
-
-      <bus-input-wrapper #description [form]="form" name="description">
-        <label busLabel [for]="description">Description</label>
+      <bus-input-wrapper #description name="description" [form]="form" [messages]="messages">
+        <label busLabel [for]="description.name">Description</label>
         <input busInput
           [id]="description.name"
           [name]="description.name"
@@ -29,6 +21,6 @@
     <input busSubmitButton
       title="Submit"
       type="submit"
-      [isDisabled]="!form.valid" />
+      [isDisabled]="!form!.valid && form!.dirty" />
   </form>
 </section>

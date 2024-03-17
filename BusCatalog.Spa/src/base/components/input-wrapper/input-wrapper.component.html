@@ -1,7 +1,7 @@
 <ng-content></ng-content>
 
-@if (errors.length > 0) {
-  <code>
-    {{ errors | json }}
-  </code>
+@for (error of errors; track $index) {
+  @if (error != null) {
+    <p class="text-red-500 text-xs">{{ error }}</p>
+  }
 }

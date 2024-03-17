@@ -27,8 +27,7 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         (await response.DeserializedBody<Vehicle>())
-            .Should().Match<Vehicle>(
-            x => x.Identification == request.Identification);
+            .Should().Match<Vehicle>(x => x.Identification == request.Identification);
     }
 
     [Fact]

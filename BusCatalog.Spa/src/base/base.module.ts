@@ -15,6 +15,9 @@ import { LineIconComponent } from './icons/line/line-icon.component';
 import { PlaceIconComponent } from './icons/place/place-icon.component';
 import { BackEndAlertComponent } from './components/back-end-alert/back-end.alert.component';
 import { AttentionIconComponent } from './icons/attention/attention-icon.component';
+import { SpinnerComponent } from './icons/spinner/spinner.component';
+import { FormsModule } from '@angular/forms';
+import { SearchInputComponent } from './components/search-input/search-input.component';
 
 @NgModule({
   declarations: [
@@ -29,13 +32,16 @@ import { AttentionIconComponent } from './icons/attention/attention-icon.compone
     FormFieldsWrapperDirective,
     VehicleIconComponent,
     PlaceIconComponent,
+    SearchInputComponent,
+    SpinnerComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,
     TableRowDirective,
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     AttentionIconComponent,
@@ -49,6 +55,8 @@ import { AttentionIconComponent } from './icons/attention/attention-icon.compone
     FormFieldsWrapperDirective,
     VehicleIconComponent,
     PlaceIconComponent,
+    SearchInputComponent,
+    SpinnerComponent,
     SubmitButtonDirective,
     TableComponent,
     TableCellDirective,

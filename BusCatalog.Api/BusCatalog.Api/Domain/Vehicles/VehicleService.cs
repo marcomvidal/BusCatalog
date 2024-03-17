@@ -7,6 +7,7 @@ public interface IVehicleService
 {
     Task<IEnumerable<Vehicle>> GetAllAsync();
     Task<Vehicle?> GetByIdAsync(int id);
+    Task<Vehicle?> GetByIdentificationAsync(string identification);
     Task<Vehicle> SaveAsync(VehiclePostRequest request);
     Task<Vehicle> UpdateAsync(VehiclePostRequest request, Vehicle vehicle);
     Task<DeleteResponse> DeleteAsync(Vehicle vehicle);
@@ -32,6 +33,16 @@ public class VehicleService(
     {
         _logger.LogInformation("Fetching vehicle with ID {id}.", id);
         var vehicle = await _repository.GetByAsync(x => x.Id == id, quantity: 1);
+
+        return vehicle.FirstOrDefault();
+    }
+
+    public async Task<Vehicle?> GetByIdentificationAsync(string identification)
+    {
+        _logger.LogInformation("Fetching vehicle with identification {id}.", identification);
+
+        var vehicle = await _repository.GetByAsync(
+            x => x.Identification.Equals(identification.ToUpper()), quantity: 1);
 
         return vehicle.FirstOrDefault();
     }

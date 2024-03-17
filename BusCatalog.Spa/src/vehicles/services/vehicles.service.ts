@@ -15,7 +15,18 @@ export class VehiclesService {
     return this.http.get<Vehicle[]>(VehiclesService.BASE_URL);
   }
 
-  post(vehicle: Vehicle) {
-    return this.http.post(VehiclesService.BASE_URL, vehicle);
+  getByIdentification(identification: string) {
+    return this.http.get<Vehicle>(`${VehiclesService.BASE_URL}/${identification}`);
+  }
+
+  save(vehicle: Vehicle) {
+    const request = {
+      identification: vehicle.identification,
+      description: vehicle.description
+    };
+    
+    return vehicle.id === undefined
+      ? this.http.post(VehiclesService.BASE_URL, request)
+      : this.http.put(`${VehiclesService.BASE_URL}/${vehicle.id}`, request);
   }
 }

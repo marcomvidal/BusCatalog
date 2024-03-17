@@ -6,7 +6,8 @@ import { ResponseError } from 'base/back-end-validation/response-error';
   templateUrl: './back-end-alert.component.html'
 })
 export class BackEndAlertComponent {
-  static readonly BASE_STYLE = 'bg-gray-100 border-gray-500 text-gray-900 border-t-4 rounded-b px-4 py-3 shadow-md mb-8';
+  static readonly UNEXPECTED_ERROR_STYLE = 'bg-red-100 border-red-500 text-red-900 border-t-4 rounded-b px-4 py-3 shadow-md mb-8';
+  static readonly EXPECTED_ERROR_STYLE = 'bg-teal-100 border-teal-500 text-teal-900 border-t-4 rounded-b px-4 py-3 shadow-md mb-8';
   
   @Input()
   error = new ResponseError();
@@ -20,6 +21,8 @@ export class BackEndAlertComponent {
   }
 
   get computedElementClass() {
-    return BackEndAlertComponent.BASE_STYLE.replaceAll('gray', this.color);
+    return this.error.isUnexpectedError
+      ? BackEndAlertComponent.UNEXPECTED_ERROR_STYLE
+      : BackEndAlertComponent.EXPECTED_ERROR_STYLE;
   }
 }

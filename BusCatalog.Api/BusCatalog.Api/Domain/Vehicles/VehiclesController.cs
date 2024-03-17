@@ -20,6 +20,17 @@ public class VehiclesController(
     public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
         Ok(await _service.GetAllAsync());
     
+    [HttpGet("{identification}")]
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Vehicle>> GetByIdentification(string identification)
+    {
+        var vehicle = await _service.GetByIdentificationAsync(identification);
+
+        return vehicle is not null
+            ? Ok(await _service.GetByIdentificationAsync(identification))
+            : NotFound();
+    }
+    
     [HttpPost]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)

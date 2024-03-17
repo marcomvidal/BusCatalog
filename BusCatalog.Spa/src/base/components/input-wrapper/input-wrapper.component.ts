@@ -15,9 +15,20 @@ export class InputWrapperComponent {
   @Input()
   name = '';
 
+  @Input()
+  messages: Record<string, string> = {};
+
+  get control() {
+    return this.form?.get(this.name);
+  }
+
   get errors() {
-    return this.form?.get(this.name)
-      ? Object.keys(this.form?.get(this.name)?.errors!)
-      : [];
+    if (!this.control || !this.control.errors || !this.control.dirty) {
+      return [];
+    }
+    
+    return Object
+      .keys(this.control?.errors!)
+      .map(error => Object.hasOwn(this.messages, error) ? this.messages[error] : null);
   }
 }

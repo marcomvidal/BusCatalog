@@ -4,12 +4,18 @@
     <bus-vehicle-icon icon />
   </bus-heading>
 
-  <bus-table [headers]="['Identification', 'Description']">
-    @for (vehicle of vehicles; track $index) {
-      <tr busTableRow>
-        <td busTableCell>{{ vehicle.identification }}</td>
-        <td busTableCell>{{ vehicle.description }}</td>
-      </tr>
-    }
-  </bus-table>
+  <bus-search-input (onValueChanges)="onSearchChanges($event)" />
+
+  @defer {
+    <bus-table [headers]="['Description', 'Identification']">
+      @for (vehicle of filteredVehicles; track $index) {
+        <tr busTableRow routerLink="/vehicles/edit/{{ vehicle.identification }}">
+          <td busTableCell>{{ vehicle.description }}</td>
+          <td busTableCell>{{ vehicle.identification }}</td>
+        </tr>
+      }
+    </bus-table>
+  } @placeholder (minimum 250ms) {
+    <bus-spinner />
+  }
 </section>
