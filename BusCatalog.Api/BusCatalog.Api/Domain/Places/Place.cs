@@ -10,5 +10,5 @@ public record Place
     public string City { get; set; } = null!;
     
     [JsonIgnore]
-    public virtual ICollection<Line> Lines { get; set; } = new List<Line>();
+    public virtual ICollection<Line> Lines { get; set; } = [];
 }
