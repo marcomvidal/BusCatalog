@@ -9,6 +9,9 @@ export class SubmitButtonDirective implements OnChanges {
   @HostBinding('class')
   elementClass = SubmitButtonDirective.BASE_STYLE;
 
+  @HostBinding('type')
+  type = 'submit';
+
   @Input()
   isDisabled = false;
 

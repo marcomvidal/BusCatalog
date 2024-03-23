@@ -10,8 +10,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-vehicles-listing',
   standalone: true,
   imports: [RouterModule, BaseModule, FormsModule],
-  templateUrl: './vehicles-listing.component.html',
-  styleUrl: './vehicles-listing.component.css'
+  templateUrl: './vehicles-listing.component.html'
 })
 export class VehiclesListingComponent implements OnInit {
   vehicles: Vehicle[] = [];

@@ -18,12 +18,15 @@ import { AttentionIconComponent } from './icons/attention/attention-icon.compone
 import { SpinnerComponent } from './icons/spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
 import { SearchInputComponent } from './components/search-input/search-input.component';
+import { WarningButtonDirective } from './directives/warning-button/warning-button.directive';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
 
 @NgModule({
   declarations: [
     AttentionIconComponent,
     BackEndAlertComponent,
     ButtonDirective,
+    DeleteModalComponent,
     HeadingComponent,
     InputDirective,
     InputWrapperComponent,
@@ -38,6 +41,7 @@ import { SearchInputComponent } from './components/search-input/search-input.com
     TableComponent,
     TableCellDirective,
     TableRowDirective,
+    WarningButtonDirective
   ],
   imports: [
     CommonModule,
@@ -47,6 +51,7 @@ import { SearchInputComponent } from './components/search-input/search-input.com
     AttentionIconComponent,
     BackEndAlertComponent,
     ButtonDirective,
+    DeleteModalComponent,
     HeadingComponent,
     InputDirective,
     InputWrapperComponent,
@@ -61,6 +66,7 @@ import { SearchInputComponent } from './components/search-input/search-input.com
     TableComponent,
     TableCellDirective,
     TableRowDirective,
+    WarningButtonDirective
   ]
 })
 export class BaseModule {}

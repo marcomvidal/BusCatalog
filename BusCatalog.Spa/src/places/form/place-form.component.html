@@ -1,7 +1,7 @@
 <section>
   <bus-heading 
-    title="Register a Vehicle"
-    subTitle="Define a vehicle that will be part of a Line.">
+    title="Register a Place"
+    subTitle="Declare a place that will be part of the itinerary of a line.">
     <bus-vehicle-icon icon />
   </bus-heading>
   
@@ -19,11 +19,5 @@
     </div>
     
     <input busSubmitButton title="Submit" [isDisabled]="!form.valid" />
-
-    @if (id != undefined) {
-      <button busWarningButton (click)="onDelete()">Delete</button>
-    }
   </form>
-
-  <bus-delete-modal title="Delete vehicle" [onSelectedYes]="service.delete(id!)" />
 </section>

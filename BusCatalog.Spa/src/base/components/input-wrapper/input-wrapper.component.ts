@@ -10,7 +10,7 @@ export class InputWrapperComponent {
   elementClass = 'block w-full mb-6';
 
   @Input()
-  form?: FormGroup;
+  form!: FormGroup;
 
   @Input()
   name = '';
@@ -19,7 +19,7 @@ export class InputWrapperComponent {
   messages: Record<string, string> = {};
 
   get control() {
-    return this.form?.get(this.name);
+    return this.form.get(this.name);
   }
 
   get errors() {

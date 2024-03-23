@@ -1,0 +1,21 @@
+<section>
+  <bus-heading title="Places" subTitle="Places that are part of the itinerary of the lines.">
+    <a busButton routerLink="/places/create">Create</a>
+    <bus-vehicle-icon icon />
+  </bus-heading>
+
+  <bus-search-input (onValueChanges)="onSearchChanges($event)" />
+
+  @defer {
+    <bus-table [headers]="['Identification', 'City']">
+      @for (vehicle of filteredPlaces; track $index) {
+        <tr busTableRow routerLink="/places/edit/{{ vehicle.identification }}">
+          <td busTableCell>{{ vehicle.identification }}</td>
+          <td busTableCell>{{ vehicle.city }}</td>
+        </tr>
+      }
+    </bus-table>
+  } @placeholder (minimum 250ms) {
+    <bus-spinner />
+  }
+</section>

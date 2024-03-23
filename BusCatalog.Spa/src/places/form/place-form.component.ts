@@ -2,31 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { BaseModule } from '../../base/base.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VehiclesService } from '../services/vehicles.service';
+import { PlacesService } from '../services/places.service';
 import { CommonModule } from '@angular/common';
 import { BackEndValidationService } from 'base/back-end-validation/back-end-validation.service';
-import { Vehicle } from 'vehicles/vehicle';
-import { VehicleFormValidation } from './vehicle-form.validation';
+import { PlaceFormValidation } from './place-form.validation';
 import { filter, switchMap, take } from 'rxjs';
-import { VehicleForm } from './vehicle-form.interface';
+import { PlaceForm } from './place-form.interface';
+import { Place } from 'places/place';
 
 @Component({
-  selector: 'app-vehicle-form',
+  selector: 'app-place-form',
   standalone: true,
   imports: [BaseModule, ReactiveFormsModule, CommonModule],
-  templateUrl: './vehicle-form.component.html'
+  templateUrl: './place-form.component.html'
 })
-export class VehicleFormComponent implements OnInit {
+export class PlaceFormComponent implements OnInit {
   id?: number;
-  form: FormGroup<VehicleForm>;
-  messages = VehicleFormValidation.MESSAGES;
+  form: FormGroup<PlaceForm>;
+  messages = PlaceFormValidation.MESSAGES;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    public service: VehiclesService,
+    private service: PlacesService,
     public validator: BackEndValidationService) {
-      this.form = VehicleFormValidation.generate();
+      this.form = PlaceFormValidation.generate();
     }
 
   ngOnInit() {
@@ -34,20 +34,12 @@ export class VehicleFormComponent implements OnInit {
     this.fillFormOnPut();
   }
 
-  onDelete() {
-    console.log();
-  }
-
-  onDeleteOptionSelected($event: any) {
-    console.log($event);
-  }
-
   onSubmit() {
-    const vehicle = Vehicle.fromForm(this.form);
+    const place = Place.fromForm(this.form);
 
-    this.service.save(vehicle, this.id)
+    this.service.save(place, this.id)
       .subscribe({
-        next: _ => this.router.navigate(['vehicles']),
+        next: _ => this.router.navigate(['places']),
         error: error => this.validator.handleError(error)
       });
   }
@@ -58,9 +50,9 @@ export class VehicleFormComponent implements OnInit {
         take(1),
         filter(params => params['identification']),
         switchMap(params => this.service.getByIdentification(params['identification'])))
-      .subscribe(({ id, description }) => {
+      .subscribe(({ id, identification, city }) => {
         this.id = id;
-        this.form.setValue({ description });
+        this.form.setValue({ identification, city });
       });
   }
 }

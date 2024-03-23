@@ -11,6 +11,10 @@ export class VehiclesService {
 
   constructor(private http: HttpClient) {}
 
+  delete(id: number) {
+    return this.http.delete(`${VehiclesService.BASE_URL}/${id}`);
+  }
+
   getAll() {
     return this.http.get<Vehicle[]>(VehiclesService.BASE_URL);
   }
@@ -19,14 +23,9 @@ export class VehiclesService {
     return this.http.get<Vehicle>(`${VehiclesService.BASE_URL}/${identification}`);
   }
 
-  save(vehicle: Vehicle) {
-    const request = {
-      identification: vehicle.identification,
-      description: vehicle.description
-    };
-    
-    return vehicle.id === undefined
-      ? this.http.post(VehiclesService.BASE_URL, request)
-      : this.http.put(`${VehiclesService.BASE_URL}/${vehicle.id}`, request);
+  save(vehicle: Vehicle, id?: number) {
+    return id === undefined
+      ? this.http.post(VehiclesService.BASE_URL, vehicle)
+      : this.http.put(`${VehiclesService.BASE_URL}/${id}`, vehicle);
   }
 }
