@@ -50,7 +50,10 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     {
         await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
-        var response = await Client.PutAsJsonAsync("/api/places/1", new PlacePostRequest());
+
+        var response = await Client.PutAsJsonAsync(
+            "/api/places/1",
+            new PlacePostRequest { City = null!, Identification = null! });
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!

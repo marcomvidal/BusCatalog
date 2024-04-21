@@ -6,8 +6,8 @@ namespace BusCatalog.Api.Domain.Places;
 public record Place
 {
     public int Id { get; set; }
-    public string Identification { get; set; } = null!;
-    public string City { get; set; } = null!;
+    public required string Identification { get; set; }
+    public required string City { get; set; }
     
     [JsonIgnore]
     public virtual ICollection<Line> Lines { get; set; } = [];

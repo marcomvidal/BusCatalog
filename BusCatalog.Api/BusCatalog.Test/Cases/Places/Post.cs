@@ -33,7 +33,10 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     [Fact]
     public async void WhenItPostsAnEmptyPlace_ShouldRespondWithValidationErrors()
     {
-        var response = await Client.PostAsJsonAsync("/api/places", new PlacePostRequest());
+        var response = await Client.PostAsJsonAsync(
+            "/api/places",
+            new PlacePostRequest { City = null!, Identification = null! });
+        
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

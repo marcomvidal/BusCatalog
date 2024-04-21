@@ -11,5 +11,5 @@ public class String
     [InlineData("super articulated", "SUPER-ARTICULATED")]
     [InlineData("super duper articulated", "SUPER-DUPER-ARTICULATED")]
     public void WhenSlugfiesString_ShouldSuccess(string input, string result) =>
-        input.SlugfyUpper().Should().Be(result);
+        input.UpperSlugfy().Should().Be(result);
 }

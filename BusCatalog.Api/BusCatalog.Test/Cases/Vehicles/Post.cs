@@ -25,14 +25,17 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
         (await response.DeserializedBody<Vehicle>())
             .Should()
             .Match<Vehicle>(x =>
-                x.Identification == request.Identification.SlugfyUpper()
+                x.Identification == request.Identification.UpperSnakeCasefy()
                 && x.Description == request.Description);
     }
 
     [Fact]
     public async void WhenItPostsAnEmptyVehicle_ShouldRespondWithValidationErrors()
     {
-        var response = await Client.PostAsJsonAsync("/api/vehicles", new VehiclePostRequest());
+        var response = await Client.PostAsJsonAsync(
+            "/api/vehicles",
+            new VehiclePostRequest { Identification = null!, Description = null! });
+        
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

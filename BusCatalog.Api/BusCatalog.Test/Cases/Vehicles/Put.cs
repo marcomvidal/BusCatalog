@@ -24,10 +24,12 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
         };
 
         var response = await Client.PutAsJsonAsync("/api/vehicles/1", request);
+        var body = await response.DeserializedBody<Vehicle>();
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
-        (await response.DeserializedBody<Vehicle>())
-            .Should().Match<Vehicle>(x => x.Identification == request.Identification);
+        
+        body.Should().Match<Vehicle>(
+            x => x.Identification == request.Identification.UpperSnakeCasefy());
     }
 
     [Fact]
@@ -50,7 +52,9 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
         await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
         await Context.SaveChangesAsync();
         
-        var response = await Client.PutAsJsonAsync("/api/vehicles/1", new VehiclePutRequest());
+        var response = await Client.PutAsJsonAsync(
+            "/api/vehicles/1",
+            new VehiclePutRequest { Identification = null!, Description = null! });
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!

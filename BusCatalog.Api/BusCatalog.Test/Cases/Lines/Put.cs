@@ -97,11 +97,10 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
         await Context.SaveChangesAsync();
 
         var response = await Client.PutAsJsonAsync("/api/lines/1", new LinePutRequest());
+        var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        (await response.DeserializedBody<ValidationProblemDetails>())!
-            .Errors
-            .Should()
-            .ContainKeys("Identification", "Fromwards", "Towards", "Vehicles", "Places");
+        body!.Errors.Should().ContainKeys(
+            "Identification", "Fromwards", "Towards", "Vehicles", "Places");
     }
 }

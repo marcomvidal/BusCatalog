@@ -27,7 +27,7 @@ public class LinePostValidator : AbstractValidator<LinePostRequest>
         
         RuleFor(x => x.Fromwards).NotEmpty().Length(3, 50);
         RuleFor(x => x.Towards).NotEmpty().Length(3, 50);
-        RuleFor(x => x.DeparturesPerDay).NotNull();
+        RuleFor(x => x.DeparturesPerDay).GreaterThan(0);
 
         RuleFor(x => x.Vehicles)
             .NotEmpty()

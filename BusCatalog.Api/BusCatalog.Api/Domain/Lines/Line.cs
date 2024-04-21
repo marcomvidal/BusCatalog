@@ -6,9 +6,9 @@ namespace BusCatalog.Api.Domain.Lines;
 public record Line
 {
     public int Id { get; set; }
-    public string Identification { get; set; } = null!;
-    public string? Fromwards { get; set; } = null!;
-    public string? Towards { get; set; } = null!;
+    public required string Identification { get; set; }
+    public required string Fromwards { get; set; }
+    public required string Towards { get; set; }
     public int DeparturesPerDay { get; set; }
     public virtual List<Place> Places { get; set; } = [];
     public virtual List<Vehicle> Vehicles { get; set; } = [];
