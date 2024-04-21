@@ -19,6 +19,15 @@ public class PlacesController(
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Place>>> Get() =>
         Ok(await _service.GetAllAsync());
+
+    [HttpGet("{id}")]
+    [ProducesResponseType<ValidationProblem>(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<Place>> GetByIdentification(int id)
+    {
+        var place = await _service.GetByIdAsync(id);
+
+        return place is not null ? Ok(place) : NotFound();
+    }
     
     [HttpPost]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]

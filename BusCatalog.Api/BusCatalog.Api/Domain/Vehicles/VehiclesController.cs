@@ -26,9 +26,7 @@ public class VehiclesController(
     {
         var vehicle = await _service.GetByIdentificationAsync(identification);
 
-        return vehicle is not null
-            ? Ok(await _service.GetByIdentificationAsync(identification))
-            : NotFound();
+        return vehicle is not null ? Ok(vehicle) : NotFound();
     }
     
     [HttpPost]
