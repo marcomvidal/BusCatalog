@@ -8,9 +8,9 @@ export class SearchInputComponent {
   value = '';
 
   @Output()
-  onValueChanges = new EventEmitter<string>();
+  onSearchTermChanges = new EventEmitter<string>();
 
   onChange() {
-    this.onValueChanges.emit(this.value);
+    this.onSearchTermChanges.emit(this.value);
   }
 }

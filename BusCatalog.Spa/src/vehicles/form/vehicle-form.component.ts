@@ -34,14 +34,6 @@ export class VehicleFormComponent implements OnInit {
     this.fillFormOnPut();
   }
 
-  onDelete() {
-    console.log();
-  }
-
-  onDeleteOptionSelected($event: any) {
-    console.log($event);
-  }
-
   onSubmit() {
     const vehicle = Vehicle.fromForm(this.form);
 
@@ -50,6 +42,16 @@ export class VehicleFormComponent implements OnInit {
         next: _ => this.router.navigate(['vehicles']),
         error: error => this.validator.handleError(error)
       });
+  }
+
+  onDelete($event: MouseEvent) {
+    $event.preventDefault();
+    
+    this.service.delete(this.id!)
+      .subscribe({
+        next: _ => this.router.navigate(['vehicles']),
+        error: error => this.validator.handleError(error)
+      })
   }
 
   private fillFormOnPut() {

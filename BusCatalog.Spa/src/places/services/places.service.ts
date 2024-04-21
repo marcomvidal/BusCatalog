@@ -15,13 +15,17 @@ export class PlacesService {
     return this.http.get<Place[]>(PlacesService.BASE_URL);
   }
 
-  getByIdentification(identification: string) {
-    return this.http.get<Place>(`${PlacesService.BASE_URL}/${identification}`);
+  getById(id: string) {
+    return this.http.get<Place>(`${PlacesService.BASE_URL}/${id}`);
   }
 
   save(place: Place, id?: number) {
     return id === undefined
       ? this.http.post(PlacesService.BASE_URL, place)
       : this.http.put(`${PlacesService.BASE_URL}/${id}`, place);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${PlacesService.BASE_URL}/${id}`);
   }
 }

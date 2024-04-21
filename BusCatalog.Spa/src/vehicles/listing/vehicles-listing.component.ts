@@ -14,20 +14,17 @@ import { FormsModule } from '@angular/forms';
 })
 export class VehiclesListingComponent implements OnInit {
   vehicles: Vehicle[] = [];
-  filteredVehicles: Vehicle[] = [];
+  searchTerm = '';
 
   constructor(private service: VehiclesService) {}
 
   ngOnInit() {
     this.service.getAll()
       .pipe(take(1))
-      .subscribe(vehicles => this.vehicles = this.filteredVehicles = vehicles);
+      .subscribe(vehicles => this.vehicles = vehicles);
   }
 
-  onSearchChanges(search: string) {
-    this.filteredVehicles = search.length > 0
-      ? this.vehicles.filter(
-          vehicle => vehicle.description.toLowerCase().startsWith(search.toLowerCase()))
-      : this.vehicles;
+  onSearchTermChanges(searchTerm: string) {
+    this.searchTerm = searchTerm;
   }
 }

@@ -11,6 +11,6 @@ export const routes: Routes = [
   { path: 'vehicles/edit/:identification', component: VehicleFormComponent },
   { path: 'vehicles/create', component: VehicleFormComponent },
   { path: 'places', component: PlacesListingComponent },
-  { path: 'places/edit/:identification', component: PlaceFormComponent },
+  { path: 'places/edit/:id', component: PlaceFormComponent },
   { path: 'places/create', component: PlaceFormComponent }
 ];

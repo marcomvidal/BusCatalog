@@ -44,12 +44,22 @@ export class PlaceFormComponent implements OnInit {
       });
   }
 
+  onDelete($event: MouseEvent) {
+    $event.preventDefault();
+    
+    this.service.delete(this.id!)
+      .subscribe({
+        next: _ => this.router.navigate(['vehicles']),
+        error: error => this.validator.handleError(error)
+      })
+  }
+
   private fillFormOnPut() {
     this.activatedRoute.params
       .pipe(
         take(1),
-        filter(params => params['identification']),
-        switchMap(params => this.service.getByIdentification(params['identification'])))
+        filter(params => params['id']),
+        switchMap(params => this.service.getById(params['id'])))
       .subscribe(({ id, identification, city }) => {
         this.id = id;
         this.form.setValue({ identification, city });

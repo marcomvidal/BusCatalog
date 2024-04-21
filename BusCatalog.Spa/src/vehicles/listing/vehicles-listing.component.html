@@ -4,11 +4,11 @@
     <bus-vehicle-icon icon />
   </bus-heading>
 
-  <bus-search-input (onValueChanges)="onSearchChanges($event)" />
+  <bus-search-input (onSearchTermChanges)="onSearchTermChanges($event)" />
 
   @defer {
     <bus-table [headers]="['Description', 'Identification']">
-      @for (vehicle of filteredVehicles; track $index) {
+      @for (vehicle of vehicles | searchFilter : searchTerm : 'identification'; track $index) {
         <tr busTableRow routerLink="/vehicles/edit/{{ vehicle.identification }}">
           <td busTableCell>{{ vehicle.description }}</td>
           <td busTableCell>{{ vehicle.identification }}</td>

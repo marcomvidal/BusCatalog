@@ -19,14 +19,13 @@ import { SpinnerComponent } from './icons/spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { WarningButtonDirective } from './directives/warning-button/warning-button.directive';
-import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
+import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
 
 @NgModule({
   declarations: [
     AttentionIconComponent,
     BackEndAlertComponent,
     ButtonDirective,
-    DeleteModalComponent,
     HeadingComponent,
     InputDirective,
     InputWrapperComponent,
@@ -35,6 +34,7 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
     FormFieldsWrapperDirective,
     VehicleIconComponent,
     PlaceIconComponent,
+    SearchFilterPipe,
     SearchInputComponent,
     SpinnerComponent,
     SubmitButtonDirective,
@@ -51,7 +51,6 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
     AttentionIconComponent,
     BackEndAlertComponent,
     ButtonDirective,
-    DeleteModalComponent,
     HeadingComponent,
     InputDirective,
     InputWrapperComponent,
@@ -60,6 +59,7 @@ import { DeleteModalComponent } from './components/delete-modal/delete-modal.com
     FormFieldsWrapperDirective,
     VehicleIconComponent,
     PlaceIconComponent,
+    SearchFilterPipe,
     SearchInputComponent,
     SpinnerComponent,
     SubmitButtonDirective,

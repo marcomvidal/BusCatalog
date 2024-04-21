@@ -9,15 +9,29 @@
     <bus-back-end-alert [error]="validator.error" />
 
     <div busFormFieldsWrapper>
-      <bus-input-wrapper #description name="description" [form]="form" [messages]="messages">
-        <label busLabel [for]="description.name">Description</label>
+      <bus-input-wrapper #identification name="identification" [form]="form" [messages]="messages">
+        <label busLabel [for]="identification.name">Identification</label>
         <input busInput
-          [id]="description.name"
-          [name]="description.name"
-          [formControlName]="description.name" />
+          [id]="identification.name"
+          [name]="identification.name"
+          [formControlName]="identification.name" />
+      </bus-input-wrapper>
+    </div>
+
+    <div busFormFieldsWrapper>
+      <bus-input-wrapper #city name="city" [form]="form" [messages]="messages">
+        <label busLabel [for]="city.name">City</label>
+        <input busInput
+          [id]="city.name"
+          [name]="city.name"
+          [formControlName]="city.name" />
       </bus-input-wrapper>
     </div>
     
     <input busSubmitButton title="Submit" [isDisabled]="!form.valid" />
+
+    @if (id != undefined) {
+      <button busWarningButton (click)="onDelete($event)">Delete</button>
+    }
   </form>
 </section>

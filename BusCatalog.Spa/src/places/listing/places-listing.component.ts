@@ -14,20 +14,17 @@ import { Place } from 'places/place';
 })
 export class PlacesListingComponent implements OnInit {
   places: Place[] = [];
-  filteredPlaces: Place[] = [];
+  searchTerm = '';
 
   constructor(private service: PlacesService) {}
 
   ngOnInit() {
     this.service.getAll()
       .pipe(take(1))
-      .subscribe(places => this.places = this.filteredPlaces = places);
+      .subscribe(places => this.places = this.places = places);
   }
 
-  onSearchChanges(search: string) {
-    this.filteredPlaces = search.length > 0
-      ? this.places.filter(
-          place => place.identification.toLowerCase().startsWith(search.toLowerCase()))
-      : this.places;
+  onSearchTermChanges(searchTerm: string) {
+    this.searchTerm = searchTerm;
   }
 }

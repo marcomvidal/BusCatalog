@@ -21,9 +21,7 @@
     <input busSubmitButton title="Submit" [isDisabled]="!form.valid" />
 
     @if (id != undefined) {
-      <button busWarningButton (click)="onDelete()">Delete</button>
+      <button busWarningButton (click)="onDelete($event)">Delete</button>
     }
   </form>
-
-  <bus-delete-modal title="Delete vehicle" [onSelectedYes]="service.delete(id!)" />
 </section>

@@ -11,10 +11,6 @@ export class VehiclesService {
 
   constructor(private http: HttpClient) {}
 
-  delete(id: number) {
-    return this.http.delete(`${VehiclesService.BASE_URL}/${id}`);
-  }
-
   getAll() {
     return this.http.get<Vehicle[]>(VehiclesService.BASE_URL);
   }
@@ -27,5 +23,9 @@ export class VehiclesService {
     return id === undefined
       ? this.http.post(VehiclesService.BASE_URL, vehicle)
       : this.http.put(`${VehiclesService.BASE_URL}/${id}`, vehicle);
+  }
+
+  delete(id: number) {
+    return this.http.delete(`${VehiclesService.BASE_URL}/${id}`);
   }
 }
