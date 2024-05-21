@@ -15,7 +15,6 @@ public class IntegrationTest : IClassFixture<TestWebApplicationFactory>, IDispos
     private static readonly string[] TablesToClean =
     [
         "Vehicles",
-        "Places",
         "Lines"
     ];
 

@@ -14,7 +14,6 @@ export class HeaderComponent {
 
   links: Link[] = [
     { label: 'Lines', url: '/' },
-    { label: 'Places', url: '/places' },
     { label: 'Vehicles', url: '/vehicles' }
   ];
 }

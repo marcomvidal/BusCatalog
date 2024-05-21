@@ -21,7 +21,7 @@ public class LineRepository(DatabaseContext db) : ILineRepository
     private readonly DatabaseContext _db = db;
 
     public async Task<IEnumerable<Line>> GetAllAsync() => 
-        await _db.Lines!
+        await _db.Lines
             .AsNoTracking()
             .OrderBy(x => x.Identification)
             .ToListAsync();
@@ -31,14 +31,13 @@ public class LineRepository(DatabaseContext db) : ILineRepository
         int? quantity = null) =>
         await _db.Lines
             .Where(predicate)
-            .Include(x => x.Places)
             .Include(x => x.Vehicles)
             .LimitIfHasQuantity(quantity)
             .ToListAsync();
 
     public async Task<Line> SaveAsync(Line line)
     {
-        _db.Lines!.Add(line);
+        _db.Lines.Add(line);
         await _db.SaveChangesAsync();
         
         return line;

@@ -13,6 +13,4 @@ public record LinePostRequest
         get => _vehicles.Select(x => x.UpperSlugfy());
         set => _vehicles = value;
     }
-    
-    public IEnumerable<int> Places { get; set; } = [];
 }

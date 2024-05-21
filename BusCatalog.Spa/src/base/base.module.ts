@@ -12,7 +12,6 @@ import { FormFieldsWrapperDirective } from './directives/submit-wrapper/form-fie
 import { SubmitButtonDirective } from './directives/submit-button/submit-button.directive';
 import { VehicleIconComponent } from './icons/vehicle/vehicle-icon.component';
 import { LineIconComponent } from './icons/line/line-icon.component';
-import { PlaceIconComponent } from './icons/place/place-icon.component';
 import { BackEndAlertComponent } from './components/back-end-alert/back-end.alert.component';
 import { AttentionIconComponent } from './icons/attention/attention-icon.component';
 import { SpinnerComponent } from './icons/spinner/spinner.component';
@@ -20,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { WarningButtonDirective } from './directives/warning-button/warning-button.directive';
 import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
+import { SelectComponent } from './components/select/select.component';
 
 @NgModule({
   declarations: [
@@ -33,9 +33,9 @@ import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
     LineIconComponent,
     FormFieldsWrapperDirective,
     VehicleIconComponent,
-    PlaceIconComponent,
     SearchFilterPipe,
     SearchInputComponent,
+    SelectComponent,
     SpinnerComponent,
     SubmitButtonDirective,
     TableComponent,
@@ -58,9 +58,9 @@ import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
     LineIconComponent,
     FormFieldsWrapperDirective,
     VehicleIconComponent,
-    PlaceIconComponent,
     SearchFilterPipe,
     SearchInputComponent,
+    SelectComponent,
     SpinnerComponent,
     SubmitButtonDirective,
     TableComponent,

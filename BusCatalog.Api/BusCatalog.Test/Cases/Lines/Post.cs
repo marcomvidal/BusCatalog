@@ -17,7 +17,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     public async void WhenItPostsAValidLine_ShouldRespondWithIt()
     {
         await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles.Take(2));
-        await Context.Places.AddRangeAsync(FakeStore.Places.Take(2));
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -26,7 +25,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Fromwards = "California",
             Towards = "Alaska",
             DeparturesPerDay = 10,
-            Places = [1, 2],
             Vehicles = ["MIDI", "PADRON"]
         };
 
@@ -40,7 +38,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
                 && x.Fromwards == request.Fromwards
                 && x.Towards == request.Towards
                 && x.DeparturesPerDay == request.DeparturesPerDay
-                && x.Places.Count == request.Places.Count()
                 && x.Vehicles.Count == request.Vehicles.Count());
     }
 
@@ -48,7 +45,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     public async void WhenItPostsALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
         await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
         
         var request = new LinePostRequest
@@ -57,7 +53,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Fromwards = "California",
             Towards = "Alaska",
             DeparturesPerDay = 10,
-            Places = [1, 2],
             Vehicles = ["MIDI", "PADRON"]
         };
 
@@ -65,7 +60,7 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!
-            .Errors.Should().ContainKeys("Places", "Vehicles");
+            .Errors.Should().ContainKeys("Vehicles");
     }
 
     [Fact]
@@ -76,14 +71,13 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         body!.Errors.Should().ContainKeys(
-            "Identification", "Fromwards", "Towards", "Vehicles", "Places");
+            "Identification", "Fromwards", "Towards", "Vehicles");
     }
 
     [Fact]
     public async void WhenItPostsALineWithRepeatedIdentification_ShouldRespondWithIt()
     {
         await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.Places.AddAsync(FakeStore.Places[0]);
         await Context.SaveChangesAsync();
 
         var request = new LinePostRequest
@@ -92,7 +86,6 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Fromwards = "California",
             Towards = "Alaska",
             DeparturesPerDay = 10,
-            Places = [1],
             Vehicles = ["MIDI"]
         };
 

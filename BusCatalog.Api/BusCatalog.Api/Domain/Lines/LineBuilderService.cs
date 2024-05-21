@@ -1,4 +1,3 @@
-using BusCatalog.Api.Domain.Places;
 using BusCatalog.Api.Domain.Vehicles;
 
 namespace BusCatalog.Api.Domain.Lines;
@@ -10,15 +9,13 @@ public interface ILineBuilderService
 
 public interface ILineRelantionshipBuilder
 {
-    Task<Line> WithRelantionships(IEnumerable<int> places, IEnumerable<string> vehicles);
+    Task<Line> WithRelantionships(IEnumerable<string> vehicles);
 }
 
-public class LineBuilderService(
-    IPlaceRepository placeRepository,
-    IVehicleRepository vehicleRepository) : ILineBuilderService, ILineRelantionshipBuilder
+public class LineBuilderService(IVehicleRepository vehicleRepository)
+    : ILineBuilderService, ILineRelantionshipBuilder
 {
     private Line _line = null!;
-    private readonly IPlaceRepository _placeRepository = placeRepository;
     private readonly IVehicleRepository _vehicleRepository = vehicleRepository;
 
     public ILineRelantionshipBuilder WithLine(Line line)
@@ -28,25 +25,11 @@ public class LineBuilderService(
         return this;
     }
 
-    public async Task<Line> WithRelantionships(
-        IEnumerable<int> places,
-        IEnumerable<string> vehicles)
+    public async Task<Line> WithRelantionships(IEnumerable<string> vehicles)
     {
-        await AddPlaces(places);
         await AddVehicles(vehicles);
 
         return _line;
-    }
-
-    private async Task AddPlaces(IEnumerable<int> placesIds)
-    {
-        if (_line.Places.Count > 0)
-        {
-            _line.Places.Clear();
-        }
-
-        var places = await _placeRepository.GetByAsync(x => placesIds.Contains(x.Id));
-        _line.AddPlaces(places);
     }
 
     private async Task AddVehicles(IEnumerable<string> vehiclesIds)

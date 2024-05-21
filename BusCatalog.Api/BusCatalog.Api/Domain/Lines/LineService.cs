@@ -56,7 +56,7 @@ public class LineService(
 
         var line = await _lineBuilder
             .WithLine(_mapper.Map<Line>(request))
-            .WithRelantionships(request.Places, request.Vehicles);
+            .WithRelantionships(request.Vehicles);
         
         await _lineRepository.SaveAsync(line);
 
@@ -67,7 +67,7 @@ public class LineService(
     {
         var updatedLine = await _lineBuilder
             .WithLine(_mapper.Map(request, line))
-            .WithRelantionships(request.Places, request.Vehicles);
+            .WithRelantionships(request.Vehicles);
         
         await _lineRepository.UpdateAsync(updatedLine);
         _logger.LogInformation("Updated line {identification}.", request.Identification);

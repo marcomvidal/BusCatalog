@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { RouterModule } from '@angular/router';
 import { Line } from '../line';
 import { LinesService } from '../services/lines.service';
 import { BaseModule } from '../../base/base.module';
@@ -7,7 +7,7 @@ import { BaseModule } from '../../base/base.module';
 @Component({
   selector: 'app-lines-listing',
   standalone: true,
-  imports: [BaseModule],
+  imports: [RouterModule, BaseModule],
   providers: [LinesService],
   templateUrl: './lines-listing.component.html',
   styleUrl: './lines-listing.component.css'

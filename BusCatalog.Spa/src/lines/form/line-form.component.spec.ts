@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { LineFormComponent } from './line-form.component';
 
-import { PlacesListingComponent } from './places-listing.component';
-
-describe('PlacesListingComponent', () => {
-  let component: PlacesListingComponent;
-  let fixture: ComponentFixture<PlacesListingComponent>;
+describe('LineFormComponent', () => {
+  let component: LineFormComponent;
+  let fixture: ComponentFixture<LineFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlacesListingComponent]
+      imports: [LineFormComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(PlacesListingComponent);
+    fixture = TestBed.createComponent(LineFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

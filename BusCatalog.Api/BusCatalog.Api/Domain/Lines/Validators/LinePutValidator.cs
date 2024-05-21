@@ -1,5 +1,4 @@
 using FluentValidation;
-using BusCatalog.Api.Domain.Places;
 using BusCatalog.Api.Domain.Vehicles;
 
 namespace BusCatalog.Api.Domain.Lines;
@@ -8,16 +7,13 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
 {
     protected readonly ILineRepository _lineRepository;
     protected readonly IVehicleRepository _vehicleRepository;
-    protected readonly IPlaceRepository _placeRepository;
 
     public LinePutValidator(
         ILineRepository lineRepository,
-        IVehicleRepository vehicleRepository,
-        IPlaceRepository placeRepository)
+        IVehicleRepository vehicleRepository)
     {
         _lineRepository = lineRepository;
         _vehicleRepository = vehicleRepository;
-        _placeRepository = placeRepository;
 
         RuleFor(x => x.Identification)
             .NotNull()
@@ -33,11 +29,6 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
             .NotEmpty()
             .MustAsync(UnknownVehicles)
                 .WithMessage("'Vehicles' should refeer to vehicles that exist in database.");
-
-        RuleFor(x => x.Places)
-            .NotEmpty()
-            .MustAsync(UnknownPlaces)
-                .WithMessage("'Places' should refeer to places that exist in database.");
     }
 
     private async Task<bool> IdentificationShouldBeUnique(
@@ -51,9 +42,4 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
         IEnumerable<string> vehicles, CancellationToken _) =>
         (await _vehicleRepository.GetByAsync(x => vehicles.Contains(x.Identification)))
             .Count == vehicles.Count();
-
-    protected async Task<bool> UnknownPlaces(
-        IEnumerable<int> places, CancellationToken _) =>
-        (await _placeRepository.GetByAsync(x => places.Contains(x.Id)))
-            .Count == places.Count();
 }

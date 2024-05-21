@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using FluentAssertions;
 using BusCatalog.Api.Domain.Vehicles;
@@ -12,7 +10,7 @@ namespace BusCatalog.Test.Cases.Vehicles;
 public class Get(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenItHasNoVehicles_ShouldRespondEmpty()
+    public async void WhenvehicleDoesNotExists_ShouldRespondEmpty()
     {
         var response = await Client.GetAsync("/api/vehicles/MEGA_ARTICULATED");
 
@@ -20,7 +18,7 @@ public class Get(TestWebApplicationFactory factory) : IntegrationTest(factory)
     }
 
     [Fact]
-    public async void WhenItHasVehicles_ShouldRespondWithIt()
+    public async void WhenVehicleExists_ShouldRespondWithIt()
     {
         var vehicle = FakeStore.Vehicles[0];
         await Context.Vehicles.AddAsync(vehicle);
