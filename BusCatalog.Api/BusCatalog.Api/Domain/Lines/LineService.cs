@@ -7,7 +7,7 @@ public interface ILineService
 {
     Task<IEnumerable<Line>> GetAllAsync();
     Task<Line?> GetByIdAsync(int id);
-    Task<Line?> GetByIdentificationAsync(string identification);
+    Task<LineResponse?> GetByIdentificationAsync(string identification);
     Task<Line> SaveAsync(LinePostRequest request);
     Task<Line> UpdateAsync(LinePutRequest request, Line line);
     Task<DeleteResponse> DeleteAsync(Line line);
@@ -40,14 +40,14 @@ public class LineService(
         return line.FirstOrDefault();
     }
 
-    public async Task<Line?> GetByIdentificationAsync(string identification)
+    public async Task<LineResponse?> GetByIdentificationAsync(string identification)
     {
         _logger.LogInformation(
             "Fetching registered line with identification {identification}.", identification);
 
         var line = await _lineRepository.GetByAsync(x => x.Identification == identification);
 
-        return line.FirstOrDefault();
+        return _mapper.Map<LineResponse>(line.FirstOrDefault());
     }
 
     public async Task<Line> SaveAsync(LinePostRequest request)

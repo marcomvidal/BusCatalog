@@ -6,3 +6,31 @@
 html {
     font-family: "Inter", sans-serif;
 }
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    @apply bg-gray-100;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked,
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    @apply bg-gray-200;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
+    @apply bg-gray-300;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container,
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+    @apply border-gray-400;
+}
+
+.ng-value {
+    @apply p-2;
+    @apply rounded;
+}
+
+.ng-select {
+    @apply p-0;
+}

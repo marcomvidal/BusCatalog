@@ -2,7 +2,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { LineForm } from "./line-form.interface";
 import { DEFAULT_MESSAGES } from "base/front-end-validation/default-messages";
 
-const MIN_LENGTH = 4;
+const MIN_LENGTH = 2;
 const MAX_LENGTH = 50;
 
 export class LineFormValidation {

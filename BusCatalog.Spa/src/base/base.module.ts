@@ -15,11 +15,12 @@ import { LineIconComponent } from './icons/line/line-icon.component';
 import { BackEndAlertComponent } from './components/back-end-alert/back-end.alert.component';
 import { AttentionIconComponent } from './icons/attention/attention-icon.component';
 import { SpinnerComponent } from './icons/spinner/spinner.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { WarningButtonDirective } from './directives/warning-button/warning-button.directive';
 import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
 import { SelectComponent } from './components/select/select.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,9 @@ import { SelectComponent } from './components/select/select.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule,
+    ReactiveFormsModule
   ],
   exports: [
     AttentionIconComponent,

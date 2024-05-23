@@ -10,7 +10,7 @@ public record LinePostRequest
 
     public IEnumerable<string> Vehicles
     {
-        get => _vehicles.Select(x => x.UpperSlugfy());
+        get => _vehicles.Select(x => x.UpperSnakeCasefy());
         set => _vehicles = value;
     }
 }

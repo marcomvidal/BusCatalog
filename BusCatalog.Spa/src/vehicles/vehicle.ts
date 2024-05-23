@@ -2,7 +2,7 @@ import { FormGroup } from "@angular/forms";
 import { VehicleForm } from "./form/vehicle-form.interface";
 
 export class Vehicle {
-  identification: string;
+  public identification: string;
 
   constructor(public description: string = '', public id?: number) {
     this.identification = this.generateIdentification();

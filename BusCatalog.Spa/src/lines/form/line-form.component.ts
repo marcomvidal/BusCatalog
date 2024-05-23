@@ -11,18 +11,19 @@ import { LineForm } from './line-form.interface';
 import { Line } from 'lines/line';
 import { VehiclesService } from 'vehicles/services/vehicles.service';
 import { Vehicle } from 'vehicles/vehicle';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-line-form',
   standalone: true,
-  imports: [BaseModule, ReactiveFormsModule, CommonModule],
+  imports: [BaseModule, ReactiveFormsModule, CommonModule, NgSelectModule],
   templateUrl: './line-form.component.html'
 })
 export class LineFormComponent implements OnInit {
   id?: number;
   form: FormGroup<LineForm>;
   messages = LineFormValidation.MESSAGES;
-  vehicles: Vehicle[] = [];
+  vehiclesList: Vehicle[] = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,17 +39,16 @@ export class LineFormComponent implements OnInit {
 
     this.vehiclesService.getAll()
       .pipe(take(1))
-      .subscribe(vehicles => this.vehicles = vehicles);
+      .subscribe(vehicles => this.vehiclesList = vehicles);
 
     this.fillFormOnPut();
   }
 
-  onListChanges(items: string[], field: string) {
-    this.form.get(field)!.setValue(items);
+  compareVehicles(sourceOption: Vehicle, listOption: string) {
+    return sourceOption.identification === listOption;
   }
 
   onSubmit() {
-    console.log(this.form.value);
     const line = Line.fromForm(this.form);
 
     this.service.save(line, this.id)
@@ -74,18 +74,9 @@ export class LineFormComponent implements OnInit {
         take(1),
         filter(params => params['identification']),
         switchMap(params => this.service.getById(params['identification'])))
-        .subscribe(({ id, identification, fromwards, towards, departuresPerDay, vehicles }) => {
+      .subscribe(({ id, ...line }) => {
         this.id = id;
-        
-        this.form.setValue({
-          identification,
-          fromwards,
-          towards,
-          departuresPerDay,
-          vehicles
-        });
-
-        console.log(this.form.value);
+        this.form.setValue(line);
       });
   }
 }
