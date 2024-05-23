@@ -50,7 +50,14 @@ export class LineFormValidation {
             Validators.maxLength(MAX_LENGTH)
           ]
         }),
-      vehicles: new FormControl([], { nonNullable: true })
+      vehicles: new FormControl([],
+        {
+          nonNullable: true,
+          validators: [
+            Validators.required,
+            Validators.minLength(1)
+          ]
+        })
     });
   }
 }

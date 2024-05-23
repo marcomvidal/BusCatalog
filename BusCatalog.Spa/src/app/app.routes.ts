@@ -6,6 +6,8 @@ import { LineFormComponent } from 'lines/form/line-form.component';
 
 export const routes: Routes = [
   { path: '', component: LinesListingComponent },
+  { path: 'lines', component: LinesListingComponent },
+  { path: 'lines/create', component: LineFormComponent },
   { path: 'lines/edit/:identification', component: LineFormComponent },
   { path: 'vehicles', component: VehiclesListingComponent },
   { path: 'vehicles/edit/:identification', component: VehicleFormComponent },
