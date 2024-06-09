@@ -19,7 +19,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { WarningButtonDirective } from './directives/warning-button/warning-button.directive';
 import { SearchFilterPipe } from './pipes/search-filter/search-filter.pipe';
-import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -45,7 +44,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
   imports: [
     CommonModule,
     FormsModule,
-    NgSelectModule,
     ReactiveFormsModule
   ],
   exports: [

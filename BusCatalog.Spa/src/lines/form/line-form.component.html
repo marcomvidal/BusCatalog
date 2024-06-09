@@ -54,7 +54,7 @@
       <bus-input-wrapper #vehicles name="vehicles" [form]="form" [messages]="messages">
         <label busLabel [for]="vehicles.name">Vehicle Types</label>
         <ng-select
-          class="block appearance-none w-full bg-white  hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
+          [id]="vehicles.name"
           [items]="vehiclesList"
           [compareWith]="compareVehicles"
           [multiple]="true"
@@ -65,7 +65,10 @@
       </bus-input-wrapper>
     </div>
     
-    <input busSubmitButton title="Submit" [isDisabled]="!form.valid" />
+    <input busSubmitButton
+      data-testid="submit-button"
+      title="Submit"
+      [isDisabled]="!form.valid" />
 
     @if (id != undefined) {
       <button busWarningButton (click)="onDelete($event)">Delete</button>

@@ -3,13 +3,21 @@
     <a busButton routerLink="/lines/create">Create</a>
     <bus-line-icon icon></bus-line-icon>
   </bus-heading>
+
+  <bus-search-input (onSearchTermChanges)="onSearchTermChanges($event)" />
   
-  <bus-table [headers]="['Identification', 'Itinerary']">
-    @for (line of lines; track $index) {
-      <tr busTableRow routerLink="/lines/edit/{{ line.identification }}">
-        <td busTableCell>{{ line.identification }}</td>
-        <td busTableCell>{{ line.fromwards }} -> {{ line.towards }}</td>
-      </tr>
-    }
-  </bus-table>
+  @defer {
+    <bus-table [headers]="['Identification', 'Itinerary']">
+      @for (line of lines | searchFilter : searchTerm : ['fromwards', 'towards']; track $index) {
+        <tr busTableRow routerLink="/lines/edit/{{ line.identification }}">
+          <td data-testid="line-identification" busTableCell>
+            {{ line.identification }}
+          </td>
+          <td busTableCell>{{ line.fromwards }} -> {{ line.towards }}</td>
+        </tr>
+      }
+    </bus-table>
+  } @placeholder (minimum 250ms) {
+    <bus-spinner />
+  }
 </section>

@@ -8,9 +8,9 @@
 
   @defer {
     <bus-table [headers]="['Description', 'Identification']">
-      @for (vehicle of vehicles | searchFilter : searchTerm : 'identification'; track $index) {
+      @for (vehicle of vehicles | searchFilter : searchTerm : ['identification']; track $index) {
         <tr busTableRow routerLink="/vehicles/edit/{{ vehicle.identification }}">
-          <td busTableCell>{{ vehicle.description }}</td>
+          <td data-testid="vehicle-description" busTableCell>{{ vehicle.description }}</td>
           <td busTableCell>{{ vehicle.identification }}</td>
         </tr>
       }
