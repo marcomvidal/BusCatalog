@@ -8,7 +8,7 @@ builder.AddAdapters();
 builder.Services.AddDomain();
 builder.Services.AddControllersWithNamingConvention();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerWithConfiguration();
 
 var app = builder.Build();
 app.UseCors();

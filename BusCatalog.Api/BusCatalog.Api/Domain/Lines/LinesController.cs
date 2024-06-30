@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BusCatalog.Api.Domain.Lines;
 
@@ -16,10 +17,12 @@ public class LinesController(
     private readonly IValidator<LinePutRequest> _putValidator = putValidator;
 
     [HttpGet]
+    [SwaggerOperation(Summary = "Gets all registered lines.")]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
         Ok(await _service.GetAllAsync());
 
     [HttpGet("{identification}")]
+    [SwaggerOperation(Summary = "Gets a line by its identification.")]
     public async Task<ActionResult<Line>> Get(string identification)
     {
         var line = await _service.GetByIdentificationAsync(identification);
@@ -31,6 +34,7 @@ public class LinesController(
 
     [HttpPost]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [SwaggerOperation(Summary = "Registers a new line.")]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
@@ -42,6 +46,7 @@ public class LinesController(
 
     [HttpPut("{id}")]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [SwaggerOperation(Summary = "Updates data of a previously registered line.")]
     public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePutRequest request)
     {
         var line = await _service.GetByIdAsync(id);
@@ -61,6 +66,7 @@ public class LinesController(
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "Deletes a line by its ID.")]
     public async Task<ActionResult<Line>> Delete(int id)
     {
         var line = await _service.GetByIdAsync(id);

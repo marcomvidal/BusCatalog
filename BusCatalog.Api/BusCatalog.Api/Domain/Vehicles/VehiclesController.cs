@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.General;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 
@@ -17,11 +18,13 @@ public class VehiclesController(
     private readonly IValidator<VehiclePutRequest> _putValidator = putValidator;
 
     [HttpGet]
+    [SwaggerOperation(Summary = "Gets all registered vehicles.")]
     public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
         Ok(await _service.GetAllAsync());
     
     [HttpGet("{identification}")]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status404NotFound)]
+    [SwaggerOperation(Summary = "Gets a vehicle by its identification.")]
     public async Task<ActionResult<Vehicle>> GetByIdentification(string identification)
     {
         var vehicle = await _service.GetByIdentificationAsync(identification);
@@ -31,6 +34,7 @@ public class VehiclesController(
     
     [HttpPost]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [SwaggerOperation(Summary = "Registers a new vehicle.")]
     public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
@@ -42,6 +46,7 @@ public class VehiclesController(
 
     [HttpPut("{id}")]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [SwaggerOperation(Summary = "Updates data of a previously registered vehicle.")]
     public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] VehiclePutRequest request)
     {
         var vehicle = await _service.GetByIdAsync(id);
@@ -61,6 +66,7 @@ public class VehiclesController(
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(Summary = "Deletes a vehicle by its ID.")]
     public async Task<ActionResult<DeleteResponse>> Delete(int id)
     {
         var vehicle = await _service.GetByIdAsync(id);
