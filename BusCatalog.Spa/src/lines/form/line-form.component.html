@@ -71,7 +71,9 @@
       [isDisabled]="!form.valid" />
 
     @if (id != undefined) {
-      <button busWarningButton (click)="onDelete($event)">Delete</button>
+      <button
+        data-testid="delete-button"
+        busWarningButton (click)="onDelete($event)">Delete</button>
     }
   </form>
 </section>
