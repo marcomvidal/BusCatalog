@@ -6,6 +6,7 @@ using BusCatalog.Test.Fakes;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
+using BusCatalog.Api.Domain.Vehicles.Ports;
 
 namespace BusCatalog.Test.Cases.Vehicles;
 

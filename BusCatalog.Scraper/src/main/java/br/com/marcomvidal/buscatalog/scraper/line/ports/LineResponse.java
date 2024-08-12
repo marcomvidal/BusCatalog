@@ -13,14 +13,18 @@ public class LineResponse {
     private List<Line> lines = new ArrayList<Line>();
     private HashMap<String, String> errors = new HashMap<>();
 
-    public void addLineOrError(LineServiceResponse<Line> line) {
-        line.getError().ifPresentOrElse(
-            error -> addError(error),
-            () -> lines.add(line.getResponse().get()));
+    public LineResponse withDataOrError(LineServiceResponse<Line> response) {
+        response.getError().ifPresentOrElse(
+            error -> withError(error),
+            () -> lines.add(response.getData().get()));
+
+        return this;
     }
 
-    public void addError(Entry<String, String> error) {
+    public LineResponse withError(Entry<String, String> error) {
         errors.put(error.getKey(), error.getValue());
+
+        return this;
     }
 
     public boolean hasLines() {

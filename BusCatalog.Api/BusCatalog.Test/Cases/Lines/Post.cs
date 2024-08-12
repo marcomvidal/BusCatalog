@@ -8,6 +8,7 @@ using BusCatalog.Api.Domain.Lines;
 using BusCatalog.Test.Fixtures;
 using BusCatalog.Test.Fakes;
 using Xunit;
+using BusCatalog.Api.Domain.Lines.Ports;
 
 namespace BusCatalog.Test.Cases.Lines;
 

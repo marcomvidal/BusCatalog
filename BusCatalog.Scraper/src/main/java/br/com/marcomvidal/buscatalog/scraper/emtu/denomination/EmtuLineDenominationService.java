@@ -15,7 +15,7 @@ public class EmtuLineDenominationService {
         this.adapter = adapter;
     }
 
-    public LineServiceResponse<String> get(String identifier) {
+    public LineServiceResponse<String> query(String identifier) {
         try {
             var response = adapter.getDenomination(identifier);
             var denomination = new EmtuLineDenominationScraper(response).scrap();

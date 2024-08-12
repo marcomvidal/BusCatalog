@@ -8,16 +8,16 @@ import lombok.Getter;
 
 @Getter
 public class LineServiceResponse<T> {
-    private final Optional<T> response;
+    private final Optional<T> data;
     private final Optional<Entry<String, String>> error;
 
-    public LineServiceResponse(T response) {
-        this.response = Optional.of(response);
+    public LineServiceResponse(T data) {
+        this.data = Optional.of(data);
         this.error = Optional.empty();
     }
 
     public LineServiceResponse(String errorKey, String errorDescription) {
-        this.response = Optional.empty();
+        this.data = Optional.empty();
         this.error = Optional.of(Map.entry(errorKey, errorDescription));
     }
 }

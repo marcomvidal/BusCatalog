@@ -1,6 +1,7 @@
-namespace BusCatalog.Api.Extensions;
+namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public enum ConfigurationKeys
 {
-    SpaUrl
+    SpaUrl,
+    ScraperUrl
 }

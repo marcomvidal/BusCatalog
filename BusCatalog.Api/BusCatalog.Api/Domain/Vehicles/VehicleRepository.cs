@@ -11,7 +11,8 @@ public interface IVehicleRepository
     Task<List<Vehicle>> GetByAsync(
         Expression<Func<Vehicle, bool>> predicate,
         int? quantity = null);
-    
+
+    Task<List<Vehicle>> GetByIdentificatorsAsync(IEnumerable<string> identificators);
     Task<int> SaveAsync(Vehicle vehicle);
     Task<int> UpdateAsync(Vehicle vehicle);
     Task<int> DeleteAsync(Vehicle vehicle);
@@ -35,6 +36,9 @@ public class VehicleRepository(DatabaseContext db) : IVehicleRepository
             .LimitIfHasQuantity(quantity)
             .OrderBy(x => x.Identification)
             .ToListAsync();
+
+    public Task<List<Vehicle>> GetByIdentificatorsAsync(IEnumerable<string> identificators) =>
+        GetByAsync(x => identificators.Contains(x.Identification));
 
     public async Task<int> SaveAsync(Vehicle vehicle)
     {

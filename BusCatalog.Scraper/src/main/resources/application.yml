@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: scraper
+
+info:
+  title: BusCatalog.Scraper
+
+configuration:
+  emtu:
+    identificationUrl: https://www.emtu.sp.gov.br/Sistemas/linha/resultado.htm?numlinha=@id&pag=buscanumero.htm
+    dataUrl: https://www.emtu.sp.gov.br/sistemas/linha/resultado_imp.htm?numlinha=
+  busCatalog:
+    url: https://localhost:7111

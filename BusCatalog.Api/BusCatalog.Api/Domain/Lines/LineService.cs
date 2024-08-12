@@ -1,5 +1,7 @@
 using AutoMapper;
 using BusCatalog.Api.Domain.General;
+using BusCatalog.Api.Domain.Lines.Ports;
+using BusCatalog.Api.Domain.Vehicles;
 
 namespace BusCatalog.Api.Domain.Lines;
 
@@ -15,12 +17,12 @@ public interface ILineService
 
 public class LineService(
     ILineRepository lineRepository,
-    ILineBuilderService lineBuilder,
+    IVehicleRepository vehicleRepository,
     IMapper mapper,
     ILogger<LineService> logger) : ILineService
 {
     private readonly ILineRepository _lineRepository = lineRepository;
-    private readonly ILineBuilderService _lineBuilder = lineBuilder;
+    private readonly IVehicleRepository _vehicleRepository = vehicleRepository;
     private readonly IMapper _mapper = mapper;
     private readonly ILogger<LineService> _logger = logger;
 
@@ -53,10 +55,11 @@ public class LineService(
     public async Task<Line> SaveAsync(LinePostRequest request)
     {
         _logger.LogInformation("Registering line {identification}.", request.Identification);
+        var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
 
-        var line = await _lineBuilder
-            .WithLine(_mapper.Map<Line>(request))
-            .WithRelantionships(request.Vehicles);
+        var line = new LineBuilder(_mapper.Map<Line>(request))
+            .WithVehicles(vehicles)
+            .Build();
         
         await _lineRepository.SaveAsync(line);
 
@@ -65,9 +68,11 @@ public class LineService(
 
     public async Task<Line> UpdateAsync(LinePutRequest request, Line line)
     {
-        var updatedLine = await _lineBuilder
-            .WithLine(_mapper.Map(request, line))
-            .WithRelantionships(request.Vehicles);
+        var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
+        
+        var updatedLine = new LineBuilder(_mapper.Map(request, line))
+            .WithVehicles(vehicles)
+            .Build();
         
         await _lineRepository.UpdateAsync(updatedLine);
         _logger.LogInformation("Updated line {identification}.", request.Identification);

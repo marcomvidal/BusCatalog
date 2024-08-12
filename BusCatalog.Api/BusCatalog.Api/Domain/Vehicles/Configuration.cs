@@ -1,3 +1,5 @@
+using BusCatalog.Api.Domain.Vehicles.Ports;
+using BusCatalog.Api.Domain.Vehicles.Validators;
 using FluentValidation;
 
 namespace BusCatalog.Api.Domain.Vehicles;

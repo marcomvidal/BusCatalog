@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace BusCatalog.Api.Domain.Vehicles;
+namespace BusCatalog.Api.Domain.Vehicles.Ports;
 
 public record VehiclePutRequest : VehiclePostRequest
 {

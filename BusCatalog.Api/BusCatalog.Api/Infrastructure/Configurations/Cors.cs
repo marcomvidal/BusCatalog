@@ -1,20 +1,24 @@
 using Microsoft.AspNetCore.Cors.Infrastructure;
 
-namespace BusCatalog.Api.Infrastructure;
+namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public static class Cors
 {
-    public static IServiceCollection AddCorsPolicy(this IHostApplicationBuilder builder) =>
-        builder.Services
-            .AddCors(options =>
-                CorsPolicy(
-                    options,
-                    builder.Configuration.GetValue<string>(ConfigurationKeys.SpaUrl)!));
+    public static IServiceCollection AddCorsPolicy(this IHostApplicationBuilder builder)
+    {
+        string[] urls = [
+            builder.Configuration.GetValue<string>(ConfigurationKeys.SpaUrl)!,
+            builder.Configuration.GetValue<string>(ConfigurationKeys.ScraperUrl)!
+        ];
 
-    private static void CorsPolicy(CorsOptions options, string spaUrl) =>
+        return builder.Services.AddCors(options => CorsPolicy(options, urls));
+    }
+        
+
+    private static void CorsPolicy(CorsOptions options, string[] urls) =>
         options.AddDefaultPolicy(policy =>
             policy
-                .WithOrigins(spaUrl)
+                .WithOrigins(urls)
                 .AllowAnyHeader()
                 .AllowAnyMethod());
 }

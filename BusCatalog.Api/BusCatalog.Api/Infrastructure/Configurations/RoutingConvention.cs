@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace BusCatalog.Api.Infrastructure;
+namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public static class RoutingConvention
 {

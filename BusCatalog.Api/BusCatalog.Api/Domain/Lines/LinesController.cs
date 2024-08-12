@@ -1,3 +1,4 @@
+using BusCatalog.Api.Domain.Lines.Ports;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

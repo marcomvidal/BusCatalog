@@ -8,8 +8,8 @@ public static class Configuration
 
     public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<DatabaseContext>(options =>
-            options.UseSqlite(
+        builder.Services.AddDbContext<DatabaseContext>(
+            options => options.UseSqlite(
                 builder.Configuration.GetConnectionString(ConnectionString)));
 
         return builder;

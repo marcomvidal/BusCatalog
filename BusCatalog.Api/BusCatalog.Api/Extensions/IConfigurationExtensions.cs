@@ -1,3 +1,5 @@
+using BusCatalog.Api.Infrastructure.Configurations;
+
 namespace BusCatalog.Api.Extensions;
 
 public static class IConfigurationExtensions

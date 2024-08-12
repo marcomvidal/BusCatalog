@@ -1,7 +1,8 @@
 using FluentValidation;
 using BusCatalog.Api.Domain.Vehicles;
+using BusCatalog.Api.Domain.Lines.Ports;
 
-namespace BusCatalog.Api.Domain.Lines;
+namespace BusCatalog.Api.Domain.Lines.Validators;
 
 public class LinePostValidator : AbstractValidator<LinePostRequest>
 {
@@ -32,13 +33,21 @@ public class LinePostValidator : AbstractValidator<LinePostRequest>
     }
 
     protected async Task<bool> IdentificationShouldBeUnique(
-        string identification, CancellationToken _) =>
-            (await _lineRepository.GetByAsync(x => x.Identification == identification))
-            .Count == 0;
+        string identification,
+        CancellationToken _)
+    {
+        var lines = await _lineRepository.GetByAsync(x => x.Identification == identification);
         
-
+        return lines.Count == 0;
+    }
+    
     protected async Task<bool> VehiclesDoesNotExists(
-        IEnumerable<string> vehicles, CancellationToken _) =>
-        (await _vehicleRepository.GetByAsync(x => vehicles.Contains(x.Identification)))
-            .Count == vehicles.Count();
+        IEnumerable<string> requestVehicles,
+        CancellationToken _)
+    {
+        var vehicles = await _vehicleRepository.GetByAsync(
+            x => requestVehicles.Contains(x.Identification));
+        
+        return requestVehicles.Count() == vehicles.Count;
+    }
 }

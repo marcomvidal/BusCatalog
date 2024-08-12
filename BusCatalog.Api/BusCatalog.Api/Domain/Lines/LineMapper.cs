@@ -1,4 +1,5 @@
 using AutoMapper;
+using BusCatalog.Api.Domain.Lines.Ports;
 
 namespace BusCatalog.Api.Domain.Lines;
 

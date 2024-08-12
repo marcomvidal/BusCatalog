@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Json;
 using Xunit;
+using BusCatalog.Api.Domain.Lines.Ports;
 
 namespace BusCatalog.Test.Cases.Lines;
 

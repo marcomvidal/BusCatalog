@@ -1,7 +1,6 @@
-using System.Reflection;
 using Microsoft.OpenApi.Models;
 
-namespace BusCatalog.Api.Infrastructure;
+namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public static class Swagger
 {

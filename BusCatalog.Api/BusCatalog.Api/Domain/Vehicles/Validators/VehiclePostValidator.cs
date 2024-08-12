@@ -1,6 +1,7 @@
+using BusCatalog.Api.Domain.Vehicles.Ports;
 using FluentValidation;
 
-namespace BusCatalog.Api.Domain.Vehicles;
+namespace BusCatalog.Api.Domain.Vehicles.Validators;
 
 public class VehiclePostValidator : AbstractValidator<VehiclePostRequest>
 {
@@ -20,7 +21,11 @@ public class VehiclePostValidator : AbstractValidator<VehiclePostRequest>
     }
 
     private async Task<bool> IdentificationShouldBeUnique(
-        string identification, CancellationToken _) =>
-        (await _repository.GetByAsync(x => x.Identification.Equals(identification)))
-            .Count == 0;
+        string identification,
+        CancellationToken _)
+    {
+        var vehicles = await _repository.GetByAsync(x => x.Identification.Equals(identification));
+
+        return vehicles.Count == 0;
+    }
 }

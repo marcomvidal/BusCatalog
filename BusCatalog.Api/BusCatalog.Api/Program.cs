@@ -1,4 +1,4 @@
-using BusCatalog.Api.Infrastructure;
+using BusCatalog.Api.Infrastructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 

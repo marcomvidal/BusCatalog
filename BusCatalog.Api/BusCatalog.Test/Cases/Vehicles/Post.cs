@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Test.Fixtures;
 using Xunit;
+using BusCatalog.Api.Domain.Vehicles.Ports;
 
 namespace BusCatalog.Test.Cases.Vehicles;
 

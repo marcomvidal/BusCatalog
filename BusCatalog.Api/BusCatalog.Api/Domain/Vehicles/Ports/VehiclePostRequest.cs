@@ -1,4 +1,4 @@
-namespace BusCatalog.Api.Domain.Vehicles;
+namespace BusCatalog.Api.Domain.Vehicles.Ports;
 
 public record VehiclePostRequest
 {

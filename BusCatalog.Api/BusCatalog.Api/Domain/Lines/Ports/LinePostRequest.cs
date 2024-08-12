@@ -1,4 +1,4 @@
-namespace BusCatalog.Api.Domain.Lines;
+namespace BusCatalog.Api.Domain.Lines.Ports;
 
 public record LinePostRequest
 {

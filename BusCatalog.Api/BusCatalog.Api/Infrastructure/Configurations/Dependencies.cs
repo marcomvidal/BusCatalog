@@ -2,7 +2,7 @@ using BusCatalog.Api.Adapters.Database;
 using BusCatalog.Api.Domain.Lines;
 using BusCatalog.Api.Domain.Vehicles;
 
-namespace BusCatalog.Api.Infrastructure;
+namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public static class Dependencies
 {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusCatalog.Api.Domain.General;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Swashbuckle.AspNetCore.Annotations;
+using BusCatalog.Api.Domain.Vehicles.Ports;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 
