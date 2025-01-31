@@ -2,7 +2,7 @@
 FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
-# Copy pom.xml and any dependencies
+# Copy pom.xml & dependencies
 COPY pom.xml .
 COPY src/main/resources ./src/main/resources
 
@@ -17,7 +17,6 @@ RUN mvn clean package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21.0.5_11-jdk-alpine
-
 WORKDIR /app
 
 # Copy the JAR file from the builder stage

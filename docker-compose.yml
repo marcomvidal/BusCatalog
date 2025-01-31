@@ -1,0 +1,35 @@
+version: '3.8'
+
+networks:
+  default:
+
+services:
+  api:
+    build:
+      context: ./BusCatalog.Api
+      dockerfile: Dockerfile
+    container_name: buscatalog-api
+    ports:
+      - "5001:80"
+    networks:
+      - default
+
+  spa:
+    build:
+      context: ./BusCatalog.Spa
+      dockerfile: Dockerfile
+    container_name: buscatalog-spa
+    ports:
+      - "5002:80"
+    networks:
+      - default
+
+  scraper:
+    build:
+      context: ./BusCatalog.Scraper
+      dockerfile: Dockerfile
+    container_name: buscatalog-scraper
+    ports:
+      - "5003:8080"
+    networks:
+      - default
