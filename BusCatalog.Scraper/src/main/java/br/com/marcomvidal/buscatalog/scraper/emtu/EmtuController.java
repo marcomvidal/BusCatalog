@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcomvidal.buscatalog.scraper.line.LineQueryService;
-import br.com.marcomvidal.buscatalog.scraper.line.LineSyncPersistenceService;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineResponse;
+import br.com.marcomvidal.buscatalog.scraper.synchronization.SynchronizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,13 +23,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Emtu")
 public class EmtuController {
     private final LineQueryService queryService;
-    private final LineSyncPersistenceService syncPersistenceService;
+    private final SynchronizationService synchronizationService;
 
     public EmtuController(
         LineQueryService queryService,
-        LineSyncPersistenceService syncPersistenceService) {
+        SynchronizationService synchronizationService) {
         this.queryService = queryService;
-        this.syncPersistenceService = syncPersistenceService;
+        this.synchronizationService = synchronizationService;
     }
 
     @Operation(summary = "Gets data from the official EMTU source for a list of lines.")
@@ -59,7 +59,7 @@ public class EmtuController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        syncPersistenceService.persist(response.getLines());
+        synchronizationService.persist(response.getLines());
 
         return ResponseEntity.ok(response);
     }

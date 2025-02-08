@@ -29,6 +29,8 @@ services:
       context: ./BusCatalog.Scraper
       dockerfile: Dockerfile
     container_name: buscatalog-scraper
+    environment:
+      - BUSCATALOG_URL=https://api
     ports:
       - "5003:8080"
     networks:

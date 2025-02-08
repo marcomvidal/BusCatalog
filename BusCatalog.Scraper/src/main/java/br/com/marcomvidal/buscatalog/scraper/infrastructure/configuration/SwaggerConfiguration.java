@@ -8,7 +8,6 @@ import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
 public class SwaggerConfiguration {
-
     @Bean
     public OpenAPI define() {
         var info = new Info()

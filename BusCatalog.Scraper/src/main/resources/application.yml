@@ -1,6 +1,14 @@
 spring:
   application:
     name: scraper
+  datasource:
+    url: jdbc:sqlite:bus-catalog-scraper.db
+    driverClassName: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 info:
   title: BusCatalog.Scraper
