@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace BusCatalog.Api.Domain.Vehicles.Validators;
 
-public class VehiclePutValidator : AbstractValidator<VehiclePutRequest>
+public sealed class VehiclePutValidator : AbstractValidator<VehiclePutRequest>
 {
     private readonly IVehicleRepository _repository;
 

@@ -1,3 +1,4 @@
+using BusCatalog.Api.Domain.Lines.Messages;
 using BusCatalog.Api.Domain.Lines.Ports;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -8,7 +9,7 @@ namespace BusCatalog.Api.Domain.Lines;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LinesController(
+public sealed class LinesController(
     ILineService service,
     IValidator<LinePostRequest> postValidator,
     IValidator<LinePutRequest> putValidator) : ControllerBase
@@ -19,14 +20,14 @@ public class LinesController(
 
     [HttpGet]
     [ProducesResponseType<IEnumerable<Line>>(StatusCodes.Status200OK)]
-    [SwaggerOperation(Summary = Messages.GetLinesEndpoint)]
+    [SwaggerOperation(Summary = EndpointMessages.GetLines)]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
         Ok(await _service.GetAllAsync());
 
     [HttpGet("{identification}")]
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = Messages.GetLineEndpoint)]
+    [SwaggerOperation(Summary = EndpointMessages.GetLine)]
     public async Task<ActionResult<Line>> Get(string identification)
     {
         var line = await _service.GetByIdentificationAsync(identification);
@@ -39,7 +40,7 @@ public class LinesController(
     [HttpPost]
     [ProducesResponseType<Line>(StatusCodes.Status201Created)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
-    [SwaggerOperation(Summary = Messages.PostLineEndpoint)]
+    [SwaggerOperation(Summary = EndpointMessages.PostLine)]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
@@ -53,7 +54,7 @@ public class LinesController(
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = Messages.PutLineEndpoint)]
+    [SwaggerOperation(Summary = EndpointMessages.PutLine)]
     public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePutRequest request)
     {
         var line = await _service.GetByIdAsync(id);
@@ -75,7 +76,7 @@ public class LinesController(
     [HttpDelete("{id}")]
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = Messages.DeleteLineEndpoint)]
+    [SwaggerOperation(Summary = EndpointMessages.DeleteLine)]
     public async Task<ActionResult<Line>> Delete(int id)
     {
         var line = await _service.GetByIdAsync(id);

@@ -2,6 +2,7 @@ using AutoMapper;
 using BusCatalog.Api.Domain.General;
 using BusCatalog.Api.Domain.Lines.Ports;
 using BusCatalog.Api.Domain.Vehicles;
+using static BusCatalog.Api.Domain.Lines.Messages.ServiceMessages;
 
 namespace BusCatalog.Api.Domain.Lines;
 
@@ -15,7 +16,7 @@ public interface ILineService
     Task<DeleteResponse> DeleteAsync(Line line);
 }
 
-public class LineService(
+public sealed class LineService(
     ILineRepository lineRepository,
     IVehicleRepository vehicleRepository,
     IMapper mapper,
@@ -28,14 +29,14 @@ public class LineService(
 
     public async Task<IEnumerable<Line>> GetAllAsync()
     {
-        _logger.LogInformation(Messages.FetchingAllLines);
+        _logger.LogInformation(FetchingAllLines);
 
         return await _lineRepository.GetAllAsync();
     }
 
     public async Task<Line?> GetByIdAsync(int id)
     {
-        _logger.LogInformation(Messages.FetchingLineById, id);
+        _logger.LogInformation(FetchingLineById, id);
         var line = await _lineRepository.GetByAsync(x => x.Id == id, quantity: 1);
 
         return line.FirstOrDefault();
@@ -43,7 +44,7 @@ public class LineService(
 
     public async Task<LineResponse?> GetByIdentificationAsync(string identification)
     {
-        _logger.LogInformation(Messages.FetchingLineByIdentification, identification);
+        _logger.LogInformation(FetchingLineByIdentification, identification);
         var line = await _lineRepository.GetByAsync(x => x.Identification == identification);
 
         return _mapper.Map<LineResponse>(line.FirstOrDefault());
@@ -51,7 +52,7 @@ public class LineService(
 
     public async Task<Line> SaveAsync(LinePostRequest request)
     {
-        _logger.LogInformation(Messages.RegisteringLine, request.Identification);
+        _logger.LogInformation(RegisteringLine, request.Identification);
         var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
 
         var line = new LineBuilder(_mapper.Map<Line>(request))
@@ -72,7 +73,7 @@ public class LineService(
             .Build();
         
         await _lineRepository.UpdateAsync(updatedLine);
-        _logger.LogInformation(Messages.UpdatingLine, request.Identification);
+        _logger.LogInformation(UpdatingLine, request.Identification);
 
         return updatedLine;
     }
@@ -80,7 +81,7 @@ public class LineService(
     public async Task<DeleteResponse> DeleteAsync(Line line)
     {
         await _lineRepository.DeleteAsync(line);
-        _logger.LogInformation(Messages.DeletingLine, line.Identification);
+        _logger.LogInformation(DeletingLine, line.Identification);
 
         return new DeleteResponse(line.Id);
     }

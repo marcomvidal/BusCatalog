@@ -3,7 +3,7 @@ using BusCatalog.Api.Domain.Lines.Ports;
 
 namespace BusCatalog.Api.Domain.Lines;
 
-public class LineMapper : Profile
+public sealed class LineMapper : Profile
 {
     public LineMapper()
     {

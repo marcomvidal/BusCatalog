@@ -16,7 +16,7 @@ public interface ILineRepository
     Task<int> DeleteAsync(Line line);
 }
 
-public class LineRepository(DatabaseContext db) : ILineRepository
+public sealed class LineRepository(DatabaseContext db) : ILineRepository
 {
     private readonly DatabaseContext _db = db;
 

@@ -1,6 +1,7 @@
 using FluentValidation;
 using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Api.Domain.Lines.Ports;
+using BusCatalog.Api.Domain.Lines.Messages;
 
 namespace BusCatalog.Api.Domain.Lines.Validators;
 
@@ -20,7 +21,7 @@ public class LinePostValidator : AbstractValidator<LinePostRequest>
             .NotEmpty()
             .Length(2, 50)
             .MustAsync(IdentificationShouldBeUnique)
-                .WithMessage("'Identification' should be unique.");
+                .WithMessage(ValidationMessages.IdentificationShouldBeUnique);
         
         RuleFor(x => x.Fromwards).NotEmpty().Length(3, 50);
         RuleFor(x => x.Towards).NotEmpty().Length(3, 50);
@@ -29,7 +30,7 @@ public class LinePostValidator : AbstractValidator<LinePostRequest>
         RuleFor(x => x.Vehicles)
             .NotEmpty()
             .MustAsync(VehiclesDoesNotExists)
-                .WithMessage("'Vehicles' should refeer to vehicles that exist in database.");
+                .WithMessage(ValidationMessages.VehiclesDoesNotExists);
     }
 
     protected async Task<bool> IdentificationShouldBeUnique(

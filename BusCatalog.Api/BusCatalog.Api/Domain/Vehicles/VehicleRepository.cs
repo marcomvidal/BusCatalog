@@ -18,7 +18,7 @@ public interface IVehicleRepository
     Task<int> DeleteAsync(Vehicle vehicle);
 }
 
-public class VehicleRepository(DatabaseContext db) : IVehicleRepository
+public sealed class VehicleRepository(DatabaseContext db) : IVehicleRepository
 {
     private readonly DatabaseContext _db = db;
 

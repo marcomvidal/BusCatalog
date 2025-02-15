@@ -1,6 +1,7 @@
 using AutoMapper;
 using BusCatalog.Api.Domain.General;
 using BusCatalog.Api.Domain.Vehicles.Ports;
+using static BusCatalog.Api.Domain.Vehicles.Messages.ServiceMessages;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 
@@ -14,7 +15,7 @@ public interface IVehicleService
     Task<DeleteResponse> DeleteAsync(Vehicle vehicle);
 }
 
-public class VehicleService(
+public sealed class VehicleService(
     IVehicleRepository repository,
     IMapper mapper,
     ILogger<VehicleService> logger) : IVehicleService
@@ -25,14 +26,14 @@ public class VehicleService(
 
     public async Task<IEnumerable<Vehicle>> GetAllAsync()
     {
-        _logger.LogInformation("Fetching all registered vehicles.");
+        _logger.LogInformation(FetchingAllVehicles);
 
         return await _repository.GetAllAsync();
     }
 
     public async Task<Vehicle?> GetByIdAsync(int id)
     {
-        _logger.LogInformation("Fetching vehicle with ID {id}.", id);
+        _logger.LogInformation(FetchingVehicleById, id);
         var vehicle = await _repository.GetByAsync(x => x.Id == id, quantity: 1);
 
         return vehicle.FirstOrDefault();
@@ -40,7 +41,7 @@ public class VehicleService(
 
     public async Task<Vehicle?> GetByIdentificationAsync(string identification)
     {
-        _logger.LogInformation("Fetching vehicle with identification {id}.", identification);
+        _logger.LogInformation(FetchingVehicleByIdentification, identification);
 
         var vehicle = await _repository.GetByAsync(
             x => x.Identification.Equals(identification.ToUpper()), quantity: 1);
@@ -50,7 +51,7 @@ public class VehicleService(
     
     public async Task<Vehicle> SaveAsync(VehiclePostRequest request)
     {
-        _logger.LogInformation("Registering vehicle {identification}.", request.Identification);
+        _logger.LogInformation(RegisteringVehicle, request.Identification);
         var vehicle = _mapper.Map<Vehicle>(request);
         await _repository.SaveAsync(vehicle);
 
@@ -59,7 +60,7 @@ public class VehicleService(
 
     public async Task<Vehicle> UpdateAsync(VehiclePostRequest request, Vehicle vehicle)
     {
-        _logger.LogInformation("Updating vehicle {identification}.", request.Identification);
+        _logger.LogInformation(UpdatingVehicle, request.Identification);
         var updatedVehicle = _mapper.Map(request, vehicle);
         await _repository.UpdateAsync(updatedVehicle);
 
@@ -68,7 +69,7 @@ public class VehicleService(
 
     public async Task<DeleteResponse> DeleteAsync(Vehicle vehicle)
     {
-        _logger.LogInformation("Deleting vehicle {identification}.", vehicle.Identification);
+        _logger.LogInformation(DeletingVehicle, vehicle.Identification);
         await _repository.DeleteAsync(vehicle);
 
         return new DeleteResponse(vehicle.Id);

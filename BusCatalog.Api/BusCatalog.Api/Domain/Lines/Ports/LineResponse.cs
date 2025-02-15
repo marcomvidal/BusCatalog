@@ -1,6 +1,6 @@
 namespace BusCatalog.Api.Domain.Lines.Ports;
 
-public record LineResponse
+public sealed record LineResponse
 {
     public int Id { get; set; }
     public required string Identification { get; set; }

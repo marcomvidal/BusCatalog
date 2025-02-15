@@ -1,9 +1,10 @@
+using BusCatalog.Api.Domain.Vehicles.Messages;
 using BusCatalog.Api.Domain.Vehicles.Ports;
 using FluentValidation;
 
 namespace BusCatalog.Api.Domain.Vehicles.Validators;
 
-public class VehiclePostValidator : AbstractValidator<VehiclePostRequest>
+public sealed class VehiclePostValidator : AbstractValidator<VehiclePostRequest>
 {
     private readonly IVehicleRepository _repository;
 
@@ -15,7 +16,7 @@ public class VehiclePostValidator : AbstractValidator<VehiclePostRequest>
             .NotEmpty()
             .Length(4, 50)
             .MustAsync(IdentificationShouldBeUnique)
-                .WithMessage("'Identification' should be unique.");
+                .WithMessage(ValidationMessages.IdentificationShouldBeUnique);
 
         RuleFor(x => x.Description).NotEmpty().Length(4, 50);
     }
