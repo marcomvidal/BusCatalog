@@ -34,9 +34,13 @@ public class SynchronizationService {
         synchronizationRepository.save(synchronization);
 
         for (var line : lines) {
-            // var response = apiHttpAdapter.save(line);
-            var synchronizedLine = new SynchronizedLine(line.getIdentification(), synchronization);
-            synchronizedLineRepository.save(synchronizedLine);
+            try {
+                var response = apiHttpAdapter.save(line);
+                var synchronizedLine = new SynchronizedLine(line.getIdentification(), synchronization);
+                synchronizedLineRepository.save(synchronizedLine);
+            } catch (Exception e) {
+                
+            }
         }
     }
 }

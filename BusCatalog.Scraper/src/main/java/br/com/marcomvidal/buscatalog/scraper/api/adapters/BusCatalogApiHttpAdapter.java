@@ -10,6 +10,7 @@ import br.com.marcomvidal.buscatalog.scraper.line.Line;
 @Service
 public class BusCatalogApiHttpAdapter {
     private final RestClient http;
+    private final String SAVE_LINE_URL = "/api/lines";
 
     public BusCatalogApiHttpAdapter(
         Configuration configuration,
@@ -18,11 +19,11 @@ public class BusCatalogApiHttpAdapter {
         this.http = httpBuilder.baseUrl(baseUrl).build();
     }
 
-    public ResponseEntity<String> save(Line line) {
+    public ResponseEntity<Line> save(Line line) {
         return http.post()
-            .uri("/api/lines")
+            .uri(SAVE_LINE_URL)
             .body(line)
             .retrieve()
-            .toEntity(String.class);
+            .toEntity(Line.class);
     }
 }

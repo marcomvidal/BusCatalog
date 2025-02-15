@@ -20,11 +20,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/lines")
 @Tag(name = "Line")
-public class LineController {
+public class LinesController {
     private final LineService lineService;
     private final SynchronizationService synchronizationService;
 
-    public LineController(
+    public LinesController(
         LineService lineService,
         SynchronizationService synchronizationService) {
         this.lineService = lineService;

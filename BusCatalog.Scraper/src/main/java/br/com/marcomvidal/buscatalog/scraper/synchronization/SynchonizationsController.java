@@ -14,12 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/synchronization")
+@RequestMapping("/api/synchronizations")
 @Tag(name = "Synchronization")
-public class SynchonizationController {
+public class SynchonizationsController {
     private final SynchronizationService synchronizationService;
 
-    public SynchonizationController(SynchronizationService synchronizationService) {
+    public SynchonizationsController(SynchronizationService synchronizationService) {
         this.synchronizationService = synchronizationService;
     }
 
