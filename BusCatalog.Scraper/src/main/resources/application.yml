@@ -2,7 +2,7 @@ spring:
   application:
     name: scraper
   datasource:
-    url: jdbc:sqlite:bus-catalog-scraper.db
+    url: jdbc:sqlite:Database.db
     driverClassName: org.sqlite.JDBC
   jpa:
     database-platform: org.hibernate.community.dialect.SQLiteDialect

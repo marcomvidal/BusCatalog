@@ -19,6 +19,9 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:21.0.5_11-jdk-alpine
 WORKDIR /app
 
+# Copy SQLite database file
+COPY ./Database.db /app/Database.db
+
 # Copy the JAR file from the builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
