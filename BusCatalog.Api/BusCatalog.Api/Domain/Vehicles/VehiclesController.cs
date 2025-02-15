@@ -19,12 +19,14 @@ public class VehiclesController(
     private readonly IValidator<VehiclePutRequest> _putValidator = putValidator;
 
     [HttpGet]
+    [ProducesResponseType<IEnumerable<Vehicle>>(StatusCodes.Status200OK)]
     [SwaggerOperation(Summary = "Gets all registered vehicles.")]
     public async Task<ActionResult<IEnumerable<Vehicle>>> Get() =>
         Ok(await _service.GetAllAsync());
     
     [HttpGet("{identification}")]
-    [ProducesResponseType<ValidationProblem>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<Vehicle>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Gets a vehicle by its identification.")]
     public async Task<ActionResult<Vehicle>> GetByIdentification(string identification)
     {
@@ -34,6 +36,7 @@ public class VehiclesController(
     }
     
     [HttpPost]
+    [ProducesResponseType<Vehicle>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(Summary = "Registers a new vehicle.")]
     public async Task<ActionResult<Vehicle>> Post([FromBody] VehiclePostRequest request)
@@ -46,7 +49,9 @@ public class VehiclesController(
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType<Vehicle>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Updates data of a previously registered vehicle.")]
     public async Task<ActionResult<Vehicle>> Put(int id, [FromBody] VehiclePutRequest request)
     {
@@ -67,6 +72,8 @@ public class VehiclesController(
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType<DeleteResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Deletes a vehicle by its ID.")]
     public async Task<ActionResult<DeleteResponse>> Delete(int id)
     {

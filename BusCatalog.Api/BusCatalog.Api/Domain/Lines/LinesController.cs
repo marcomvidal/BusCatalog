@@ -18,11 +18,14 @@ public class LinesController(
     private readonly IValidator<LinePutRequest> _putValidator = putValidator;
 
     [HttpGet]
+    [ProducesResponseType<IEnumerable<Line>>(StatusCodes.Status200OK)]
     [SwaggerOperation(Summary = "Gets all registered lines.")]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
         Ok(await _service.GetAllAsync());
 
     [HttpGet("{identification}")]
+    [ProducesResponseType<Line>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Gets a line by its identification.")]
     public async Task<ActionResult<Line>> Get(string identification)
     {
@@ -34,6 +37,7 @@ public class LinesController(
     }
 
     [HttpPost]
+    [ProducesResponseType<Line>(StatusCodes.Status201Created)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     [SwaggerOperation(Summary = "Registers a new line.")]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
@@ -46,7 +50,9 @@ public class LinesController(
     }
 
     [HttpPut("{id}")]
+    [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Updates data of a previously registered line.")]
     public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePutRequest request)
     {
@@ -67,6 +73,8 @@ public class LinesController(
     }
 
     [HttpDelete("{id}")]
+    [ProducesResponseType<Line>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Summary = "Deletes a line by its ID.")]
     public async Task<ActionResult<Line>> Delete(int id)
     {
