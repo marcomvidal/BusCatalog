@@ -1,4 +1,4 @@
-package br.com.marcomvidal.buscatalog.scraper.emtu;
+package br.com.marcomvidal.buscatalog.scraper.line;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.marcomvidal.buscatalog.scraper.line.LineQueryService;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineResponse;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.SynchronizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,16 +18,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/emtu")
-@Tag(name = "Emtu")
-public class EmtuController {
-    private final LineQueryService queryService;
+@RequestMapping("/api/lines")
+@Tag(name = "Line")
+public class LineController {
+    private final LineService lineService;
     private final SynchronizationService synchronizationService;
 
-    public EmtuController(
-        LineQueryService queryService,
+    public LineController(
+        LineService lineService,
         SynchronizationService synchronizationService) {
-        this.queryService = queryService;
+        this.lineService = lineService;
         this.synchronizationService = synchronizationService;
     }
 
@@ -39,7 +38,7 @@ public class EmtuController {
     })
     @GetMapping
     public ResponseEntity<LineResponse> get(@RequestParam List<String> lines) {
-        var response = queryService.query(lines);
+        var response = lineService.query(lines);
 
         return response.hasLines()
             ? ResponseEntity.ok(response)
@@ -53,7 +52,7 @@ public class EmtuController {
     })
     @PostMapping("/sync")
     public ResponseEntity<LineResponse> post(@RequestBody List<String> lines) {
-        var response = queryService.query(lines);
+        var response = lineService.query(lines);
 
         if (!response.hasLines()) {
             return ResponseEntity.badRequest().body(response);

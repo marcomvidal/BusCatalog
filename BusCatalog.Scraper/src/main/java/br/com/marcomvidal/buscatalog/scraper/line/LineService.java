@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.marcomvidal.buscatalog.scraper.emtu.data.EmtuLineDataService;
-import br.com.marcomvidal.buscatalog.scraper.emtu.denomination.EmtuLineDenominationService;
+import br.com.marcomvidal.buscatalog.scraper.emtu.services.EmtuLineDenominationService;
+import br.com.marcomvidal.buscatalog.scraper.emtu.services.EmtuLineDataService;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineResponse;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineServiceResponse;
 
 @Service
-public class LineQueryService {
+public class LineService {
     private final EmtuLineDenominationService denominationService;
     private final EmtuLineDataService dataService;
 
-    public LineQueryService(
+    public LineService(
         EmtuLineDenominationService denominationService,
         EmtuLineDataService dataService) {
         this.denominationService = denominationService;

@@ -1,4 +1,4 @@
-package br.com.marcomvidal.buscatalog.scraper.emtu.data;
+package br.com.marcomvidal.buscatalog.scraper.emtu;
 
 import java.util.List;
 import java.util.Map;

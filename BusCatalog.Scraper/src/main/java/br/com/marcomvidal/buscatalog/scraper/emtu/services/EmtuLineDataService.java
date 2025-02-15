@@ -1,10 +1,12 @@
-package br.com.marcomvidal.buscatalog.scraper.emtu.data;
+package br.com.marcomvidal.buscatalog.scraper.emtu.services;
 
 import java.io.IOException;
 
 import org.springframework.stereotype.Service;
 
+import br.com.marcomvidal.buscatalog.scraper.emtu.EmtuVehicleFactory;
 import br.com.marcomvidal.buscatalog.scraper.emtu.adapters.EmtuHttpAdapter;
+import br.com.marcomvidal.buscatalog.scraper.emtu.scrapers.EmtuLineDataScraper;
 import br.com.marcomvidal.buscatalog.scraper.line.Line;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineServiceResponse;
 

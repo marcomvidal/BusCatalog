@@ -1,4 +1,4 @@
-package br.com.marcomvidal.buscatalog.scraper.emtu.denomination;
+package br.com.marcomvidal.buscatalog.scraper.emtu.scrapers;
 
 import org.jsoup.nodes.Document;
 
