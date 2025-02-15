@@ -19,14 +19,14 @@ public class LinesController(
 
     [HttpGet]
     [ProducesResponseType<IEnumerable<Line>>(StatusCodes.Status200OK)]
-    [SwaggerOperation(Summary = "Gets all registered lines.")]
+    [SwaggerOperation(Summary = Messages.GetLinesEndpoint)]
     public async Task<ActionResult<IEnumerable<Line>>> Get() =>
         Ok(await _service.GetAllAsync());
 
     [HttpGet("{identification}")]
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = "Gets a line by its identification.")]
+    [SwaggerOperation(Summary = Messages.GetLineEndpoint)]
     public async Task<ActionResult<Line>> Get(string identification)
     {
         var line = await _service.GetByIdentificationAsync(identification);
@@ -39,7 +39,7 @@ public class LinesController(
     [HttpPost]
     [ProducesResponseType<Line>(StatusCodes.Status201Created)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
-    [SwaggerOperation(Summary = "Registers a new line.")]
+    [SwaggerOperation(Summary = Messages.PostLineEndpoint)]
     public async Task<ActionResult<Line>> Post([FromBody] LinePostRequest request)
     {
         var validation = await _postValidator.ValidateModelAsync(request, ModelState);
@@ -53,7 +53,7 @@ public class LinesController(
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType<ValidationProblem>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = "Updates data of a previously registered line.")]
+    [SwaggerOperation(Summary = Messages.PutLineEndpoint)]
     public async Task<ActionResult<Line>> Put(int id, [FromBody] LinePutRequest request)
     {
         var line = await _service.GetByIdAsync(id);
@@ -75,7 +75,7 @@ public class LinesController(
     [HttpDelete("{id}")]
     [ProducesResponseType<Line>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [SwaggerOperation(Summary = "Deletes a line by its ID.")]
+    [SwaggerOperation(Summary = Messages.DeleteLineEndpoint)]
     public async Task<ActionResult<Line>> Delete(int id)
     {
         var line = await _service.GetByIdAsync(id);

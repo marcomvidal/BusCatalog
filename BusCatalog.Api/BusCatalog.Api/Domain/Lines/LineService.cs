@@ -28,15 +28,14 @@ public class LineService(
 
     public async Task<IEnumerable<Line>> GetAllAsync()
     {
-        _logger.LogInformation("Fetching all registered lines.");
+        _logger.LogInformation(Messages.FetchingAllLines);
 
         return await _lineRepository.GetAllAsync();
     }
 
     public async Task<Line?> GetByIdAsync(int id)
     {
-        _logger.LogInformation("Fetching registered line with ID {id}.", id);
-
+        _logger.LogInformation(Messages.FetchingLineById, id);
         var line = await _lineRepository.GetByAsync(x => x.Id == id, quantity: 1);
 
         return line.FirstOrDefault();
@@ -44,9 +43,7 @@ public class LineService(
 
     public async Task<LineResponse?> GetByIdentificationAsync(string identification)
     {
-        _logger.LogInformation(
-            "Fetching registered line with identification {identification}.", identification);
-
+        _logger.LogInformation(Messages.FetchingLineByIdentification, identification);
         var line = await _lineRepository.GetByAsync(x => x.Identification == identification);
 
         return _mapper.Map<LineResponse>(line.FirstOrDefault());
@@ -54,7 +51,7 @@ public class LineService(
 
     public async Task<Line> SaveAsync(LinePostRequest request)
     {
-        _logger.LogInformation("Registering line {identification}.", request.Identification);
+        _logger.LogInformation(Messages.RegisteringLine, request.Identification);
         var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
 
         var line = new LineBuilder(_mapper.Map<Line>(request))
@@ -75,7 +72,7 @@ public class LineService(
             .Build();
         
         await _lineRepository.UpdateAsync(updatedLine);
-        _logger.LogInformation("Updated line {identification}.", request.Identification);
+        _logger.LogInformation(Messages.UpdatingLine, request.Identification);
 
         return updatedLine;
     }
@@ -83,7 +80,7 @@ public class LineService(
     public async Task<DeleteResponse> DeleteAsync(Line line)
     {
         await _lineRepository.DeleteAsync(line);
-        _logger.LogInformation("Deleted line {identification}.", line.Identification);
+        _logger.LogInformation(Messages.DeletingLine, line.Identification);
 
         return new DeleteResponse(line.Id);
     }
