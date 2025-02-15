@@ -19,14 +19,14 @@ public class EmtuHttpAdapter {
     }
 
     public Document getDenomination(String identifier) throws IOException {
-        var url = identificationUrl.replace("@id", identifier);
-        
-        return Jsoup.connect(url).get();
+        return Jsoup
+            .connect(identificationUrl.replace("@id", identifier))
+            .get();
     }
     
     public Document getData(String denomination) throws IOException {
-        var url = dataUrl + denomination;
-
-        return Jsoup.connect(url).get();
+        return Jsoup
+            .connect(dataUrl + denomination)
+            .get();
     }
 }

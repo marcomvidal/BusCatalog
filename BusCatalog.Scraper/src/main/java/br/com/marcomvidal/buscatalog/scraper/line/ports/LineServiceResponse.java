@@ -8,7 +8,9 @@ import lombok.Getter;
 
 @Getter
 public class LineServiceResponse<T> {
+    @Getter
     private final Optional<T> data;
+    
     private final Optional<Entry<String, String>> error;
 
     public LineServiceResponse(T data) {

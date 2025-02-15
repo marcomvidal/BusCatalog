@@ -28,6 +28,10 @@ public class Synchronization {
     @Setter
     private LocalDateTime createdAt;
 
+    @Getter
+    @Setter
+    private boolean isSuccessful = false;
+
     @Enumerated(EnumType.STRING)
     @Getter
     @Setter
