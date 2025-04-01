@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineResponse;
+import br.com.marcomvidal.buscatalog.scraper.line.ports.LineSyncRequest;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.SynchronizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -51,15 +52,17 @@ public class LinesController {
         @ApiResponse(responseCode = "400", description = "Invalid line list")
     })
     @PostMapping("/sync")
-    public ResponseEntity<LineResponse> post(@RequestBody List<String> lines) {
-        var response = lineService.query(lines);
+    public ResponseEntity<LineResponse> post(@RequestBody LineSyncRequest request) {
+        var response = lineService.query(request.getLines());
 
         if (!response.hasLines()) {
             return ResponseEntity.badRequest().body(response);
         }
 
-        synchronizationService.persist(response.getLines());
+        var errors = synchronizationService.persist(response.getLines());
 
-        return ResponseEntity.ok(response);
+        return errors.isEmpty()
+            ? ResponseEntity.ok(response)
+            : ResponseEntity.unprocessableEntity().body(response.withErrors(errors));
     }
 }

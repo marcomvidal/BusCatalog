@@ -1,4 +1,4 @@
-package br.com.marcomvidal.buscatalog.scraper.synchronization;
+package br.com.marcomvidal.buscatalog.scraper.synchronization.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

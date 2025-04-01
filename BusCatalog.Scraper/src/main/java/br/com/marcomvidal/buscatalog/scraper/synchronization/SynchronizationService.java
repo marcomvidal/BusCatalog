@@ -1,5 +1,6 @@
 package br.com.marcomvidal.buscatalog.scraper.synchronization;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import br.com.marcomvidal.buscatalog.scraper.synchronization.entities.SyncType;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.entities.Synchronization;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.entities.SynchronizedLine;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.messages.ServiceMessages;
+import br.com.marcomvidal.buscatalog.scraper.synchronization.repositories.SynchronizationRepository;
+import br.com.marcomvidal.buscatalog.scraper.synchronization.repositories.SynchronizedLineRepository;
 
 @Service
 public class SynchronizationService {
@@ -32,32 +35,35 @@ public class SynchronizationService {
 
     public List<Synchronization> getAll() {
         var synchronizations = synchronizationRepository.findAll();
-        logger.info(ServiceMessages.FETCHED_ALL_SYNCS, synchronizations.size());
+        logger.info(ServiceMessages.FETCHED_ALL_SYNCS.getMessage(), synchronizations.size());
 
         return synchronizations;
     }
 
-    public void persist(List<Line> lines) {
+    public HashMap<String, String> persist(List<Line> lines) {
         var synchronization = new Synchronization(SyncType.REST_API);
         synchronizationRepository.save(synchronization);
+        var errors = new HashMap<String, String>();
 
         for (var line : lines) {
             try {
                 apiHttpAdapter.save(line);
-                logger.info(ServiceMessages.SAVED_SYNC_DATA_AT_API, line.getIdentification());
+                logger.info(ServiceMessages.SAVED_SYNC_DATA_AT_API.getMessage(), line.getIdentification());
                 persistSynchronization(line, synchronization);
             } catch (HttpServerErrorException e) {
-                logger.warn(
+                registerError(
+                    errors,
                     ServiceMessages.SAVED_SYNC_DATA_AT_API_FAILURE,
-                    line.getIdentification(),
-                    e.getStatusCode(),
                     e.getResponseBodyAsString());
             } catch (Exception e) {
-                logger.warn(ServiceMessages.SAVED_SYNC_DATA_AT_API_UNEXPECTED_FAILURE,
-                    line.getIdentification(),
+                registerError(
+                    errors,
+                    ServiceMessages.SAVED_SYNC_DATA_AT_API_UNEXPECTED_FAILURE,
                     e.getMessage());
             }
         }
+
+        return errors;
     }
 
     private void persistSynchronization(Line line, Synchronization synchronization) {
@@ -65,6 +71,14 @@ public class SynchronizationService {
         synchronizedLineRepository.save(synchronizedLine);
         synchronization.setSuccessful(true);
         synchronizationRepository.save(synchronization);
-        logger.info(ServiceMessages.SAVED_SYNC_AT_SCRAPER, line.getIdentification());
+        logger.info(ServiceMessages.SAVED_SYNC_AT_SCRAPER.getMessage(), line.getIdentification());
+    }
+
+    private void registerError(
+        HashMap<String, String> errors,
+        ServiceMessages message,
+        String description) {
+        logger.warn(message.getMessage(), description);
+        errors.put(message.name(), description);
     }
 }

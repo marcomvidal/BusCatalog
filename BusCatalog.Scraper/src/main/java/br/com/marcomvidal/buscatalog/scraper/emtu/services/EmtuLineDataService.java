@@ -25,21 +25,28 @@ public class EmtuLineDataService {
     public LineServiceResponse<Line> get(String identifier) {
         try {
             var response = adapter.getData(identifier);
-            logger.info(ServiceMessages.LINE_DATA_FETCHED_SUCCESSFULLY, identifier);
-
+            
             var line = new EmtuLineDataScraper(response)
                 .scrap()
                 .withVehicles(EmtuVehicleFactory.generate(identifier));
             
-            logger.info(ServiceMessages.LINE_DATA_SCRAPED_SUCCESSFULLY, identifier);
+            logger.info(
+                ServiceMessages.LINE_DATA_SCRAPED_SUCCESSFULLY.getMessage(),
+                identifier);
 
             return new LineServiceResponse<Line>(line);
         } catch (IOException ex) {
-            logger.warn(ServiceMessages.NETWORK_FAILURE, identifier);
-            return new LineServiceResponse<Line>(identifier, ServiceMessages.NETWORK_FAILURE_LABEL);
+            logger.warn(ServiceMessages.NETWORK_FAILURE.getMessage(), identifier);
+            
+            return new LineServiceResponse<Line>(
+                identifier,
+                ServiceMessages.NETWORK_FAILURE.name());
         } catch (Exception ex) {
-            logger.warn(ServiceMessages.LINE_NOT_FOUND, identifier);
-            return new LineServiceResponse<Line>(identifier, ServiceMessages.LINE_NOT_FOUND_LABEL);
+            logger.warn(ServiceMessages.LINE_NOT_FOUND.getMessage(), identifier);
+            
+            return new LineServiceResponse<Line>(
+                identifier,
+                ServiceMessages.LINE_NOT_FOUND.name());
         }
     }
 }

@@ -27,6 +27,12 @@ public class LineResponse {
         return this;
     }
 
+    public LineResponse withErrors(HashMap<String, String> errors) {
+        this.errors.putAll(errors);
+
+        return this;
+    }
+
     public boolean hasLines() {
         return !lines.isEmpty();
     }

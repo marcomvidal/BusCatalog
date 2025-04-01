@@ -23,17 +23,16 @@ public class EmtuLineDenominationService {
     public LineServiceResponse<String> query(String identifier) {
         try {
             var response = adapter.getDenomination(identifier);
-            logger.info(ServiceMessages.LINE_DENOMINATION_FETCHED_SUCCESSFULLY, identifier);
             var denomination = new EmtuLineDenominationScraper(response).scrap();
-            logger.info(ServiceMessages.LINE_DENOMINATION_SCRAPED_SUCCESSFULLY, identifier);
+            logger.info(ServiceMessages.LINE_DENOMINATION_SCRAPED_SUCCESSFULLY.getMessage(), identifier);
 
             return new LineServiceResponse<String>(denomination);
         } catch (IOException ex) {
-            logger.warn(ServiceMessages.NETWORK_FAILURE, identifier);
-            return new LineServiceResponse<String>(identifier, ServiceMessages.NETWORK_FAILURE_LABEL);
+            logger.warn(ServiceMessages.NETWORK_FAILURE.getMessage(), identifier);
+            return new LineServiceResponse<String>(identifier, ServiceMessages.NETWORK_FAILURE.name());
         } catch (Exception ex) {
-            logger.warn(ServiceMessages.LINE_NOT_FOUND, identifier);
-            return new LineServiceResponse<String>(identifier, ServiceMessages.LINE_NOT_FOUND_LABEL);
+            logger.warn(ServiceMessages.LINE_NOT_FOUND.getMessage(), identifier);
+            return new LineServiceResponse<String>(identifier, ServiceMessages.LINE_NOT_FOUND.name());
         }
     }
 }

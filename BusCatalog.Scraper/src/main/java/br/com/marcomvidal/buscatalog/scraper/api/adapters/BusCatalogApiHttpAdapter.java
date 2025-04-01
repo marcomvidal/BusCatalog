@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import br.com.marcomvidal.buscatalog.scraper.api.ports.SaveLineResponse;
 import br.com.marcomvidal.buscatalog.scraper.infrastructure.configuration.Configuration;
 import br.com.marcomvidal.buscatalog.scraper.line.Line;
 
@@ -19,11 +20,11 @@ public class BusCatalogApiHttpAdapter {
         this.http = httpBuilder.baseUrl(baseUrl).build();
     }
 
-    public ResponseEntity<Line> save(Line line) {
+    public ResponseEntity<SaveLineResponse> save(Line line) {
         return http.post()
             .uri(SAVE_LINE_URL)
             .body(line)
             .retrieve()
-            .toEntity(Line.class);
+            .toEntity(SaveLineResponse.class);
     }
 }

@@ -40,12 +40,15 @@ public class LineService {
         LineServiceResponse<String> denomination,
         LineResponse response) {
         if (denomination.getError().isPresent()) {
-            logger.warn(ServiceMessages.LINE_QUERY_FAILED, denomination.getData().get());
+            logger.warn(ServiceMessages.LINE_QUERY_FAILED.getMessage(), denomination.getData().get());
             return response.withError(denomination.getError().get());
         }
         
         var data = dataService.get(denomination.getData().get());
-        logger.info(ServiceMessages.LINE_QUERY_CONCLUDED, denomination.getData().get());
+        
+        logger.info(
+            ServiceMessages.LINE_QUERY_CONCLUDED.getMessage(),
+            denomination.getData().get());
 
         return response.withDataOrError(data);
     }
