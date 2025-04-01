@@ -15,14 +15,21 @@ public interface IVehicleService
     Task<DeleteResponse> DeleteAsync(Vehicle vehicle);
 }
 
-public sealed class VehicleService(
-    IVehicleRepository repository,
-    IMapper mapper,
-    ILogger<VehicleService> logger) : IVehicleService
+public sealed class VehicleService : IVehicleService
 {
-    private readonly IVehicleRepository _repository = repository;
-    private readonly IMapper _mapper = mapper;
-    private readonly ILogger<VehicleService> _logger = logger;
+    private readonly IVehicleRepository _repository;
+    private readonly IMapper _mapper;
+    private readonly ILogger<VehicleService> _logger;
+
+    public VehicleService(
+        IVehicleRepository repository,
+        IMapper mapper,
+        ILogger<VehicleService> logger)
+    {
+        _repository = repository;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
     public async Task<IEnumerable<Vehicle>> GetAllAsync()
     {

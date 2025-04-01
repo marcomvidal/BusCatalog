@@ -18,9 +18,11 @@ public interface IVehicleRepository
     Task<int> DeleteAsync(Vehicle vehicle);
 }
 
-public sealed class VehicleRepository(DatabaseContext db) : IVehicleRepository
+public sealed class VehicleRepository : IVehicleRepository
 {
-    private readonly DatabaseContext _db = db;
+    private readonly DatabaseContext _db;
+
+    public VehicleRepository(DatabaseContext db) => _db = db;
 
     public async Task<IEnumerable<Vehicle>> GetAllAsync() =>
         await _db.Vehicles

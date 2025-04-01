@@ -9,14 +9,21 @@ namespace BusCatalog.Api.Domain.Lines;
 
 [Route("api/[controller]")]
 [ApiController]
-public sealed class LinesController(
-    ILineService service,
-    IValidator<LinePostRequest> postValidator,
-    IValidator<LinePutRequest> putValidator) : ControllerBase
+public sealed class LinesController : ControllerBase
 {
-    private readonly ILineService _service = service;
-    private readonly IValidator<LinePostRequest> _postValidator = postValidator;
-    private readonly IValidator<LinePutRequest> _putValidator = putValidator;
+    private readonly ILineService _service;
+    private readonly IValidator<LinePostRequest> _postValidator;
+    private readonly IValidator<LinePutRequest> _putValidator;
+
+    public LinesController(
+        ILineService service,
+        IValidator<LinePostRequest> postValidator,
+        IValidator<LinePutRequest> putValidator)
+    {
+        _service = service;
+        _postValidator = postValidator;
+        _putValidator = putValidator;
+    }
 
     [HttpGet]
     [ProducesResponseType<IEnumerable<Line>>(StatusCodes.Status200OK)]

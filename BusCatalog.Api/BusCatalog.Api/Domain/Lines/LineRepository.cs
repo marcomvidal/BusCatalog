@@ -16,9 +16,11 @@ public interface ILineRepository
     Task<int> DeleteAsync(Line line);
 }
 
-public sealed class LineRepository(DatabaseContext db) : ILineRepository
+public sealed class LineRepository : ILineRepository
 {
-    private readonly DatabaseContext _db = db;
+    private readonly DatabaseContext _db;
+
+    public LineRepository(DatabaseContext db) => _db = db;
 
     public async Task<IEnumerable<Line>> GetAllAsync() => 
         await _db.Lines

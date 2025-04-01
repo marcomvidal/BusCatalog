@@ -10,14 +10,21 @@ namespace BusCatalog.Api.Domain.Vehicles;
 
 [Route("api/[controller]")]
 [ApiController]
-public sealed class VehiclesController(
-    IVehicleService service,
-    IValidator<VehiclePostRequest> postValidator,
-    IValidator<VehiclePutRequest> putValidator) : ControllerBase
+public sealed class VehiclesController : ControllerBase
 {
-    private readonly IVehicleService _service = service;
-    private readonly IValidator<VehiclePostRequest> _postValidator = postValidator;
-    private readonly IValidator<VehiclePutRequest> _putValidator = putValidator;
+    private readonly IVehicleService _service;
+    private readonly IValidator<VehiclePostRequest> _postValidator;
+    private readonly IValidator<VehiclePutRequest> _putValidator;
+
+    public VehiclesController(
+        IVehicleService service,
+        IValidator<VehiclePostRequest> postValidator,
+        IValidator<VehiclePutRequest> putValidator)
+    {
+        _service = service;
+        _postValidator = postValidator;
+        _putValidator = putValidator;
+    }
 
     [HttpGet]
     [ProducesResponseType<IEnumerable<Vehicle>>(StatusCodes.Status200OK)]

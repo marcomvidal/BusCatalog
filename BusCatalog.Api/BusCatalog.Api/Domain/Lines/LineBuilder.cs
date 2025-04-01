@@ -8,9 +8,14 @@ public interface ILineBuilder
     Line Build();
 }
 
-public class LineBuilder(Line line) : ILineBuilder
+public class LineBuilder : ILineBuilder
 {
-    private readonly Line _line = line;
+    private readonly Line _line;
+
+    public LineBuilder(Line line)
+    {
+        _line = line;
+    }
 
     public ILineBuilder WithVehicles(IEnumerable<Vehicle> vehicles)
     {

@@ -16,16 +16,24 @@ public interface ILineService
     Task<DeleteResponse> DeleteAsync(Line line);
 }
 
-public sealed class LineService(
-    ILineRepository lineRepository,
-    IVehicleRepository vehicleRepository,
-    IMapper mapper,
-    ILogger<LineService> logger) : ILineService
+public sealed class LineService : ILineService
 {
-    private readonly ILineRepository _lineRepository = lineRepository;
-    private readonly IVehicleRepository _vehicleRepository = vehicleRepository;
-    private readonly IMapper _mapper = mapper;
-    private readonly ILogger<LineService> _logger = logger;
+    private readonly ILineRepository _lineRepository;
+    private readonly IVehicleRepository _vehicleRepository;
+    private readonly IMapper _mapper;
+    private readonly ILogger<LineService> _logger;
+
+    public LineService(
+        ILineRepository lineRepository,
+        IVehicleRepository vehicleRepository,
+        IMapper mapper,
+        ILogger<LineService> logger)
+    {
+        _lineRepository = lineRepository;
+        _vehicleRepository = vehicleRepository;
+        _mapper = mapper;
+        _logger = logger;
+    }
 
     public async Task<IEnumerable<Line>> GetAllAsync()
     {

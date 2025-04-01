@@ -11,6 +11,7 @@ namespace BusCatalog.Test.Fixtures;
 public class TestWebApplicationFactory : WebApplicationFactory<Program>
 {
     private const string ConnectionString = "Data Source=:memory:";
+    private const string TestEnvironment = "Development";
     private SqliteConnection _connection = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -23,7 +24,7 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
             services.EnsureDbCreated<DatabaseContext>();
         });
 
-        builder.UseEnvironment("Development");
+        builder.UseEnvironment(TestEnvironment);
     }
 
     private void InitializeDatabaseConnection()
