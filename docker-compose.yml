@@ -7,6 +7,11 @@ services:
       context: ./BusCatalog.Api
       dockerfile: Dockerfile
     container_name: buscatalog-api
+    environment:
+      - SpaUrl=http://localhost:5002
+      - ScraperUrl=http://scraper:8080
+      - LinesConsumer:BootstrapServers=kafka:9092
+      - LinesConsumer:Topic=public.lines.sync
     ports:
       - "5001:80"
     networks:
@@ -28,7 +33,8 @@ services:
       dockerfile: Dockerfile
     container_name: buscatalog-scraper
     environment:
-      - BUSCATALOG_URL=https://api
+      - CONFIGURATION_APIURL=http://api
+      - CONFIGURATION_LINESPRODUCER_BOOTSTRAPSERVERS=kafka:9092
     ports:
       - "5003:8080"
     networks:
@@ -37,12 +43,17 @@ services:
   kafka:
     image: 'bitnami/kafka:3.9'
     environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_KRAFT_CLUSTER_ID=1
       - KAFKA_CFG_NODE_ID=0
       - KAFKA_CFG_PROCESS_ROLES=controller,broker
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092       # When acessing from the inside containers
+      #- KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092  # When acessing from the outside containers
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@localhost:9093
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - ALLOW_PLAINTEXT_LISTENER=yes
     ports:
       - '9092:9092'
       - '9093:9093'

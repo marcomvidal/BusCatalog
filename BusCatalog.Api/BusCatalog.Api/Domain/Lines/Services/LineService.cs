@@ -4,7 +4,7 @@ using BusCatalog.Api.Domain.Lines.Ports;
 using BusCatalog.Api.Domain.Vehicles;
 using static BusCatalog.Api.Domain.Lines.Messages.ServiceMessages;
 
-namespace BusCatalog.Api.Domain.Lines;
+namespace BusCatalog.Api.Domain.Lines.Services;
 
 public interface ILineService
 {
