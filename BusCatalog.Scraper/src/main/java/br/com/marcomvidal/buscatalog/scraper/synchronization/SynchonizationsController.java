@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcomvidal.buscatalog.scraper.synchronization.entities.Synchronization;
+import br.com.marcomvidal.buscatalog.scraper.synchronization.services.GetSynchronizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,9 +18,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/synchronizations")
 @Tag(name = "Synchronization")
 public class SynchonizationsController {
-    private final SynchronizationService synchronizationService;
+    private final GetSynchronizationService synchronizationService;
 
-    public SynchonizationsController(SynchronizationService synchronizationService) {
+    public SynchonizationsController(GetSynchronizationService synchronizationService) {
         this.synchronizationService = synchronizationService;
     }
 
