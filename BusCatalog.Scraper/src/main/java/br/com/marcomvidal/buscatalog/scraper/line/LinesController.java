@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineResponse;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineSyncRequest;
-import br.com.marcomvidal.buscatalog.scraper.synchronization.SynchronizationService;
+import br.com.marcomvidal.buscatalog.scraper.line.services.LineProducerService;
+import br.com.marcomvidal.buscatalog.scraper.line.services.RestLineSyncService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,13 +24,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Line")
 public class LinesController {
     private final LineService lineService;
-    private final SynchronizationService synchronizationService;
+    private final RestLineSyncService restLineSyncService;
+    private final LineProducerService lineProducerService;
 
     public LinesController(
         LineService lineService,
-        SynchronizationService synchronizationService) {
+        RestLineSyncService restLineSyncService,
+        LineProducerService lineProducerService) {
         this.lineService = lineService;
-        this.synchronizationService = synchronizationService;
+        this.restLineSyncService = restLineSyncService;
+        this.lineProducerService = lineProducerService;
     }
 
     @Operation(summary = "Gets data from the official EMTU source for a list of lines.")
@@ -51,15 +55,35 @@ public class LinesController {
         @ApiResponse(responseCode = "200", description = "Successfully synchronized data"),
         @ApiResponse(responseCode = "400", description = "Invalid line list")
     })
-    @PostMapping("/sync")
-    public ResponseEntity<LineResponse> post(@RequestBody LineSyncRequest request) {
+    @PostMapping("/rest")
+    public ResponseEntity<LineResponse> rest(@RequestBody LineSyncRequest request) {
         var response = lineService.query(request.getLines());
 
         if (!response.hasLines()) {
             return ResponseEntity.badRequest().body(response);
         }
 
-        var errors = synchronizationService.persist(response.getLines());
+        var errors = restLineSyncService.sync(response.getLines());
+
+        return errors.isEmpty()
+            ? ResponseEntity.ok(response)
+            : ResponseEntity.unprocessableEntity().body(response.withErrors(errors));
+    }
+
+    @Operation(summary = "Gets list of lines from EMTU and produce them to Kafka topic.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successfully synchronized data"),
+        @ApiResponse(responseCode = "400", description = "Invalid line list")
+    })
+    @PostMapping("/producer")
+    public ResponseEntity<LineResponse> producer(@RequestBody LineSyncRequest request) {
+        var response = lineService.query(request.getLines());
+
+        if (!response.hasLines()) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        var errors = lineProducerService.sync(response.getLines());
 
         return errors.isEmpty()
             ? ResponseEntity.ok(response)

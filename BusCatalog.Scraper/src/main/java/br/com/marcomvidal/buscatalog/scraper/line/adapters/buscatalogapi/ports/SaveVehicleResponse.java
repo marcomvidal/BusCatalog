@@ -1,18 +1,12 @@
-package br.com.marcomvidal.buscatalog.scraper.api.ports;
+package br.com.marcomvidal.buscatalog.scraper.line.adapters.buscatalogapi.ports;
 
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class SaveVehicleResponse {
-    @Getter
-    @Setter
     public int id;
-
-    @Getter
-    @Setter
     public String identification;
-
-    @Getter
-    @Setter
     public String description;
 }

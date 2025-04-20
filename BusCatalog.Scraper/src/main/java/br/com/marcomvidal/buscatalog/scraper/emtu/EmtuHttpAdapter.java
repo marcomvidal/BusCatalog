@@ -1,4 +1,4 @@
-package br.com.marcomvidal.buscatalog.scraper.emtu.adapters;
+package br.com.marcomvidal.buscatalog.scraper.emtu;
 
 import java.io.IOException;
 
@@ -6,14 +6,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import br.com.marcomvidal.buscatalog.scraper.infrastructure.configuration.Configuration;
+import br.com.marcomvidal.buscatalog.scraper.infrastructure.configuration.sections.ConfigurationSection;
 
 @Service
 public class EmtuHttpAdapter {
     private final String identificationUrl;
     private final String dataUrl;
 
-    public EmtuHttpAdapter(Configuration configuration) {
+    public EmtuHttpAdapter(ConfigurationSection configuration) {
         this.identificationUrl = configuration.emtu.identificationUrl;
         this.dataUrl = configuration.emtu.dataUrl;
     }

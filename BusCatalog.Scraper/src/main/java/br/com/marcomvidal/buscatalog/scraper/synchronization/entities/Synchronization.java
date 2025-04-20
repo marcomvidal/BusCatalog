@@ -17,30 +17,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class Synchronization {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     private LocalDateTime createdAt;
-
-    @Getter
-    @Setter
     private boolean isSuccessful = false;
 
     @Enumerated(EnumType.STRING)
-    @Getter
-    @Setter
     private SyncType type;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "synchronization")
     @JsonManagedReference
-    @Getter
-    @Setter
     private List<SynchronizedLine> lines;
 
     public Synchronization() {}

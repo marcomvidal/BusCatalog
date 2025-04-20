@@ -12,22 +12,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class SynchronizedLine {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter
-    @Setter
     private Long id;
 
-    @Getter
-    @Setter
     private String identification;
 
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "synchronization_id")
-    @Getter
-    @Setter
     private Synchronization synchronization;
 
     public SynchronizedLine() {}

@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import br.com.marcomvidal.buscatalog.scraper.emtu.adapters.EmtuHttpAdapter;
+import br.com.marcomvidal.buscatalog.scraper.emtu.EmtuHttpAdapter;
 import br.com.marcomvidal.buscatalog.scraper.emtu.messages.ServiceMessages;
 import br.com.marcomvidal.buscatalog.scraper.emtu.scrapers.EmtuLineDenominationScraper;
 import br.com.marcomvidal.buscatalog.scraper.line.ports.LineServiceResponse;
