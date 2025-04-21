@@ -1,12 +1,11 @@
 # BusCatalog
-Ecossistema de aplicações para gerenciamento de linhas de ônibus. Desenvolvido sob preceitos de DDD (Domain-Driven Design), TDD (Test-Driven Development) e arquitetura orientada a eventos.
+Application ecosystem for bus lines management. Development under DDD (Domain-Driven Design), TDD (Test-Driven Development) concepts and event-driven architecture.
 
 ## Disclaimer
-Este aplicativo não é oficial e não possui nenhuma ligação com empresas ou órgãos oficiais de transportes.
-Foi desenvolvido unicamente para fins de aprendizagem e não pode ser distribuído comercialmente.
+This application is non-official and it has no relantionship with companies or transport official entities. It was development exclusively for learning purposes. It can't be distributed commercially.
 
-## Componentes
-Todas as aplicações componentes foram compartimentadas em contêineres Docker, estando cada `Dockerfile` dentro de seu respectivo diretório. Um `docker-compose.yml` geral orquestra a execução das aplicações juntas.
+## Components
+All the application components were compartmented on Docker containers. Each component has a `Dockerfile` inside their own directory. A general `docker-compose.yml` orchestrates the entire ecosystem execution together.
 - SPA
 - Scraper
 - API
@@ -14,38 +13,40 @@ Todas as aplicações componentes foram compartimentadas em contêineres Docker,
 ![Topology](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/Topology.png "Topology")
 
 ## SPA - Single Page Application
-Front-end de painel de configuração da aplicação. Permite visualizar, criar, editar e excluir linhas através de uma interface web amigável.
+Front-end, a configuration painel of the application. It allows visualize, create, edit, and delete data through a friendly web user interface through interaction with the <b>API</b> microservice.
 
-### Especificidades técnicas
-- <b>Linguagem:</b> TypeScript 5.3.2
+### Tech specifications
+- <b>Language:</b> TypeScript 5.3.2
 - <b>Runtime:</b> Node 20.11.0
 - <b>Framework:</b> Angular 17.1.1
-- <b>Bibliotecas importantes:</b> Tailwind, Ng-Select, Karma, Jasmine, Spectator
+- <b>Main libraries:</b> Tailwind, Ng-Select, Karma, Jasmine, Spectator
 
 ## Scraper
-Back-end para extração de informações das informações das linhas pelo site da EMTU via webscrapping. Possibilita persistí-las através de REST ou por eventos usando Kafka.
+Back-end, a microservice for extraction of the lines information from the EMTU website via webscrapping. It allows persistence through REST or events (using Kafka) to the <b>API</b> microservice.
 
-### Especificidades técnicas
-- <b>Linguagem:</b> Java 21
+### Tech specifications
+- <b>Language:</b> Java 21
 - <b>Runtime:</b> JRE 21
 - <b>Framework:</b> Spring Boot 3.2.4
-- <b>Bibliotecas importantes:</b> Maven, Spring Kafka, Spring Data JPA, Spring Test, Spring Kafka, Lombok, JUnit
+- <b>Main libraries:</b> Maven, Spring Kafka, Spring Test, Spring Kafka, Lombok, JUnit
+- <b>Persistence:</b> SQLite via Spring Data JPA (Hibernate)
 
 ## API
-Back-end para consolidação e disponibilização das informações das linhas produzidas por <b>Scraper</b> ou criadas no <b>SPA</b>.
+Back-end, a microservice for lines information consolidation and provision that were persisted through <b>Scraper</b> or <b>SPA</b>.
 
-### Especificidades técnicas
-- <b>Linguagem:</b> C# 12
+### Tech specifications
+- <b>Language:</b> C# 12
 - <b>Runtime:</b> .NET 8
 - <b>Framework:</b> ASP.NET Core 8.0.0
-- <b>Bibliotecas importantes:</b> AutoMapper, Confluient.Kafka, FluentValidation, Entity Framework Core, xUnit, FluentAssertions
+- <b>Main libraries:</b> AutoMapper, Confluient.Kafka, FluentValidation, xUnit, FluentAssertions
+- <b>Persistence:</b> SQLite via Entity Framework Core
 
-## Execução
-É possível executar cada uma das aplicações de forma independente e isolada utilizando as ferramentas de cada dos runtimes em que foram desenvolvidas. Contudo, dada a heterogeneidade da solução, a forma mais prática de executar o conjunto todo através do <b>Docker Compose</b>, através dos seguintes passos:
+## Execution
+It is possible to execute each of the components independently using the runtimes tools that each one were built. However, given the solution is very heterogenous, the most straighforward way to execute the whole ecosystem is using <b>Docker Compose<b> through the following steps:
 
-1. Certifique-se de que Docker e Docker Compose estejam instalados
-2. No diretório raiz do projeto, execute o comando `docker compose up --build`
-3. Acesse as aplicações via interface web:
+1. Be sure that Docker and Docker Compose are installed
+2. in the project root directory, run the command `docker compose up --build`
+3. Access the application via web browser:
 - <b>API</b>: http://localhost:5001/swagger
 - <b>SPA</b>: http://localhost:5002
 - <b>Scraper</b>: http://localhost:5003/swagger-ui/index.html
