@@ -11,6 +11,8 @@ Todas as aplicações componentes foram compartimentadas em contêineres Docker,
 - Scraper
 - API
 
+![Topology](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/Topology.png "Topology")
+
 ## SPA - Single Page Application
 Front-end de painel de configuração da aplicação. Permite visualizar, criar, editar e excluir linhas através de uma interface web amigável.
 
@@ -47,3 +49,13 @@ Back-end para consolidação e disponibilização das informações das linhas p
 - <b>API</b>: http://localhost:5001/swagger
 - <b>SPA</b>: http://localhost:5002
 - <b>Scraper</b>: http://localhost:5003/swagger-ui/index.html
+
+![LinesSummary](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/LinesSummary.png "Lines Summary")
+
+![LinesEdit](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/LinesEdit.png "Lines Edit")
+
+![DockerContainers](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/Docker.png "Docker Containers")
+
+![ScraperSwagger](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/ScraperSwagger.png "Scraper Swagger")
+
+![ApiSwagger](https://raw.githubusercontent.com/marcomvidal/BusCatalog/refs/heads/master/Images/ApiSwagger.png "API Swagger")
