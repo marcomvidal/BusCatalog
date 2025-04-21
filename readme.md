@@ -38,7 +38,7 @@ Back-end, a microservice for lines information consolidation and provision that 
 - <b>Language:</b> C# 12
 - <b>Runtime:</b> .NET 8
 - <b>Framework:</b> ASP.NET Core 8.0.0
-- <b>Main libraries:</b> AutoMapper, Confluient.Kafka, FluentValidation, xUnit, FluentAssertions
+- <b>Main libraries:</b> AutoMapper, Confluent.Kafka, FluentValidation, xUnit, FluentAssertions
 - <b>Persistence:</b> SQLite via Entity Framework Core
 
 ## Execution
