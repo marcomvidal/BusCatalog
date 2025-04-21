@@ -9,17 +9,14 @@ import org.springframework.stereotype.Service;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.entities.Synchronization;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.messages.ServiceMessages;
 import br.com.marcomvidal.buscatalog.scraper.synchronization.repositories.SynchronizationRepository;
-import br.com.marcomvidal.buscatalog.scraper.synchronization.repositories.SynchronizedLineRepository;
 
 @Service
 public class GetSynchronizationService {
     private final SynchronizationRepository synchronizationRepository;
     private final Logger logger = LoggerFactory.getLogger(GetSynchronizationService.class);
 
-    public GetSynchronizationService(
-        SynchronizationRepository synchronizationRepository,
-        SynchronizedLineRepository synchronizedLineRepository) {
-            this.synchronizationRepository = synchronizationRepository;
+    public GetSynchronizationService(SynchronizationRepository synchronizationRepository) {
+        this.synchronizationRepository = synchronizationRepository;
     }
 
     public List<Synchronization> getAll() {

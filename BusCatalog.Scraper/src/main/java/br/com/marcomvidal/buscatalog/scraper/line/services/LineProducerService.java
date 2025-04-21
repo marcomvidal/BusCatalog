@@ -31,7 +31,7 @@ public class LineProducerService {
             this.lineSyncService = lineSyncService;
             this.synchronizationRepository = synchronizationRepository;
             this.producer = producer;
-            this.topic = configuration.linesProducer.getTopic();
+            this.topic = configuration.getLinesProducer().getTopic();
     }
 
     public HashMap<String, String> sync(List<Line> lines) {

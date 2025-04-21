@@ -17,7 +17,7 @@ public class ApiLinesAdapter {
         ConfigurationSection configuration,
         RestClient.Builder httpBuilder) {
         this.http = httpBuilder
-            .baseUrl(configuration.apiUrl)
+            .baseUrl(configuration.getApiUrl())
             .build();
     }
 

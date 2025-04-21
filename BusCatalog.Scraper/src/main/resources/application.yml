@@ -21,3 +21,7 @@ configuration:
   linesProducer:
     topic: public.lines.sync
     bootstrapServers: localhost:9092
+  description:
+    title: BusCatalog.Scraper
+    version: "1.0"
+    description: This API fetches data from transport authorities and provides ways to synchronize them with BusCatalog.Api.

@@ -29,10 +29,16 @@ public class EmtuLineDenominationService {
             return new LineServiceResponse<String>(denomination);
         } catch (IOException ex) {
             logger.warn(ServiceMessages.NETWORK_FAILURE.getMessage(), identifier);
-            return new LineServiceResponse<String>(identifier, ServiceMessages.NETWORK_FAILURE.name());
+
+            return new LineServiceResponse<String>(
+                identifier,
+                ServiceMessages.NETWORK_FAILURE.name());
         } catch (Exception ex) {
             logger.warn(ServiceMessages.LINE_NOT_FOUND.getMessage(), identifier);
-            return new LineServiceResponse<String>(identifier, ServiceMessages.LINE_NOT_FOUND.name());
+            
+            return new LineServiceResponse<String>(
+                identifier,
+                ServiceMessages.LINE_NOT_FOUND.name());
         }
     }
 }

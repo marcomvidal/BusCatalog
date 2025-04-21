@@ -10,8 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ConfigurationSection {
-    public String apiUrl;
-    public String spaUrl;
-    public EmtuConfiguration emtu;
-    public KafkaSection linesProducer;
+    private String apiUrl;
+    private String spaUrl;
+    private EmtuConfiguration emtu;
+    private KafkaSection linesProducer;
+    private DescriptionSection description;
 }

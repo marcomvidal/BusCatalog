@@ -32,7 +32,7 @@ public class HealthCheckService {
 
     public HealthCheckResponse apiHealthCheck() {
         return adapter.send(
-            configuration.apiUrl + API_HEALTH_CHECK_URL,
+            configuration.getApiUrl() + API_HEALTH_CHECK_URL,
             HealthCheckApplication.API.name());
     }
 }

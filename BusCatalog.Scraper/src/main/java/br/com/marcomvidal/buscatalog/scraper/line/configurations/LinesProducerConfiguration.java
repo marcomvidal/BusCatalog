@@ -19,7 +19,7 @@ public class LinesProducerConfiguration {
     private final KafkaSection configuration;
 
     public LinesProducerConfiguration(ConfigurationSection configuration) {
-        this.configuration = configuration.linesProducer;
+        this.configuration = configuration.getLinesProducer();
     }
 
     @Bean

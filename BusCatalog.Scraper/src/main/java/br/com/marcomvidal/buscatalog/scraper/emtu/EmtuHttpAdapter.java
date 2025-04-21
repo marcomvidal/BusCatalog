@@ -14,8 +14,8 @@ public class EmtuHttpAdapter {
     private final String dataUrl;
 
     public EmtuHttpAdapter(ConfigurationSection configuration) {
-        this.identificationUrl = configuration.emtu.identificationUrl;
-        this.dataUrl = configuration.emtu.dataUrl;
+        this.identificationUrl = configuration.getEmtu().identificationUrl;
+        this.dataUrl = configuration.getEmtu().dataUrl;
     }
 
     public Document getDenomination(String identifier) throws IOException {
