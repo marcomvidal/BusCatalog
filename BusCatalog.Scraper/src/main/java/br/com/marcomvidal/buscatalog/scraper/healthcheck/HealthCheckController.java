@@ -22,10 +22,7 @@ public class HealthCheckController {
     }
 
     @Operation(summary = "Responds a health check request.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Application is up & running"),
-        @ApiResponse(responseCode = "503", description = "Application is unreachable")
-    })
+    @ApiResponse(responseCode = "200", description = "Application is up & running")
     @GetMapping
     public ResponseEntity<HealthCheckResponse> get() {
         return service.selfHealthCheck().toResult();
