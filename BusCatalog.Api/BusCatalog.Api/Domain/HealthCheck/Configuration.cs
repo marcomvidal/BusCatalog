@@ -2,10 +2,13 @@ namespace BusCatalog.Api.Domain.HealthCheck;
 
 public static class Configuration
 {
-    public static IServiceCollection AddHealthCheck(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddHttpClient<IHealthCheckAdapter, HealthCheckAdapter>();
+        public IServiceCollection AddHealthCheck()
+        {
+            services.AddHttpClient<IHealthCheckAdapter, HealthCheckAdapter>();
 
-        return services.AddScoped<IHealthCheckService, HealthCheckService>();
+            return services.AddScoped<IHealthCheckService, HealthCheckService>();
+        }
     }
 }

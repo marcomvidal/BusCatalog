@@ -2,14 +2,14 @@ using System.Text.RegularExpressions;
 
 namespace BusCatalog.Api.Extensions;
 
-public static partial class StringExtensions
+public static class StringExtensions
 {
-    public static string UpperSlugfy(this string text) =>
-        SlugfyRegex().Replace(text, "-").ToUpper();
+    extension(string text)
+    {
+        public string UpperSlugfy() =>
+            new Regex(@"[\s_]").Replace(text, "-").ToUpper();
 
-    public static string UpperSnakeCasefy(this string text) =>
-        SlugfyRegex().Replace(text, "_").ToUpper();
-    
-    [GeneratedRegex(@"[\s_]")]
-    private static partial Regex SlugfyRegex();
+        public string UpperSnakeCasefy() =>
+            new Regex(@"[\s_]").Replace(text, "_").ToUpper(); 
+    }
 }

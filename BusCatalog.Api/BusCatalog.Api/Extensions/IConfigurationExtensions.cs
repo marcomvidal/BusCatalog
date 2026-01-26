@@ -4,6 +4,9 @@ namespace BusCatalog.Api.Extensions;
 
 public static class IConfigurationExtensions
 {
-    public static T GetValue<T>(this IConfiguration configuration, ConfigurationKeys key) =>
-        configuration.GetValue<T>(key.ToString())!;
+    extension(IConfiguration configuration)
+    {
+        public T GetValue<T>(ConfigurationKeys key) =>
+            configuration.GetValue<T>(key.ToString())!;
+    }
 }

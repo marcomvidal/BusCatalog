@@ -2,7 +2,6 @@ using BusCatalog.Api.Infrastructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddHttpContextAccessor();
 builder.AddCorsPolicy();
 builder.Services.AddControllersWithNamingConvention();

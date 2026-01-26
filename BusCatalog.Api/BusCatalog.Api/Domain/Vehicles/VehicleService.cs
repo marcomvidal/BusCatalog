@@ -1,4 +1,3 @@
-using AutoMapper;
 using BusCatalog.Api.Domain.General;
 using BusCatalog.Api.Domain.Vehicles.Ports;
 using static BusCatalog.Api.Domain.Vehicles.Messages.ServiceMessages;
@@ -18,16 +17,13 @@ public interface IVehicleService
 public sealed class VehicleService : IVehicleService
 {
     private readonly IVehicleRepository _repository;
-    private readonly IMapper _mapper;
     private readonly ILogger<VehicleService> _logger;
 
     public VehicleService(
         IVehicleRepository repository,
-        IMapper mapper,
         ILogger<VehicleService> logger)
     {
         _repository = repository;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -59,7 +55,7 @@ public sealed class VehicleService : IVehicleService
     public async Task<Vehicle> SaveAsync(VehiclePostRequest request)
     {
         _logger.LogInformation(RegisteringVehicle, request.Identification);
-        var vehicle = _mapper.Map<Vehicle>(request);
+        var vehicle = request.ToVehicle();
         await _repository.SaveAsync(vehicle);
 
         return vehicle;
@@ -68,7 +64,7 @@ public sealed class VehicleService : IVehicleService
     public async Task<Vehicle> UpdateAsync(VehiclePostRequest request, Vehicle vehicle)
     {
         _logger.LogInformation(UpdatingVehicle, request.Identification);
-        var updatedVehicle = _mapper.Map(request, vehicle);
+        var updatedVehicle = request.MergeWithSavedVehicle(vehicle);
         await _repository.UpdateAsync(updatedVehicle);
 
         return updatedVehicle;

@@ -1,4 +1,3 @@
-using AutoMapper;
 using BusCatalog.Api.Domain.General;
 using BusCatalog.Api.Domain.Lines.Ports;
 using BusCatalog.Api.Domain.Vehicles;
@@ -20,18 +19,15 @@ public sealed class LineService : ILineService
 {
     private readonly ILineRepository _lineRepository;
     private readonly IVehicleRepository _vehicleRepository;
-    private readonly IMapper _mapper;
     private readonly ILogger<LineService> _logger;
 
     public LineService(
         ILineRepository lineRepository,
         IVehicleRepository vehicleRepository,
-        IMapper mapper,
         ILogger<LineService> logger)
     {
         _lineRepository = lineRepository;
         _vehicleRepository = vehicleRepository;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -53,9 +49,9 @@ public sealed class LineService : ILineService
     public async Task<LineResponse?> GetByIdentificationAsync(string identification)
     {
         _logger.LogInformation(FetchingLineByIdentification, identification);
-        var line = await _lineRepository.GetByAsync(x => x.Identification == identification);
-
-        return _mapper.Map<LineResponse>(line.FirstOrDefault());
+        var lines = await _lineRepository.GetByAsync(x => x.Identification == identification);
+        
+        return lines.FirstOrDefault()?.ToLineResponse();
     }
 
     public async Task<Line> SaveAsync(LinePostRequest request)
@@ -63,7 +59,7 @@ public sealed class LineService : ILineService
         _logger.LogInformation(RegisteringLine, request.Identification);
         var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
 
-        var line = new LineBuilder(_mapper.Map<Line>(request))
+        var line = new LineBuilder(request.ToLine())
             .WithVehicles(vehicles)
             .Build();
         
@@ -76,7 +72,7 @@ public sealed class LineService : ILineService
     {
         var vehicles = await _vehicleRepository.GetByIdentificatorsAsync(request.Vehicles);
         
-        var updatedLine = new LineBuilder(_mapper.Map(request, line))
+        var updatedLine = new LineBuilder(request.MergeWithSavedLine(line))
             .WithVehicles(vehicles)
             .Build();
         

@@ -6,12 +6,15 @@ public static class Configuration
 {
     private const string ConnectionString = "Default";
 
-    public static IHostApplicationBuilder AddDatabase(this IHostApplicationBuilder builder)
+    extension(IHostApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<DatabaseContext>(
-            options => options.UseSqlite(
-                builder.Configuration.GetConnectionString(ConnectionString)));
+        public IHostApplicationBuilder AddDatabase()
+        {
+            builder.Services.AddDbContext<DatabaseContext>(
+                options => options.UseSqlite(
+                    builder.Configuration.GetConnectionString(ConnectionString)));
 
-        return builder;
+            return builder;
+        }
     }
 }

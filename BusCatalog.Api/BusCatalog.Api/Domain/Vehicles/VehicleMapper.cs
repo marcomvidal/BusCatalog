@@ -1,9 +1,27 @@
-using AutoMapper;
 using BusCatalog.Api.Domain.Vehicles.Ports;
 
 namespace BusCatalog.Api.Domain.Vehicles;
 
-public sealed class VehicleMapper : Profile
+public static class VehicleMapper
 {
-    public VehicleMapper() => CreateMap<VehiclePostRequest, Vehicle>();
+    extension(VehiclePostRequest request)
+    {
+        public Vehicle ToVehicle() =>
+            new()
+            {
+                Identification = request.Identification!,
+                Description = request.Description!
+            };
+    }
+
+    extension(VehiclePostRequest request)
+    {
+        public Vehicle MergeWithSavedVehicle(Vehicle vehicle)
+        {
+            vehicle.Identification = request.Identification!;
+            vehicle.Description = request.Description!;
+
+            return vehicle;   
+        }
+    }
 }

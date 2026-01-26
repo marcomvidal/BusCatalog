@@ -9,16 +9,18 @@ using BusCatalog.Test.Fixtures;
 using BusCatalog.Test.Fakes;
 using Xunit;
 using BusCatalog.Api.Domain.Lines.Ports;
+using System.Threading.Tasks;
 
 namespace BusCatalog.Test.Cases.Lines;
 
 public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenItPostsAValidLine_ShouldRespondWithIt()
+    public async Task WhenItPostsAValidLine_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles.Take(2));
-        await Context.SaveChangesAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Vehicles.AddRangeAsync(FakeStore.Vehicles.Take(2), cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
         
         var request = new LinePostRequest
         {
@@ -29,7 +31,10 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Vehicles = ["MIDI", "PADRON"]
         };
 
-        var response = await Client.PostAsJsonAsync("/api/lines", request);
+        var response = await Client.PostAsJsonAsync(
+            "/api/lines",
+            request,
+            cancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         (await response.DeserializedBody<Line>())
@@ -43,10 +48,11 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     }
 
     [Fact]
-    public async void WhenItPostsALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
+    public async Task WhenItPostsALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.SaveChangesAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0], cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
         
         var request = new LinePostRequest
         {
@@ -57,17 +63,26 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Vehicles = ["MIDI", "PADRON"]
         };
 
-        var response = await Client.PostAsJsonAsync("/api/lines", request);
+        var response = await Client.PostAsJsonAsync(
+            "/api/lines",
+            request,
+            cancellationToken);
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!
-            .Errors.Should().ContainKeys("Vehicles");
+            .Errors
+            .Should()
+            .ContainKeys("Vehicles");
     }
 
     [Fact]
-    public async void WhenItPostsAnEmptyLine_ShouldRespondWithValidationErrors()
+    public async Task WhenItPostsAnEmptyLine_ShouldRespondWithValidationErrors()
     {
-        var response = await Client.PostAsJsonAsync("/api/lines", new LinePostRequest());
+        var response = await Client.PostAsJsonAsync(
+            "/api/lines",
+            new LinePostRequest(),
+            TestContext.Current.CancellationToken);
+        
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -76,10 +91,11 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
     }
 
     [Fact]
-    public async void WhenItPostsALineWithRepeatedIdentification_ShouldRespondWithIt()
+    public async Task WhenItPostsALineWithRepeatedIdentification_ShouldRespondWithIt()
     {
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.SaveChangesAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0], cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
 
         var request = new LinePostRequest
         {
@@ -90,11 +106,20 @@ public class Post(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Vehicles = ["MIDI"]
         };
 
-        await Client.PostAsJsonAsync("/api/lines", request);
-        var response = await Client.PostAsJsonAsync("/api/lines", request);
+        await Client.PostAsJsonAsync(
+            "/api/lines",
+            request,
+            cancellationToken);
+        
+        var response = await Client.PostAsJsonAsync(
+            "/api/lines",
+            request,
+            cancellationToken);
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!
-            .Errors.Should().ContainKeys("Identification");
+            .Errors
+            .Should()
+            .ContainKeys("Identification");
     }
 }

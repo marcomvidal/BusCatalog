@@ -29,7 +29,7 @@ public sealed class HealthCheckService : IHealthCheckService
 
     public HealthCheckResponse SelfHealthCheck() =>
         HealthCheckResponse.Generate(
-            _httpContextAccessor.HttpContext!.GetFullRequestUrl(),
+            _httpContextAccessor.HttpContext!.FullRequestUrl,
             (int)HttpStatusCode.OK,
             success: true);
 

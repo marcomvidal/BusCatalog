@@ -6,15 +6,19 @@ using BusCatalog.Api.Domain.Lines;
 using BusCatalog.Test.Fixtures;
 using BusCatalog.Test.Fakes;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace BusCatalog.Test.Cases.Lines;
 
 public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenItHasNoPlaces_ShouldRespondEmpty()
+    public async Task WhenItHasNoPlaces_ShouldRespondEmpty()
     {
-        var response = await Client.GetAsync("/api/lines");
+        var response = await Client.GetAsync(
+            "/api/lines",
+            TestContext.Current.CancellationToken);
+
         var body = await response.DeserializedBody<IEnumerable<Line>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,13 +26,14 @@ public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory
     }
 
     [Fact]
-    public async void WhenItHasLines_ShouldRespondWithIt()
+    public async Task WhenItHasLines_ShouldRespondWithIt()
     {
         var lines = FakeStore.Lines.Take(2);
-        await Context.Lines.AddRangeAsync(lines);
-        await Context.SaveChangesAsync();
-        
-        var response = await Client.GetAsync("/api/lines");
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Lines.AddRangeAsync(lines, cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
+
+        var response = await Client.GetAsync("/api/lines", cancellationToken);
         var body = await response.DeserializedBody<IEnumerable<Line>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);

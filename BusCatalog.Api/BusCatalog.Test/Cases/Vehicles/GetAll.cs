@@ -6,15 +6,19 @@ using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Test.Fixtures;
 using BusCatalog.Test.Fakes;
 using Xunit;
+using System.Threading.Tasks;
 
 namespace BusCatalog.Test.Cases.Vehicles;
 
 public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenItHasNoVehicles_ShouldRespondEmpty()
+    public async Task WhenItHasNoVehicles_ShouldRespondEmpty()
     {
-        var response = await Client.GetAsync("/api/vehicles");
+        var response = await Client.GetAsync(
+            "/api/vehicles",
+            TestContext.Current.CancellationToken);
+        
         var body = await response.DeserializedBody<IEnumerable<Vehicle>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -22,13 +26,14 @@ public class GetAll(TestWebApplicationFactory factory) : IntegrationTest(factory
     }
 
     [Fact]
-    public async void WhenItHasVehicles_ShouldRespondWithIt()
+    public async Task WhenItHasVehicles_ShouldRespondWithIt()
     {
+        var cancellationToken = TestContext.Current.CancellationToken;
         var vehicles = FakeStore.Vehicles.Take(2);
-        await Context.Vehicles.AddRangeAsync(vehicles);
-        await Context.SaveChangesAsync();
+        await Context.Vehicles.AddRangeAsync(vehicles, cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
         
-        var response = await Client.GetAsync("/api/vehicles");
+        var response = await Client.GetAsync("/api/vehicles", cancellationToken);
         var body = await response.DeserializedBody<IEnumerable<Vehicle>>();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);

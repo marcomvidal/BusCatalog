@@ -7,12 +7,14 @@ namespace BusCatalog.Api.Infrastructure.Configurations;
 
 public static class Dependencies
 {
-    public static IHostApplicationBuilder AddAdapters(this IHostApplicationBuilder builder) =>
-        builder.AddDatabase();
+    extension(IHostApplicationBuilder builder)
+    {
+        public IHostApplicationBuilder AddAdapters() => builder.AddDatabase();
     
-    public static IServiceCollection AddDomain(this IHostApplicationBuilder builder) =>
-        builder.Services
-            .AddVehicles()
-            .AddLines(builder.Configuration)
-            .AddHealthCheck();
+        public IServiceCollection AddDomain() =>
+            builder.Services
+                .AddVehicles()
+                .AddLines(builder.Configuration)
+                .AddHealthCheck();
+    }
 }

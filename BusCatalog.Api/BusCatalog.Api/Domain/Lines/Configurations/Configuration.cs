@@ -16,8 +16,8 @@ public static class Configuration
             .AddScoped<ILineRepository, LineRepository>()
             .AddScoped<ILineService, LineService>()
             .AddScoped<IValidator<LinePostRequest>, LinePostValidator>()
-            .AddScoped<IValidator<LinePutRequest>, LinePutValidator>()
-            .AddLineConsumerBackgroundService(configuration);
+            .AddScoped<IValidator<LinePutRequest>, LinePutValidator>();
+            // .AddLineConsumerBackgroundService(configuration);
 
     private static IServiceCollection AddLineConsumerBackgroundService(
         this IServiceCollection services,

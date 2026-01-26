@@ -2,8 +2,11 @@ namespace BusCatalog.Api.Extensions;
 
 public static class HttpContextExtensions
 {
-    public static string GetFullRequestUrl(this HttpContext context)
+    extension(HttpContext context)
     {
-        return $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
+        public string FullRequestUrl
+        {
+            get => $"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
+        }
     }
 }

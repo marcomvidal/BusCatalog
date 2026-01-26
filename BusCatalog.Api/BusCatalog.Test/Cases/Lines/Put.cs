@@ -8,20 +8,22 @@ using System.Net;
 using System.Net.Http.Json;
 using Xunit;
 using BusCatalog.Api.Domain.Lines.Ports;
+using System.Threading.Tasks;
 
 namespace BusCatalog.Test.Cases.Lines;
 
 public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
 {
     [Fact]
-    public async void WhenItUpdatesAValidLine_ShouldRespondWithIt()
+    public async Task WhenItUpdatesAValidLine_ShouldRespondWithIt()
     {
+        var cancellationToken = TestContext.Current.CancellationToken;
         var vehicle = FakeStore.Vehicles[0];
-        await Context.Vehicles.AddAsync(vehicle);
+        await Context.Vehicles.AddAsync(vehicle, cancellationToken);
 
         var line = FakeStore.Lines[0] with { Vehicles = [vehicle] };
-        await Context.Lines.AddAsync(line);
-        await Context.SaveChangesAsync();
+        await Context.Lines.AddAsync(line, cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
 
         var request = new LinePutRequest
         {
@@ -32,7 +34,10 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Vehicles = ["MIDI"]
         };
 
-        var response = await Client.PutAsJsonAsync("/api/lines/1", request);
+        var response = await Client.PutAsJsonAsync(
+            "/api/lines/1",
+            request,
+            cancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.Accepted);
         (await response.DeserializedBody<Line>())
@@ -46,11 +51,12 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
     }
 
     [Fact]
-    public async void WhenItUpdatesALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
+    public async Task WhenItUpdatesALineWithNonExistentLinesOrVehicles_ShouldRespondWithValidationErrors()
     {
-        await Context.Lines.AddAsync(FakeStore.Lines[0]);
-        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0]);
-        await Context.SaveChangesAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Lines.AddAsync(FakeStore.Lines[0], cancellationToken);
+        await Context.Vehicles.AddAsync(FakeStore.Vehicles[0], cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
         
         var request = new LinePostRequest
         {
@@ -61,15 +67,20 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
             Vehicles = ["MIDI", "PADRON"]
         };
 
-        var response = await Client.PutAsJsonAsync("/api/lines/1", request);
+        var response = await Client.PutAsJsonAsync(
+            "/api/lines/1",
+            request,
+            cancellationToken);
         
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         (await response.DeserializedBody<ValidationProblemDetails>())!
-            .Errors.Should().ContainKeys("Vehicles");
+            .Errors
+            .Should()
+            .ContainKeys("Vehicles");
     }
 
     [Fact]
-    public async void WhenItPutsALineThatDoesNotExists_ShouldRespondNotFound()
+    public async Task WhenItPutsALineThatDoesNotExists_ShouldRespondNotFound()
     {
         var request = new LinePutRequest
         {
@@ -79,18 +90,26 @@ public class Put(TestWebApplicationFactory factory) : IntegrationTest(factory)
             DeparturesPerDay = 20
         };
 
-        var response = await Client.PutAsJsonAsync("/api/lines/0", request);
+        var response = await Client.PutAsJsonAsync(
+            "/api/lines/0",
+            request,
+            TestContext.Current.CancellationToken);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     [Fact]
-    public async void WhenItPutsAnInvalidLine_ShouldRespondWithValidationErrors()
+    public async Task WhenItPutsAnInvalidLine_ShouldRespondWithValidationErrors()
     {
-        await Context.Lines.AddAsync(FakeStore.Lines[0]);
-        await Context.SaveChangesAsync();
+        var cancellationToken = TestContext.Current.CancellationToken;
+        await Context.Lines.AddAsync(FakeStore.Lines[0], cancellationToken);
+        await Context.SaveChangesAsync(cancellationToken);
 
-        var response = await Client.PutAsJsonAsync("/api/lines/1", new LinePutRequest());
+        var response = await Client.PutAsJsonAsync(
+            "/api/lines/1",
+            new LinePutRequest(),
+            cancellationToken);
+
         var body = await response.DeserializedBody<ValidationProblemDetails>();
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
