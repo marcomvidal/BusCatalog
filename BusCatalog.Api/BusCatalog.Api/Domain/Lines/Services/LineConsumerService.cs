@@ -18,14 +18,14 @@ public sealed class LineConsumerService : BackgroundService
     public LineConsumerService(
         IConsumer<Null, LinePostRequest> consumer,
         IServiceScopeFactory serviceScopeFactory,
-        ILogger<LineConsumerService> logger,
         IOptions<LinesConsumerSection> configuration,
+        ILogger<LineConsumerService> logger,
         IHostApplicationLifetime applicationLifetime)
     {
         _consumer = consumer;
         _serviceScopeFactory = serviceScopeFactory;
-        _logger = logger;
         _configuration = configuration.Value;
+        _logger = logger;
         applicationLifetime.ApplicationStarted.Register(() => _isReady = true);
     }
 

@@ -1,6 +1,7 @@
 using FluentValidation;
 using BusCatalog.Api.Domain.Vehicles;
 using BusCatalog.Api.Domain.Lines.Ports;
+using BusCatalog.Api.Domain.Lines.Messages;
 
 namespace BusCatalog.Api.Domain.Lines.Validators;
 
@@ -20,7 +21,7 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
             .NotNull()
             .Length(2, 50)
             .MustAsync(IdentificationShouldBeUnique)
-                .WithMessage("'Identification' should be unique.");
+                .WithMessage(ValidationMessages.IdentificationShouldBeUnique);
         
         RuleFor(x => x.Fromwards).NotNull().Length(3, 50);
         RuleFor(x => x.Towards).NotNull().Length(3, 50);
@@ -29,7 +30,7 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
         RuleFor(x => x.Vehicles)
             .NotEmpty()
             .MustAsync(UnknownVehicles)
-                .WithMessage("'Vehicles' should refeer to vehicles that exist in database.");
+                .WithMessage(ValidationMessages.VehiclesDoesNotExists);
     }
 
     private async Task<bool> IdentificationShouldBeUnique(
@@ -48,7 +49,8 @@ public class LinePutValidator : AbstractValidator<LinePutRequest>
         IEnumerable<string> requestVehicles,
         CancellationToken _)
     {
-        var vehicles = await _vehicleRepository.GetByAsync(x => requestVehicles.Contains(x.Identification));
+        var vehicles = await _vehicleRepository
+            .GetByAsync(x => requestVehicles.Contains(x.Identification));
 
         return requestVehicles.Count() == vehicles.Count;
     }

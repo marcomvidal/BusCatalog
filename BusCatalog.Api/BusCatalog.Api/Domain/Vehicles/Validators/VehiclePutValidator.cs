@@ -1,3 +1,4 @@
+using BusCatalog.Api.Domain.Vehicles.Messages;
 using BusCatalog.Api.Domain.Vehicles.Ports;
 using FluentValidation;
 
@@ -15,7 +16,7 @@ public sealed class VehiclePutValidator : AbstractValidator<VehiclePutRequest>
             .NotEmpty()
             .Length(4, 50)
             .MustAsync(IdentificationShouldBeUnique)
-                .WithMessage("'Identification' should be unique.");
+                .WithMessage(ValidationMessages.IdentificationShouldBeUnique);
 
         RuleFor(x => x.Description).NotEmpty().Length(4, 50);
     }
